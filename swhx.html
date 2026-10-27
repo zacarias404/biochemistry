@@ -1,0 +1,6298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>生物化学知识点闪卡 · 苏大338</title>
+<style>
+:root{
+  --bg:#101820; --bg2:#17212b; --card:#1e2a36; --card2:#26343f;
+  --line:#2b3a4a; --line2:#38495c;
+  --txt:#e8eef5; --txt2:#9fb0c3; --txt3:#6b7f94;
+  --acc:#3fb6a8; --acc2:#2a8e83; --warn:#e6a23c; --bad:#e2685e; --good:#4ca777; --blue:#5b9bd5;
+  --shadow:0 8px 28px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;height:100%}
+body{
+  background:radial-gradient(1200px 600px at 20% -10%, #1c2b38 0%, transparent 60%),
+             radial-gradient(900px 500px at 100% 0%, #1a2e2b 0%, transparent 55%),
+             var(--bg);
+  color:var(--txt);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  font-size:15px;line-height:1.7;
+  min-height:100%;display:flex;flex-direction:column;
+}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+.hidden{display:none!important}
+
+/* ---------- 顶栏 ---------- */
+header{
+  position:sticky;top:0;z-index:40;
+  background:rgba(15,20,25,.86);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+  padding:10px 16px;display:flex;align-items:center;gap:14px;
+}
+.brand{display:flex;align-items:center;gap:9px;font-weight:700;font-size:15px;letter-spacing:.3px;white-space:nowrap}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--acc);box-shadow:0 0 10px var(--acc)}
+.brand small{font-weight:400;color:var(--txt3);font-size:11px;margin-left:2px}
+.hbar{flex:1;display:flex;align-items:center;gap:10px;min-width:0}
+.prog{flex:1;height:6px;background:#26333f;border-radius:99px;overflow:hidden;min-width:40px}
+.prog>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--acc2),var(--acc));border-radius:99px;transition:width .3s}
+.stat{font-variant-numeric:tabular-nums;font-size:12px;color:var(--txt2);white-space:nowrap}
+.iconbtn{
+  width:34px;height:34px;border-radius:9px;border:1px solid var(--line2);
+  display:grid;place-items:center;color:var(--txt2);background:var(--card);transition:.15s;flex:none;
+}
+.iconbtn:hover{color:var(--txt);border-color:var(--acc);background:var(--card2)}
+
+/* ---------- 布局 ---------- */
+main{flex:1;display:grid;grid-template-columns:270px 1fr;max-width:1400px;width:100%;margin:0 auto;align-items:start}
+aside{
+  border-right:1px solid var(--line);padding:14px 12px 40px;overflow-y:auto;
+  max-height:calc(100vh - 57px);position:sticky;top:57px;
+}
+aside::-webkit-scrollbar{width:7px}
+aside::-webkit-scrollbar-thumb{background:#2e3c4a;border-radius:9px}
+.sec-title{font-size:11px;letter-spacing:1.4px;color:var(--txt3);text-transform:uppercase;margin:14px 8px 8px;font-weight:700}
+.sec-title:first-child{margin-top:2px}
+.catgrp{margin-bottom:6px}
+.cathead{
+  display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:9px;
+  font-weight:700;font-size:13.5px;width:100%;text-align:left;transition:.15s;
+  border:1px solid transparent;
+}
+.cathead:hover{background:var(--card)}
+.cathead .cnt{margin-left:auto;font-size:11px;color:var(--txt3);font-weight:400;font-variant-numeric:tabular-nums}
+.cathead .caret{color:var(--txt3);font-size:10px;transition:.2s;width:10px}
+.cathead.open .caret{transform:rotate(90deg)}
+.chlist{display:none;padding:2px 0 6px 4px}
+.chlist.open{display:block}
+.chitem{
+  display:flex;align-items:center;gap:7px;width:100%;padding:6.5px 9px 6.5px 14px;
+  border-radius:8px;font-size:13px;color:var(--txt2);text-align:left;transition:.12s;position:relative;
+}
+.chitem:hover{background:var(--card);color:var(--txt)}
+.chitem.active{background:linear-gradient(90deg,rgba(63,182,168,.18),rgba(63,182,168,.04));color:var(--acc);font-weight:600}
+.chitem.active::before{content:"";position:absolute;left:4px;top:8px;bottom:8px;width:2.5px;border-radius:9px;background:var(--acc)}
+.chitem .mini{margin-left:auto;display:flex;gap:2px;align-items:center;flex:none}
+.mbar{height:4px;border-radius:9px;background:#2a3745;width:38px;overflow:hidden}
+.mbar>i{display:block;height:100%;background:var(--acc);width:0}
+
+/* ---------- 内容区 ---------- */
+.content{padding:22px 26px 130px;min-width:0}
+.content::-webkit-scrollbar{width:9px}
+.content::-webkit-scrollbar-thumb{background:#2e3c4a;border-radius:9px}
+
+/* 首页 */
+.hero{max-width:920px;margin:0 auto}
+h1{font-size:26px;margin:6px 0 4px;letter-spacing:.5px;font-weight:800}
+h1 span{color:var(--acc)}
+.sub{color:var(--txt2);font-size:13.5px;margin-bottom:22px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:16px;box-shadow:var(--shadow)}
+.panel h3{margin:0 0 12px;font-size:14px;color:var(--txt);display:flex;align-items:center;gap:8px}
+.panel h3 em{font-style:normal;color:var(--txt3);font-weight:400;font-size:12px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{
+  padding:10px 18px;border-radius:10px;font-size:14px;font-weight:600;
+  background:linear-gradient(180deg,var(--acc),var(--acc2));color:#04201d;
+  border:1px solid #57c9bb;transition:.16s;box-shadow:0 4px 14px rgba(63,182,168,.22);
+}
+.btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(63,182,168,.32)}
+.btn.ghost{background:var(--card2);color:var(--txt);border:1px solid var(--line2);box-shadow:none}
+.btn.ghost:hover{border-color:var(--acc);color:var(--acc)}
+.btn.small{padding:7px 13px;font-size:12.5px;border-radius:8px}
+.seg{display:inline-flex;background:#111820;border:1px solid var(--line);border-radius:10px;padding:3px;gap:2px;flex-wrap:wrap}
+.seg button{padding:7px 14px;border-radius:8px;font-size:13px;color:var(--txt2);transition:.14s;white-space:nowrap}
+.seg button.on{background:var(--acc);color:#04201d;font-weight:700}
+.seg button:hover:not(.on){color:var(--txt)}
+
+/* 统计 */
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kpi{background:var(--card2);border:1px solid var(--line);border-radius:11px;padding:12px 14px}
+.kpi b{display:block;font-size:22px;font-variant-numeric:tabular-nums;line-height:1.3}
+.kpi span{font-size:11.5px;color:var(--txt3)}
+.kpi.ok b{color:var(--good)} .kpi.no b{color:var(--bad)} .kpi.mid b{color:var(--warn)} .kpi.na b{color:var(--txt2)}
+
+/* 章节表 */
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{text-align:left;color:var(--txt3);font-weight:600;font-size:11.5px;padding:6px 8px;border-bottom:1px solid var(--line)}
+.tbl td{padding:8px;border-bottom:1px solid #222d38}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:#1e2833}
+.tag{display:inline-block;padding:1.5px 8px;border-radius:99px;font-size:10.5px;border:1px solid;line-height:1.6;white-space:nowrap}
+.tag.s{color:#8fc7e8;border-color:#2f5973;background:#16242e}
+.tag.d{color:#9fd8b8;border-color:#2f6047;background:#15241c}
+.tag.m{color:#e8c07a;border-color:#6b5124;background:#241f13}
+.mini-bar{height:6px;background:#26333f;border-radius:9px;overflow:hidden;min-width:60px}
+.mini-bar>i{display:block;height:100%;background:var(--acc);border-radius:9px}
+.mini-bar>i.low{background:var(--bad)} .mini-bar>i.midb{background:var(--warn)}
+
+/* ---------- 复习卡 ---------- */
+.study{max-width:860px;margin:0 auto}
+.meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px;font-size:12px;color:var(--txt2)}
+.meta .pill{background:var(--card2);border:1px solid var(--line);border-radius:99px;padding:2.5px 11px}
+.meta .spacer{margin-left:auto}
+.cardwrap{perspective:1600px}
+.card{
+  background:linear-gradient(165deg,var(--card),#18222c 85%);
+  border:1px solid var(--line2);border-radius:18px;
+  padding:36px 34px 30px;min-height:300px;display:flex;flex-direction:column;
+  box-shadow:0 14px 44px rgba(0,0,0,.42);position:relative;overflow:hidden;
+}
+.card::after{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--acc),transparent 70%)}
+.card .qzone{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:16px 0 8px}
+.qsmall{font-size:12px;color:var(--txt3);letter-spacing:2px;margin-bottom:14px;text-transform:uppercase}
+.qtext{font-size:30px;font-weight:800;line-height:1.45;letter-spacing:.4px;word-break:break-word}
+.qhint{color:var(--txt3);font-size:13px;margin-top:16px}
+.anszone{border-top:1px dashed var(--line2);margin-top:16px;padding-top:20px;display:none;animation:fade .28s ease}
+.anszone.show{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.field{margin-bottom:15px}
+.field:last-child{margin-bottom:0}
+.flabel{font-size:11px;color:var(--acc);letter-spacing:1.6px;font-weight:700;margin-bottom:5px;text-transform:uppercase}
+.ftext{font-size:14.5px;line-height:1.85;color:#dbe6f0}
+.ftext b,.ftext strong{color:#fff;font-weight:700}
+.ftext code{background:#0e151b;padding:1px 6px;border-radius:5px;font-size:13px;color:#9fe3d7}
+.ftext .arrow{color:var(--acc)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.chip{font-size:11.5px;padding:2px 10px;border-radius:99px;background:#16202a;border:1px solid var(--line2);color:var(--txt2)}
+
+.actions{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap}
+.big{
+  flex:1;min-width:130px;padding:15px;border-radius:13px;font-size:15px;font-weight:800;
+  border:1px solid;transition:.16s;display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.big small{font-weight:400;font-size:11px;opacity:.7;display:block;margin-top:2px}
+.big.known{background:rgba(76,167,119,.14);border-color:#3d7f5c;color:#8fe0b4}
+.big.known:hover{background:rgba(76,167,119,.26);transform:translateY(-1px)}
+.big.unknown{background:rgba(226,104,94,.13);border-color:#8d4139;color:#f0a49c}
+.big.unknown:hover{background:rgba(226,104,94,.24);transform:translateY(-1px)}
+/* 三档标记 */
+.big.lv0{background:rgba(226,104,94,.13);border-color:#8d4139;color:#f0a49c}
+.big.lv0:hover{background:rgba(226,104,94,.24);transform:translateY(-1px)}
+.big.lv1,.big.lv2{background:rgba(230,162,60,.13);border-color:#7a5a24;color:#f0cb8a}
+.big.lv1:hover,.big.lv2:hover{background:rgba(230,162,60,.24);transform:translateY(-1px)}
+.big.lv3,.big.lv4,.big.lv5{background:rgba(76,167,119,.14);border-color:#3d7f5c;color:#8fe0b4}
+.big.lv3:hover,.big.lv4:hover,.big.lv5:hover{background:rgba(76,167,119,.26);transform:translateY(-1px)}
+.act3 .big{flex:1;min-width:96px}
+@media (max-width:560px){
+  .act3{gap:7px}
+  .act3 .big{padding:11px 3px;font-size:14px;white-space:nowrap;flex-direction:column;gap:2px}
+  .act3 .big small{font-size:9.5px;line-height:1.35;opacity:.75;margin-top:0}
+}
+@media (max-width:900px){
+  .card .qzone{padding:6px 0 2px}
+  .card{padding:20px 16px 18px;min-height:auto}
+}
+.lvpill{font-variant-numeric:tabular-nums}
+.lvpill.okl{color:var(--good);border-color:#3d7f5c}
+.lvpill.midl{color:var(--warn);border-color:#7a5a24}
+.lvpill.badl{color:var(--bad);border-color:#8d4139}
+.wrongitem.fuzzy{border-left-color:var(--warn)}
+.wrongitem .lvpill{margin-left:auto;font-size:10.5px;padding:0 7px;border:1px solid var(--line2);border-radius:99px;color:var(--txt2)}
+.kbdhint{text-align:center;color:var(--txt3);font-size:11.5px;margin-top:14px}
+kbd{background:#1d2731;border:1px solid var(--line2);border-bottom-width:2px;border-radius:5px;padding:1px 6px;font-size:11px;font-family:inherit;color:var(--txt2)}
+
+/* 练习/测试 */
+.typebox{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:8px 0}
+.reveal-btn{padding:11px 26px;border-radius:11px;border:1px dashed var(--line2);color:var(--txt2);font-size:14px;background:#131b23;transition:.15s}
+.reveal-btn:hover{color:var(--acc);border-color:var(--acc)}
+.timer{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;background:rgba(20,27,35,.95);border:1px solid var(--line2);
+  border-radius:99px;padding:7px 18px;font-size:13px;color:var(--txt2);z-index:50;font-variant-numeric:tabular-nums;backdrop-filter:blur(8px)}
+
+/* 结尾 */
+.done{max-width:820px;margin:0 auto;text-align:center;padding:30px 0}
+.done .bigchar{font-size:52px;margin-bottom:6px}
+.done h2{font-size:24px;margin:6px 0 4px}
+.wronglist{text-align:left;margin-top:18px}
+.wrongitem{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--bad);border-radius:10px;padding:12px 16px;margin-bottom:9px}
+.wrongitem .wn{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;gap:8px;align-items:center}
+.wrongitem .wd{font-size:12.5px;color:var(--txt2);line-height:1.7}
+.wrongitem .wa{font-size:13px;color:#cfe0ee;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);display:none}
+.wrongitem.open .wa{display:block}
+
+/* 浮层：快捷键 */
+.sheet{position:fixed;inset:0;background:rgba(6,10,14,.72);z-index:80;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+.sheet.show{display:flex}
+.sheetbox{background:var(--bg2);border:1px solid var(--line2);border-radius:16px;max-width:560px;width:100%;padding:22px 24px;max-height:82vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.sheetbox h3{margin:0 0 14px;font-size:16px}
+.krow{display:flex;justify-content:space-between;gap:14px;padding:7px 0;border-bottom:1px solid #222d38;font-size:13px;color:var(--txt2)}
+.krow:last-child{border-bottom:none}
+.krow b{color:var(--txt);font-weight:600}
+
+footer{text-align:center;font-size:11px;color:#4d5f72;padding:10px 8px 18px;pointer-events:none}
+
+/* 移动端 */
+@media (max-width:900px){
+  main{grid-template-columns:1fr}
+  aside{
+    position:fixed;left:0;top:57px;bottom:0;width:280px;z-index:60;background:var(--bg2);
+    transform:translateX(-102%);transition:transform .25s;box-shadow:20px 0 50px rgba(0,0,0,.5);
+    height:auto;max-height:none;
+  }
+  aside.open{transform:none}
+  .content{padding:16px 14px 90px}
+  .qtext{font-size:24px}
+  .card{padding:26px 20px 22px;min-height:260px}
+  .brand small{display:none}
+  .hbar .stat{display:none}
+  .actions{gap:9px}
+  .big{min-width:0;padding:13px 8px;font-size:14px}
+  .mask{position:fixed;inset:57px 0 0 0;background:rgba(0,0,0,.5);z-index:55;display:none}
+  .mask.show{display:block}
+}
+@media (max-width:900px){
+  .actions{
+    position:fixed;left:0;right:0;bottom:0;z-index:45;margin:0;padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+    background:rgba(15,20,25,.94);backdrop-filter:blur(14px);border-top:1px solid var(--line);
+  }
+  .kbdhint{display:none}
+  .study{padding-bottom:70px}
+}
+@media (max-width:420px){
+  .panel{padding:14px}
+  .seg button{padding:6px 10px;font-size:12px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <button class="iconbtn" id="menuBtn" style="display:none" title="章节目录">☰</button>
+  <div class="brand"><span class="dot"></span>生化闪卡<small>苏大 338</small></div>
+  <div class="hbar">
+    <div class="prog"><i id="progBar"></i></div>
+    <div class="stat" id="progTxt">0 / 0</div>
+  </div>
+  <button class="iconbtn" id="homeBtn" title="首页">⌂</button>
+  <button class="iconbtn" id="helpBtn" title="快捷键与说明">?</button>
+</header>
+
+<div class="mask" id="mask"></div>
+
+<main>
+  <aside id="sidebar">
+    <div class="sec-title">章节进度</div>
+    <div id="tree"></div>
+    <div class="sec-title" style="margin-top:18px">操作</div>
+    <button class="chitem" id="resetBtn">↺ 重置全部记录</button>
+    <button class="chitem" id="exportBtn">⤓ 导出掌握情况</button>
+  </aside>
+
+  <section class="content" id="content"></section>
+</main>
+
+<footer id="footbar">本地存储 · 支持手机添加到主屏背题</footer>
+
+<!-- 快捷键面板 -->
+<div class="sheet" id="sheet">
+  <div class="sheetbox">
+    <h3>使用说明</h3>
+    <div class="krow"><b>三档标记</b><span>不知道（Lv.0）/ 模糊（Lv.1~2）/ 知道（Lv.3+），标记后立刻展开答案</span></div>
+    <div class="krow"><b>自适应排序</b><span>每次复习按 level 升序：不会最先、模糊其次、熟练最后</span></div>
+    <div class="krow"><b>步进规则</b><span>不会→0；模糊→level+1；知道→level+2（上限 5）</span></div>
+    <div style="height:10px"></div>
+    <div class="krow"><span>标记“不知道”</span><b>1 / 空格</b></div>
+    <div class="krow"><span>标记“模糊”</span><b>2 / J</b></div>
+    <div class="krow"><span>标记“知道”</span><b>3 / K / Enter</b></div>
+    <div class="krow"><span>上一个（不计入统计）</span><b>←</b></div>
+    <div class="krow"><span>返回首页</span><b>Esc</b></div>
+    <div style="height:14px"></div>
+    <p style="font-size:12.5px;color:var(--txt3);line-height:1.8;margin:0">
+      数据保存在浏览器本地（localStorage）。“记错了 / 没答全”的知识点会进入“薄弱清单”，下一轮优先复习。<br>
+      手机上：点左上角 ☰ 切换章节；答案未展开时左右滑动不会直接判定掌握。
+    </p>
+    <div class="row" style="margin-top:16px;justify-content:flex-end">
+      <button class="btn small ghost" id="closeSheet">关闭</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ====================== 数据 ====================== */
+const CATS = ["静态生物化学","动态生物化学","分子生物学"];
+const CH_ORDER = [
+  ["静态生物化学",["绪论","蛋白质","糖类","脂质与生物膜","酶","维生素与辅酶","核酸"]],
+  ["动态生物化学",["糖代谢","生物氧化","脂质代谢","氨基酸代谢","核苷酸代谢"]],
+  ["分子生物学",["DNA复制","转录","翻译","基因表达调控","DNA技术应用"]]
+];
+</script>
+<script>
+/* 生物化学知识点库 · 参考朱圣庚《生物化学》第3/4版章节体系 · 苏州大学338考纲 */
+const CARDS = [
+{
+"id": "s1-01",
+"cat": "静态生物化学",
+"ch": "绪论",
+"level": "基础",
+"q": "生物化学",
+"def": "研究生物体内化学组成与化学变化规律的科学。",
+"ans": "生物化学是研究生命物质的**化学组成、结构、性质与功能**，以及生命过程中**化学变化规律**（物质代谢、能量转换、信息传递）的科学。",
+"why": "分两大块：静态（组成、结构、性质）与动态（代谢、调控），是理解后续所有章节的总纲。",
+"tip": "答题可拆成三句：研究什么分子—它们怎么变—变化如何被调控。",
+"link": [
+  "代谢",
+  "分子生物学"
+]
+},
+{
+"id": "s1-02",
+"cat": "静态生物化学",
+"ch": "绪论",
+"level": "基础",
+"q": "生物分子的四大类",
+"def": "蛋白质、核酸、糖类、脂类。",
+"ans": "①**蛋白质**：氨基酸通过肽键聚合，承担催化、结构、运输、信号等功能；②**核酸**：核苷酸聚合，储存与传递遗传信息；③**糖类**：多羟基醛酮及其聚合物，供能与结构；④**脂类**：疏水或两亲性小分子，储能、构成膜、参与信号。",
+"why": "四大类按“由简到繁的聚合物”逻辑排列，考试常以此作总述题骨架。",
+"tip": "注意：蛋白质和核酸是生物大分子，多糖由单糖聚合；**脂质通常不是聚合物**，可通过疏水作用形成膜等超分子结构。",
+"link": [
+  "氨基酸",
+  "核苷酸",
+  "单糖",
+  "脂肪酸"
+]
+},
+{
+"id": "s1-03",
+"cat": "静态生物化学",
+"ch": "绪论",
+"level": "基础",
+"q": "生物化学发展史的三个里程碑",
+"def": "尿素人工合成、DNA双螺旋模型、重组DNA技术。",
+"ans": "①**1828年维勒**由氰酸铵人工合成尿素，打破“有机物只能由生命体产生”的活力论；②**1953年Watson与Crick**提出DNA双螺旋模型，标志分子生物学诞生；③**1973年Boyer与Cohen**建立重组DNA技术，开启基因工程时代。",
+"why": "三次突破对应“化学→分子→工程”三个阶段，是绪论必背三要素。",
+"tip": "苏大真题风格偏爱“里程碑/意义”类问法，这三点可作万能开头。",
+"link": [
+  "DNA双螺旋",
+  "重组DNA技术"
+]
+},
+{
+"id": "s1-04",
+"cat": "静态生物化学",
+"ch": "绪论",
+"level": "拓展",
+"q": "生物化学与生物医药的关系",
+"def": "生化原理是药物靶点发现、诊断与生物制药的基础。",
+"ans": "①**靶点识别**：酶、受体、离子通道的构效关系是药物设计基础（如他汀抑制HMG-CoA还原酶）；②**诊断标志物**：酶活性（转氨酶）、代谢物（血糖、血脂）用于疾病诊断；③**生物制药**：重组蛋白、抗体、mRNA疫苗依赖基因表达与蛋白合成原理。",
+"why": "苏大属生物医药方向，简答题常要求结合“生物医药应用”展开。",
+"tip": "举2个具体药物例子即可得分，不要空谈。",
+"link": [
+  "酶的抑制",
+  "代谢",
+  "重组DNA技术"
+]
+},
+{
+"id": "s1-05",
+"cat": "静态生物化学",
+"ch": "绪论",
+"level": "拓展",
+"q": "中心法则",
+"def": "遗传信息从DNA流向RNA再流向蛋白质，不能反向（除特殊情况）。",
+"ans": "Crick提出的信息流：**DNA→（复制）DNA；DNA→（转录）RNA→（翻译）蛋白质**。后来的补充：RNA→RNA（RNA复制）、RNA→DNA（逆转录），以及朊病毒的构象传递。",
+"why": "贯穿DNA复制、转录、翻译、表达调控整条“分子生物学”主线，是全书索引。",
+"tip": "答“中心法则新发展”时要写逆转录和RNA复制，并说明是对经典法则的补充而非否定。",
+"link": [
+  "DNA复制",
+  "转录",
+  "翻译"
+]
+},
+{
+"id": "s1-06",
+"cat": "静态生物化学",
+"ch": "绪论",
+"level": "基础",
+"q": "生物化学的主要研究方法",
+"def": "分离纯化 + 结构测定 + 代谢分析。",
+"ans": "①**分离纯化**：盐析、层析、电泳、离心（按电荷、大小、疏水性、亲和力分离）；②**结构测定**：X射线晶体学、NMR、冷冻电镜、质谱；③**代谢与功能研究**：同位素示踪、酶动力学、基因敲除/过表达。",
+"why": "所有结构、代谢结论都由这些方法得出，考“如何证明”类题必备。",
+"tip": "实验设计题答题模板：按什么性质分离→如何验证纯度→如何验证功能。",
+"link": [
+  "盐析",
+  "凝胶过滤",
+  "SDS-PAGE"
+]
+},
+{
+"id": "s2-01",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "基础",
+"q": "蛋白质的元素组成",
+"def": "以C、H、O、N为主，多数含S，N平均约16%。",
+"ans": "蛋白质的元素组成是**C、H、O、N、S**，部分含P、Fe、Zn、Cu等。**含氮量平均约为16%**，故样品含氮量×**6.25**可粗估蛋白质含量（凯氏定氮法）。",
+"why": "这是蛋白质定量与元素组成题的固定考点。",
+"tip": "16%这个数是“平均”值，不同蛋白质会有偏差，答题要写“平均”。",
+"link": [
+  "氨基酸",
+  "凯氏定氮法"
+]
+},
+{
+"id": "s2-02",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "基础",
+"q": "α-氨基酸的一般结构",
+"def": "取代的甲烷，一个氨基、一个羧基均连在α碳上。",
+"ans": "通式：**H₂N—CH(R)—COOH**，即α碳上同时连接**氨基、羧基、氢原子和侧链R基**。由于α碳连有4个不同基团，除甘氨酸外均具**手性**，构型为**L型**。",
+"why": "R基差异是氨基酸分类和蛋白质性质多样性的根源。",
+"tip": "注意：脯氨酸是α-亚氨基酸，其氨基在环内，与一般结构不同。",
+"link": [
+  "L-氨基酸",
+  "脯氨酸"
+]
+},
+{
+"id": "s2-03",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "基础",
+"q": "L-α-氨基酸",
+"def": "天然蛋白质中氨基酸的立体构型。",
+"ans": "以**L-甘油醛**为参考，把α碳上的NH₂与H按Fischer投影画出，NH₂在左侧即为L型。天然蛋白质中的氨基酸几乎全为**L-α-氨基酸**，只有少数短肽（如细菌细胞壁肽聚糖）含D型。",
+"why": "L/D与D/L命名和生物合成、药物设计相关，也是常见名词解释。",
+"tip": "与D/L-甘油醛类比记忆，别与R/S混淆：R/S按优先顺序，L/D按构型类比。",
+"link": [
+  "α-氨基酸的一般结构",
+  "旋光性"
+]
+},
+{
+"id": "s2-04",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "基础",
+"q": "氨基酸的分类（按侧链）",
+"def": "非极性脂肪族、极性不带电、酸性、碱性四类。",
+"ans": "常用五类法：①**非极性脂肪族**：Gly、Ala、Val、Leu、Ile、Pro、Met；②**芳香族**：Phe、Tyr、Trp；③**极性中性**：Ser、Thr、Cys、Asn、Gln；④**酸性（生理pH下侧链带负电）**：Asp、Glu；⑤**碱性（侧链可带正电）**：Lys、Arg、His。不同教材对Tyr、Trp的极性归类略有差异。另有按营养分为**必需/非必需氨基酸**。",
+"why": "分类是理解蛋白质折叠、等电点、带电性质的前提，也是简答题常考框架。",
+"tip": "答题时先给分类维度（极性/酸碱性/营养），再举例，比只写名称得分高。",
+"link": [
+  "必需氨基酸",
+  "等电点",
+  "疏水作用"
+]
+},
+{
+"id": "s2-05",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "必需氨基酸（成人8种）",
+"def": "人体不能合成或合成量不足，必须由食物供给。",
+"ans": "成人**8种**：**缬氨酸、异亮氨酸、亮氨酸、苯丙氨酸、蛋（甲硫）氨酸、色氨酸、苏氨酸、赖氨酸**；婴儿另需**组氨酸**（共9种）。口诀：“**甲携来本亮色，苏缬赖**”。",
+"why": "营养学与蛋白质营养价值评价（蛋白质互补作用）的直接考点。",
+"tip": "常考“婴儿多一种”——组氨酸；花生四烯酸不属氨基酸，别混。",
+"link": [
+  "蛋白质的营养价值",
+  "蛋白质互补作用"
+]
+},
+{
+"id": "s2-06",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "氨基酸的两性电离与等电点（pI）",
+"def": "兼有氨基与羧基，pI是净电荷为零时的pH。",
+"ans": "氨基酸是**两性电解质**：低pH时α-COOH不解离、α-NH₃⁺带正电，向阴极泳动；高pH时带负电，向阳极泳动；**净电荷为零时的pH即为等电点pI**，此时溶解度最小、不泳动。pI近似为两性基团pKa的平均值。",
+"why": "等电点决定电泳、离子交换层析行为，也是蛋白质分离方法的基础。",
+"tip": "碱性氨基酸pI>7（Arg≈10.8、Lys≈9.7、His≈7.6），酸性<7（Asp≈2.8、Glu≈3.2）。",
+"link": [
+  "电泳",
+  "离子交换层析",
+  "蛋白质的胶体性质"
+]
+},
+{
+"id": "s2-07",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "氨基酸的紫外吸收",
+"def": "Trp、Tyr在280nm贡献主要吸收，Phe主要在257nm吸收。",
+"ans": "**Trp、Tyr、Phe**均含芳香环，但蛋白质在**280nm**的吸收主要由**Trp和Tyr**贡献，通常Trp更强；**Phe主要在257nm附近吸收，对A280贡献很小**。这是蛋白质A280定量的基础；核酸则在**260nm**有强吸收。",
+"why": "区分蛋白质（280）与核酸（260）的测定波长，是实验题常设陷阱。",
+"tip": "“A260/A280比值”可判断核酸纯度：纯DNA≈1.8，纯RNA≈2.0，蛋白污染则偏低。",
+"link": [
+  "核酸的紫外吸收",
+  "蛋白质定量"
+]
+},
+{
+"id": "s2-08",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "茚三酮反应",
+"def": "氨基酸与茚三酮共热生成蓝紫色化合物。",
+"ans": "α-氨基酸与**茚三酮**在弱酸性条件下共热，生成**蓝紫色**化合物（Ruhemann紫），**570nm**比色可定量氨基酸；**脯氨酸、羟脯氨酸**生成**黄色**产物。多肽、蛋白质也有此反应（因有游离α-NH₂）。",
+"why": "氨基酸定性与定量的经典反应，常与双缩脲、Sanger反应对比出题。",
+"tip": "脯氨酸显黄色是高频细节考点。",
+"link": [
+  "双缩脲反应",
+  "Sanger反应"
+]
+},
+{
+"id": "s2-09",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "基础",
+"q": "肽键",
+"def": "一个氨基酸的羧基与另一个氨基酸的氨基脱水形成的酰胺键。",
+"ans": "肽键为**—CO—NH—**，由α-COOH与α-NH₂缩合脱水形成。肽键**不能自由旋转**（部分双键性质，C—N键长约0.132nm），使6个原子共处一平面（**肽平面**），是蛋白质二级结构的基础。",
+"why": "肽键平面性是理解α-螺旋、β-折叠几何的直接依据。",
+"tip": "答题时点明“共振导致部分双键性→平面性→限制旋转”这条因果链。",
+"link": [
+  "肽平面",
+  "α-螺旋",
+  "β-折叠"
+]
+},
+{
+"id": "s2-10",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "基础",
+"q": "肽、寡肽、多肽与蛋白质的区分",
+"def": "按氨基酸残基数分类。",
+"ans": "**2~10个**氨基酸为寡肽，**10个以上**为多肽，一般**50个以上**（或分子量>1万）称为蛋白质。肽链的游离α-NH₂端称**N端**，游离α-COOH端称**C端**，书写习惯N→C。",
+"why": "名词解释与结构描述常用；也提醒“肽链有方向性”，影响序列书写。",
+"tip": "谷胱甘肽（3肽）、催产素（9肽）、胰岛素（51残基）是常举的例子。",
+"link": [
+  "谷胱甘肽",
+  "胰岛素"
+]
+},
+{
+"id": "s2-11",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "谷胱甘肽（GSH）",
+"def": "由Glu、Cys、Gly组成的三肽，含特殊γ-肽键。",
+"ans": "结构为**γ-L-谷氨酰-L-半胱氨酰甘氨酸**，其特征是Glu的**γ-羧基**与Cys的α-氨基形成**γ-肽键**（非α-肽键）。Cys的**—SH**是活性基团。功能：①**抗氧化**（清除自由基，作为谷胱甘肽过氧化物酶的底物）；②参与**氨基酸转运**（γ-谷氨酰循环）；③维持巯基酶的还原状态；④参与药物/毒物解毒。",
+"why": "GSH是“结构特殊—功能多样”类简答题的经典素材。",
+"tip": "必写“γ-肽键”和“—SH”两个关键词，这是阅卷采分点。",
+"link": [
+  "肽键",
+  "活性氧"
+]
+},
+{
+"id": "s2-12",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "蛋白质的一级结构",
+"def": "氨基酸的排列顺序，含二硫键位置。",
+"ans": "指多肽链中**氨基酸残基的排列顺序**，由**肽键**连接，并包括**二硫键的位置**。一级结构由基因决定，是空间结构和生物功能的**基础**。经典方法包括**Sanger试剂法（DNFB/FDNB鉴定N端氨基酸）**和**Edman降解法（从N端逐步测序）**，现代常用**质谱**并辅以基因/cDNA序列推导。",
+"why": "“一级结构决定高级结构决定功能”是蛋白质部分的总纲句。",
+"tip": "区分：Sanger试剂法用于蛋白质N端鉴定；Sanger双脱氧法用于DNA测序，二者不要混淆。",
+"link": [
+  "蛋白质的变性",
+  "同源蛋白质",
+  "分子病"
+]
+},
+{
+"id": "s2-13",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "蛋白质的二级结构",
+"def": "主链局部空间折叠，不含侧链构象。",
+"ans": "指多肽链主链**局部的空间折叠方式**，主要形式有**α-螺旋、β-折叠、β-转角、无规卷曲**。其稳定性主要靠**主链之间的氢键**。二级结构不涉及侧链的空间排布。",
+"why": "与三级结构（含侧链、整体折叠）区分是本节的第一个分水岭。",
+"tip": "关键词：“局部”“主链”“氢键”，写清就不会和三级结构混。",
+"link": [
+  "α-螺旋",
+  "β-折叠",
+  "β-转角"
+]
+},
+{
+"id": "s2-14",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "α-螺旋",
+"def": "右手螺旋，每圈3.6个残基，上升0.54nm。",
+"ans": "**右手螺旋**，每圈**3.6个氨基酸残基**，螺距**0.54nm**，残基沿轴上升**0.15nm**。氢键在**第n个残基的C=O与第n+4个残基的N—H**之间形成，方向平行于螺旋轴。侧链伸向螺旋外侧。**Pro、Gly**破坏螺旋（Pro无N—H且环状刚性，Gly侧链小、柔性大）。",
+"why": "α-螺旋是球状蛋白与纤维蛋白（角蛋白、肌球蛋白）中最常见的二级结构。",
+"tip": "数字（3.6/0.54/0.15/ n+4）是名词解释和计算题的采分点，务必记住。",
+"link": [
+  "蛋白质的二级结构",
+  "氢键",
+  "超二级结构"
+]
+},
+{
+"id": "s2-15",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "β-折叠",
+"def": "两条或多条肽链平行/反平行排列成片层。",
+"ans": "肽链主链呈**锯齿状伸展**，相邻肽段间以**氢键**连接成**片层**结构。分**平行式**（肽链方向相同）和**反平行式**（方向相反，更稳定）。侧链交替伸向片层**上下两侧**。典型代表为**丝心蛋白**。",
+"why": "与α-螺旋并列的两种主要二级结构，常作比较题。",
+"tip": "比较要点：氢键方向（平行于轴 vs 垂直于链）、伸展程度、纤维蛋白代表。",
+"link": [
+  "α-螺旋",
+  "氢键",
+  "丝心蛋白"
+]
+},
+{
+"id": "s2-16",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "β-转角与无规卷曲",
+"def": "连接二级结构的回折结构 / 无固定规律的主链构象。",
+"ans": "**β-转角**：多肽链**180°回折**处形成，常见4个残基，第一个残基的C=O与第四个残基的N—H形成氢键，**Gly、Pro**常出现。**无规卷曲（无序结构）**：没有确定规律的主链构象，但也是蛋白质发挥功能所必需的区域（如活性中心、柔性铰链）。",
+"why": "“无规不等于无功能”是简答题加分点，也是常被误解处。",
+"tip": "答“无规卷曲是否无用”时，举例：酶的活性中心、抗体CDR、跨膜信号区。",
+"link": [
+  "蛋白质的二级结构",
+  "分子伴侣"
+]
+},
+{
+"id": "s2-17",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "超二级结构",
+"def": "相邻二级结构聚集成有规律的组合单位。",
+"ans": "二级结构之间进一步聚集形成的**规则组合体**，常见形式：**αα**（螺旋-螺旋）、**βαβ**（β-α-β）、**ββ**（β-发夹/β-转角串）。它是介于二级与三级结构之间的层次，是形成结构域的基础。",
+"why": "构成结构域与三级结构的“积木”，答“结构层次”题时必须提到。",
+"tip": "最好配一句“三种基本形式：αα、βαβ、ββ”，名字写全即得分。",
+"link": [
+  "结构域",
+  "蛋白质的三级结构"
+]
+},
+{
+"id": "s2-18",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "结构域",
+"def": "三维空间中相对独立的折叠单位。",
+"ans": "多肽链在空间上折叠成的**相对独立、稳定的球状区域**，由超二级结构组合而成，常具有独立的功能（如结合域、催化域）。较大的蛋白质通常由多个结构域组成，同一分子的不同结构域承担不同功能（如免疫球蛋白的V区与C区）。",
+"why": "解释“多功能蛋白”“酶的结构域”“抗体结构”的关键概念。",
+"tip": "用抗体或蛋白激酶举例，非常直观。",
+"link": [
+  "超二级结构",
+  "蛋白质的三级结构"
+]
+},
+{
+"id": "s2-19",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "蛋白质的三级结构",
+"def": "整条肽链所有原子（含侧链）的空间排布。",
+"ans": "指**整条多肽链**在二级、超二级、结构域基础上进一步折叠形成的**完整三维构象**，包括**侧链的空间排布**。稳定的作用力包括**疏水作用（主要驱动力）、氢键、离子键（盐桥）、范德华力和二硫键**（共价）。",
+"why": "与二级结构区分（是否含侧链）+ 作用力排序，是高频考点。",
+"tip": "“疏水作用是最主要驱动力”这一点必写，比只列4种力更得分。",
+"link": [
+  "疏水作用",
+  "结构域",
+  "肌红蛋白"
+]
+},
+{
+"id": "s2-20",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "蛋白质的四级结构",
+"def": "亚基之间的空间排布与相互作用。",
+"ans": "由**两条或多条具有独立三级结构的多肽链（亚基）**通过**非共价键**缔合形成的寡聚体结构。亚基单独一般无活性或活性不同，缔合后产生**协同效应**（如血红蛋白的正协同结合氧气）。**并非所有蛋白质都有四级结构**（如肌红蛋白只有单链）。",
+"why": "解释血红蛋白与肌红蛋白功能差异的分子基础。",
+"tip": "强调“亚基之间靠非共价键”“可解聚重组”，是名词解释的得分点。",
+"link": [
+  "血红蛋白",
+  "协同效应",
+  "变构效应"
+]
+},
+{
+"id": "s2-21",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "维持蛋白质空间结构的作用力",
+"def": "疏水作用为主，加氢键、离子键、范德华力、二硫键。",
+"ans": "①**疏水作用/疏水相互作用**：非极性侧链避水向内聚集，是折叠的**主要驱动力**；②**氢键**：维持二级结构、稳定极性基团间作用；③**离子键（盐桥）**：带电侧链间静电吸引；④**范德华力**：近距离弱相互作用；⑤**二硫键**：共价交联，稳定三级/四级结构（细胞外蛋白尤其多）。",
+"why": "解释变性（非共价键破坏）、盐析、有机溶剂沉淀等现象的理论基础。",
+"tip": "排序题答案固定：疏水作用 > 氢键 ≈ 离子键 > 范德华力，二硫键属共价但非主驱动力。",
+"link": [
+  "蛋白质的变性",
+  "盐析",
+  "疏水作用"
+]
+},
+{
+"id": "s2-22",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "疏水作用",
+"def": "非极性基团在水环境中相互聚集的趋势。",
+"ans": "水分子在非极性基团周围形成有序的“笼状”结构导致熵减小；非极性基团相互聚集可**减少疏水表面积，释放有序水分子，使体系熵增加**，故为自发过程。它是蛋白质折叠的**主要驱动力**，使疏水残基埋在内部、亲水残基暴露表面。",
+"why": "“熵驱动”的物理化学解释能让简答/论述题显得有深度。",
+"tip": "答题要提“熵增”这一热力学本质，而不只是“相似相溶”。",
+"link": [
+  "蛋白质的三级结构",
+  "蛋白质折叠"
+]
+},
+{
+"id": "s2-23",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "血红蛋白与肌红蛋白的结构与功能比较",
+"def": "四聚体载氧 vs 单链储氧。",
+"ans": "**肌红蛋白（Mb）**：单链，含1个血红素，**双曲线**氧合曲线，P₅₀低、亲和力高，功能是**肌肉储氧**；**血红蛋白（Hb）**：**α₂β₂四聚体**，含4个血红素，**S形（正协同）曲线**，P₅₀高、可调节，功能是**血液运氧**。Hb存在**T态（紧张态、低亲和）与R态（松弛态、高亲和）**互变。",
+"why": "Hb/Mb对比几乎是每本教材必考的比较题，涵盖四级结构、协同效应、变构调节。",
+"tip": "答题模板：结构（亚基数/血红素）→ 曲线形状 → 功能 → 调节（BPG、H⁺、CO₂、温度）。",
+"link": [
+  "协同效应",
+  "波尔效应",
+  "变构效应"
+]
+},
+{
+"id": "s2-24",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "协同效应（正协同）",
+"def": "一个配体结合促进后续配体结合。",
+"ans": "寡聚蛋白中，**第一个配体结合后改变其余亚基的构象，使其对配体亲和力升高**，表现为氧合曲线呈**S形**。机制可用**齐变模型（MWC，全或无）**和**序变模型（KNF，逐步诱导）**解释。",
+"why": "解释Hb的S形曲线、酶的变构调节，是“结构—功能关系”的核心案例。",
+"tip": "名词解释必须写“亲和力升高 + S形曲线”，再补两个模型名称。",
+"link": [
+  "血红蛋白",
+  "变构效应",
+  "齐变模型"
+]
+},
+{
+"id": "s2-25",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "波尔效应",
+"def": "pH降低、CO₂升高使Hb对O₂亲和力下降。",
+"ans": "**H⁺和CO₂浓度升高（pH下降）**时，Hb对O₂的亲和力**降低**、氧合曲线**右移**，更易在组织中释放O₂；在肺部CO₂排出、pH升高则促进结合。其分子基础是H⁺与CO₂结合到Hb的特定基团，稳定**T态**。",
+"why": "解释组织供氧、肺换气的生理意义，常与BPG、温度并列考“影响Hb氧合的因素”。",
+"tip": "别写反方向：曲线右移=P₅₀升高=亲和力下降=释放氧增多。",
+"link": [
+  "血红蛋白",
+  "协同效应",
+  "2,3-BPG"
+]
+},
+{
+"id": "s2-26",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "拓展",
+"q": "2,3-BPG（2,3-二磷酸甘油酸）",
+"def": "红细胞内调节Hb氧亲和力的负变构效应物。",
+"ans": "2,3-BPG结合在Hb四聚体**中央孔穴（T态）**，稳定T态，**降低Hb对O₂的亲和力**，使曲线右移，促进组织释氧。高原缺氧、慢性贫血时红细胞2,3-BPG升高，有利于适应低氧。",
+"why": "变构调节、生理适应的典型实例，也是选择题高频点。",
+"tip": "记“结合T态中央孔、稳定T态→降亲和力”这条因果链。",
+"link": [
+  "波尔效应",
+  "变构效应",
+  "血红蛋白"
+]
+},
+{
+"id": "s2-27",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "变构效应（别构效应）",
+"def": "效应物结合调节位点引起构象改变，从而改变活性。",
+"ans": "这类蛋白为**寡聚蛋白**，除活性中心（或配体结合部位）外还有**调节部位**；效应物非共价结合调节部位，引起**构象改变**，从而增强（**变构激活**）或减弱（**变构抑制**）活性。效应物可以是底物本身（同促效应）或其他分子（异促效应）。",
+"why": "联系酶调节、Hb氧合、基因表达调控三大板块。",
+"tip": "务必写“非共价结合”“构象改变”“可逆”，与共价修饰调节区分。",
+"link": [
+  "协同效应",
+  "别构酶",
+  "共价修饰调节"
+]
+},
+{
+"id": "s2-28",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "基础",
+"q": "蛋白质的变性",
+"def": "非共价键破坏导致构象改变、活性丧失。",
+"ans": "在**热、酸、碱、有机溶剂、重金属、紫外、剧烈振荡**等因素下，蛋白质的**非共价键（疏水作用、氢键、盐桥）被破坏**，空间构象改变，**生物活性丧失**，但**一级结构（肽键）不受破坏**。变性后溶解度降低、黏度增加、易被蛋白酶水解、紫外吸收增强。",
+"why": "贯穿食品加工、消毒灭菌、蛋白质纯化等多个应用场景。",
+"tip": "高频辨析：“变性≠水解”，肽键完好；“变性≠沉淀”，沉淀不一定变性。",
+"link": [
+  "蛋白质复性",
+  "蛋白质沉淀",
+  "蛋白质水解"
+]
+},
+{
+"id": "s2-29",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "蛋白质复性",
+"def": "变性蛋白恢复天然构象与活性。",
+"ans": "去除变性因素后，部分蛋白质可**自发重新折叠**恢复原构象和活性，如**核糖核酸酶A**（Anfinsen实验：尿素+β-巯基乙醇变性，透析后8个—SH重新配对、活性恢复）。说明**一级结构决定高级结构**，但大分子蛋白复性困难（易聚集、需分子伴侣）。",
+"why": "Anfinsen实验是“一级结构决定空间结构”的经典证据，论述题常引。",
+"tip": "别忘了写实验条件和结论，这才是采分点。",
+"link": [
+  "蛋白质的变性",
+  "蛋白质折叠",
+  "分子伴侣"
+]
+},
+{
+"id": "s2-30",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "蛋白质的胶体性质",
+"def": "分子大小在胶体范围，表面有水化层和电荷。",
+"ans": "蛋白质分子直径**1~100nm**，处于胶体范围。其稳定因素有两个：①**水化层**（表面亲水基团吸附水分子）；②**表面电荷**（同性电荷相斥）。破坏这两因素即可使蛋白质沉淀。",
+"why": "解释盐析、等电点沉淀、有机溶剂沉淀等全部纯化方法的原理。",
+"tip": "答题万能句：稳定因素 = 水化层 + 电荷；沉淀方法 = 破坏其中之一或两者。",
+"link": [
+  "盐析",
+  "等电点沉淀",
+  "有机溶剂沉淀"
+]
+},
+{
+"id": "s2-31",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "盐析",
+"def": "高浓度中性盐使蛋白质脱水、电荷被中和而沉淀。",
+"ans": "加入**高浓度中性盐**（如(NH₄)₂SO₄、Na₂SO₄、NaCl），盐离子与蛋白质竞争水分子，破坏**水化层**，同时中和表面电荷，使蛋白质聚集沉淀。特点：**不发生变性、可逆、可分级沉淀**，故广泛用于蛋白纯化的粗分离。",
+"why": "与有机溶剂沉淀、重金属沉淀对比出题，是纯化方法的总开关。",
+"tip": "盐析=可逆、不变性；有机溶剂低温操作也是为了抗变性。",
+"link": [
+  "蛋白质的胶体性质",
+  "有机溶剂沉淀",
+  "蛋白质的分离纯化"
+]
+},
+{
+"id": "s2-32",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "有机溶剂沉淀",
+"def": "降低介电常数、脱水导致沉淀。",
+"ans": "加入**乙醇、丙酮**等有机溶剂，使溶液**介电常数下降**、静电引力增强，同时**脱水**，破坏水化层而沉淀。缺点：有机溶剂易使蛋白质**变性**，故须在**0~4℃**低温、控制浓度和pH下操作。",
+"why": "与盐析对比：原理不同（脱水+介电）,风险不同（易变性）。",
+"tip": "写“低温、控制pH和浓度”体现操作细节，是加分点。",
+"link": [
+  "盐析",
+  "蛋白质的变性"
+]
+},
+{
+"id": "s2-33",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "等电点沉淀",
+"def": "在pI处蛋白质净电荷为零、溶解度最低。",
+"ans": "调节溶液pH至蛋白质的**等电点pI**，此时分子净电荷为零，静电斥力消失、溶解度最小而沉淀。该法**温和、可逆**，常用于与有机溶剂/盐析配合进行分级分离（不同蛋白pI不同）。",
+"why": "是pI概念的直接应用，也是“为什么蛋白在pI处沉淀”类问答的标准答案。",
+"tip": "等电点沉淀与盐析常联合使用于血浆蛋白分级（Cohn法）。",
+"link": [
+  "等电点",
+  "盐析",
+  "蛋白质的胶体性质"
+]
+},
+{
+"id": "s2-34",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "重金属盐沉淀",
+"def": "重金属离子与蛋白质结合致不可逆沉淀。",
+"ans": "Hg²⁺、Pb²⁺、Cu²⁺、Ag⁺等与蛋白质中**—SH、—COOH、咪唑基**结合，形成不溶性盐而沉淀，且**不可逆、常伴随变性**。医学上用于误服重金属盐的**急救（灌服牛奶、蛋清）**，工业上用于去除蛋白。",
+"why": "“不可逆沉淀”与盐析形成对照，常考“如何区分可逆/不可逆沉淀”。",
+"tip": "可逆=盐析、等电点；不可逆=重金属、生物碱试剂、强酸强碱。",
+"link": [
+  "蛋白质沉淀",
+  "蛋白质的变性"
+]
+},
+{
+"id": "s2-35",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "透析与超滤",
+"def": "按分子大小分离，去除小分子。",
+"ans": "**透析**：用半透膜（如纤维素膜）隔开蛋白溶液与小分子溶剂，小分子自由通过、大分子保留，可去除盐、小分子抑制剂或更换缓冲液。**超滤**：在压力驱动下通过超滤膜，按**分子量截留**分离，可浓缩蛋白并置换缓冲液。两者均**不改变蛋白质的电荷状态**，温和、不易变性。",
+"why": "纯化流程中的“脱盐/浓缩”环节，实验设计题常出现。",
+"tip": "都能同时“脱盐+浓缩”时优先超滤，因为快。",
+"link": [
+  "蛋白质的分离纯化",
+  "盐析"
+]
+},
+{
+"id": "s2-36",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "凝胶过滤层析（分子筛）",
+"def": "按分子大小分离，大分子先出。",
+"ans": "固定相为**多孔凝胶珠**。**大分子**不能进入孔内，只在颗粒间流动，**最先洗脱**；**小分子**能进入孔内，路程长，**最后洗脱**。用于**脱盐、按分子量分级、测定分子量**。注意它与SDS-PAGE方向相反。",
+"why": "“大先小后”是常考陷阱，也是最易记混的一点。",
+"tip": "口诀：“分子筛，大的先出来”；SDS-PAGE则是“小的跑得快”。",
+"link": [
+  "SDS-PAGE",
+  "离子交换层析",
+  "亲和层析"
+]
+},
+{
+"id": "s2-37",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "离子交换层析",
+"def": "按电荷差异分离。",
+"ans": "固定相为带电荷的树脂（阳/阴离子交换剂）。**pH选择使蛋白质带某种净电荷**，与树脂反向电荷结合；再用**盐梯度或pH梯度**洗脱，结合力弱者先出。**等电点pI低的蛋白在给定pH下带更多负电**，便于分离。",
+"why": "蛋白纯化最常用的一步，考“如何分离两种pI不同的蛋白”。",
+"tip": "阳离子交换剂结合带正电的蛋白（pH<pI）；阴离子交换剂结合带负电的蛋白（pH>pI）。",
+"link": [
+  "等电点",
+  "凝胶过滤层析",
+  "亲和层析"
+]
+},
+{
+"id": "s2-38",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "亲和层析",
+"def": "利用特异生物亲和作用分离。",
+"ans": "把**配体（如底物类似物、抗体、金属离子、凝集素）**固定于载体，只有与该配体**特异结合**的蛋白质被吸附，其余流出，再用**竞争性配体或改变pH/离子强度**洗脱。特点是**纯化倍数高、一步到位**，如His标签蛋白用Ni²⁺柱纯化。",
+"why": "生物工程中最重要的纯化手段，常与“如何获得高纯度蛋白”题结合。",
+"tip": "答题要点：配基-载体固定化 → 特异吸附 → 特异洗脱 → 高纯度。",
+"link": [
+  "离子交换层析",
+  "重组蛋白"
+]
+},
+{
+"id": "s2-39",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "SDS-PAGE",
+"def": "变性电泳，只按分子量分离。",
+"ans": "**SDS（十二烷基硫酸钠）**与蛋白质结合，使蛋白质**变性并带上大量负电荷**，掩蔽原有电荷差异；同时**巯基乙醇/二硫苏糖醇**还原二硫键。于是在聚丙烯酰胺凝胶中，迁移率**只取决于分子量**，**小分子迁移快**，常用于**纯度鉴定与分子量测定**。",
+"why": "与凝胶过滤方向相反，是必须区分的“大小分离”两种方法。",
+"tip": "SDS-PAGE结果：条带越多越不纯；单一条带≈纯。",
+"link": [
+  "凝胶过滤层析",
+  "等电聚焦",
+  "双向电泳"
+]
+},
+{
+"id": "s2-40",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "拓展",
+"q": "等电聚焦与双向电泳",
+"def": "按pI分离 + 按分子量分离。",
+"ans": "**等电聚焦（IEF）**：在pH梯度凝胶中电泳，蛋白质迁移至**净电荷为零的pH位置（即pI处）**停下。**双向电泳**：先IEF（第一维，按pI），再SDS-PAGE（第二维，按Mr），可把复杂样品分离成上千个斑点，是**蛋白质组学**的核心技术。",
+"why": "蛋白质组学的门票，答“蛋白质组研究方法”时必写。",
+"tip": "答题顺序：第一维pI、第二维Mr、后续质谱鉴定。",
+"link": [
+  "SDS-PAGE",
+  "等电点",
+  "质谱"
+]
+},
+{
+"id": "s2-41",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "拓展",
+"q": "质谱分析蛋白质",
+"def": "按质荷比测定分子量与序列。",
+"ans": "通过电离（MALDI、ESI）使蛋白质/多肽带电荷，按**质荷比（m/z）**分离检测，可得**精确分子量**；采用**串联质谱（MS/MS）碎裂肽段**并与数据库比对，可实现**序列测定和翻译后修饰鉴定**。优点是**灵敏、快速、需样量少**。",
+"why": "现代蛋白鉴定标准手段，与双向电泳搭配构成蛋白质组学流程。",
+"tip": "写“m/z”“肽段碎裂”“数据库比对”三个关键词。",
+"link": [
+  "双向电泳",
+  "Edman降解"
+]
+},
+{
+"id": "s2-42",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "蛋白质的结构与功能关系",
+"def": "一级结构决定高级结构与功能。",
+"ans": "①**一级结构决定空间结构**（Anfinsen实验）；②**一级结构决定功能**：关键残基改变即引起功能异常，如**分子病**（镰刀型贫血症HbS：β链第6位Glu→Val）、**同源蛋白质**中保守残基决定共同功能；③**空间结构决定功能**：活性中心构象、变构调节；④**结构改变（变性）导致功能丧失**。",
+"why": "苏大论述题常问“举例说明蛋白质结构与功能的关系”，这是万能总纲。",
+"tip": "至少举2个例子（HbS、Hb/Mb、核糖核酸酶），再加一句结论。",
+"link": [
+  "分子病",
+  "同源蛋白质",
+  "蛋白质的变性"
+]
+},
+{
+"id": "s2-43",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "分子病",
+"def": "基因突变导致蛋白质结构异常而引起的疾病。",
+"ans": "因**基因突变使蛋白质一级结构改变**（氨基酸替换、缺失等），导致功能异常。典型：**镰状细胞贫血**——Hbβ链第6位**Glu→Val**，使Hb聚合、红细胞镰变、易溶血；此外如**地中海贫血、苯丙酮尿症**等。",
+"why": "“结构—功能关系”的经典例证，多个学科交叉考。",
+"tip": "务必写出“Glu→Val”“β链第6位”“疏水侧链导致聚集”这条链。",
+"link": [
+  "蛋白质的结构与功能关系",
+  "血红蛋白"
+]
+},
+{
+"id": "s2-44",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "同源蛋白质与保守序列",
+"def": "不同物种中结构功能相似、序列有保守残基的蛋白。",
+"ans": "**同源蛋白质**指不同生物中执行**相似功能**、源自共同祖先的蛋白质（如细胞色素c、血红蛋白）。其序列中**不变或极少改变的残基称保守残基（不变残基）**，通常与**功能/结构关键**相关；变异较大的区域称可变区。序列差异可反映物种进化距离（**分子进化钟**）。",
+"why": "联系蛋白质进化、物种亲缘关系、功能关键位点识别。",
+"tip": "答“保守残基的意义”时写“维持结构或直接参与催化/结合”。",
+"link": [
+  "蛋白质的结构与功能关系",
+  "分子进化"
+]
+},
+{
+"id": "s2-45",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "拓展",
+"q": "蛋白质折叠与分子伴侣",
+"def": "分子伴侣协助蛋白质正确折叠，不参与终产物。",
+"ans": "**分子伴侣**是一类帮助其他蛋白质**正确折叠、组装、跨膜转运**，但**不构成最终产物**的蛋白。如**Hsp70（热激蛋白）、Hsp60/GroEL-GroES、Hsp90**。它们通过**结合并释放暴露的疏水区**，防止错误折叠和聚集；**伴侣蛋白**（Chaperonin）提供封闭空腔供折叠。",
+"why": "既解释了折叠机制，也是“高温耐受”“蛋白错误折叠病”的分子基础。",
+"tip": "答题必写“不构成终产物”“防止聚集/错误折叠”“ATP依赖”。",
+"link": [
+  "蛋白质折叠",
+  "蛋白质复性"
+]
+},
+{
+"id": "s2-46",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "拓展",
+"q": "蛋白质错误折叠病（构象病）",
+"def": "错误折叠蛋白聚集导致的疾病。",
+"ans": "蛋白质折叠异常导致**错误构象的蛋白聚集**，形成淀粉样纤维或斑块而致病，如**阿尔茨海默病（Aβ、tau）、帕金森病（α-突触核蛋白）、亨廷顿病、朊病毒病（PrP^Sc）**。分子机制涉及**β-片层富集的聚集核心与“播种”效应**。",
+"why": "近年热门交叉考点，符合苏大“前沿热点”出题倾向。",
+"tip": "举1~2个例子 + 一句“β片层聚集、模板化传播”就够。",
+"link": [
+  "蛋白质折叠",
+  "分子伴侣"
+]
+},
+{
+"id": "s2-47",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "基础",
+"q": "蛋白质的分类",
+"def": "按组成、形状、功能分类。",
+"ans": "①按**组成**：**简单蛋白**（仅氨基酸，如清蛋白、球蛋白、硬蛋白）与**结合蛋白**（含辅基，如糖蛋白、脂蛋白、核蛋白、金属蛋白、色蛋白）；②按**形状**：**球状蛋白**（酶、血红蛋白，可溶）与**纤维状蛋白**（角蛋白、胶原蛋白，不溶、结构支持）；③按**功能**：催化、结构、运输、免疫、调节、运动等。",
+"why": "分类维度是描述题主干，也是“举例说明蛋白质多样性”的框架。",
+"tip": "结合蛋白的“辅基”举例：血红素（色蛋白）、磷酸基（磷蛋白）、糖链（糖蛋白）。",
+"link": [
+  "结合蛋白",
+  "纤维状蛋白",
+  "球状蛋白"
+]
+},
+{
+"id": "s2-48",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "拓展",
+"q": "蛋白质的呈色反应",
+"def": "双缩脲、茚三酮、米伦、坂口等。",
+"ans": "**双缩脲反应**：肽键与Cu²⁺在碱性条件下生成紫红色（>2个肽键才有，用于蛋白定量）；**茚三酮反应**：氨基酸/蛋白显蓝紫色；**米伦反应**：酚羟基（Tyr）显红色；**坂口反应**：胍基（Arg）显红色；**酚试剂法（Lowry）**、**BCA法**、**Bradford法（考马斯亮蓝）**用于蛋白定量。",
+"why": "实验题、选择判断题的高频细节区，常考“哪个反应测什么”。",
+"tip": "记核心：肽键→双缩脲；Tyr→米伦；Arg→坂口；Trp/Tyr→280nm。",
+"link": [
+  "茚三酮反应",
+  "蛋白质定量"
+]
+},
+{
+"id": "s2-49",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "蛋白质定量方法比较",
+"def": "凯氏定氮、双缩脲、Lowry、Bradford、A280。",
+"ans": "①**凯氏定氮**：测总氮×6.25，准但繁琐，适合大批样品；②**双缩脲法**：显色稳定、灵敏度低，适合0.5~10mg/mL；③**Lowry（酚试剂）法**：灵敏度高但受还原剂、糖类干扰；④**Bradford（考马斯亮蓝G-250）法**：快速、灵敏、受去污剂干扰，结合后由红变蓝；⑤**A280法**：快速无损，受核酸干扰（需校正）。",
+"why": "对比类简答/实验设计题：要“准”“快”“不受干扰”各有取舍。",
+"tip": "答题提“灵敏度、干扰物、是否破坏样品”三维度对比，层次立刻清晰。",
+"link": [
+  "蛋白质的元素组成",
+  "茚三酮反应",
+  "氨基酸的紫外吸收"
+]
+},
+{
+"id": "s2-50",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "拓展",
+"q": "蛋白质的紫外吸收与定量",
+"def": "A280由Trp/Tyr贡献，可快速无损定量。",
+"ans": "蛋白质在**280nm**有吸收，主要来自**Trp、Tyr**（Phe贡献很小）。可用**A280/摩尔消光系数**或**经验公式**估算浓度；Warburg-Christian经验式常写为**蛋白质浓度（mg/mL）≈1.55×A280−0.76×A260**，用于粗略扣除核酸干扰。优点：**快速、不破坏样品、可在线监测**；缺点：不同蛋白消光系数差异大，经验式只适用于特定条件。",
+"why": "层析纯化时在线监测A280是常规操作，实验题必用。",
+"tip": "同时测A260和A280可判断蛋白/核酸污染情况。",
+"link": [
+  "氨基酸的紫外吸收",
+  "蛋白质定量"
+]
+},
+{
+"id": "s2-51",
+"cat": "静态生物化学",
+"ch": "蛋白质",
+"level": "重点",
+"q": "蛋白质分离纯化的基本原则",
+"def": "先粗后细、防变性、全程低温、监测活性。",
+"ans": "①**先粗后细**：先沉淀/离心去除杂质，再层析精制；②**防变性**：全程**0~4℃**、避免剧烈搅拌与强酸碱、必要时加**蛋白酶抑制剂和还原剂**；③**保持活性**：选择温和方法，**每一步检测酶活/生物活性并计算回收率与纯化倍数**；④**避免反复冻融**。",
+"why": "实验设计题的评分骨架，比只会背方法名重要得多。",
+"tip": "答题务必写“纯化倍数”和“回收率”两个指标，显示科研素养。",
+"link": [
+  "盐析",
+  "亲和层析",
+  "酶的活力测定"
+]
+},
+{
+"id": "s3-01",
+"cat": "静态生物化学",
+"ch": "糖类",
+"level": "基础",
+"q": "糖类的定义与分类",
+"def": "多羟基醛/酮及其缩合物，分单糖、寡糖、多糖。",
+"ans": "糖类是**多羟基醛或多羟基酮及其缩聚物和衍生物**。按水解产物分：**单糖**（不能再水解，如葡萄糖、果糖）、**寡糖**（2~10个单糖，如蔗糖、麦芽糖、乳糖）、**多糖**（>10个，如淀粉、糖原、纤维素）。也可按是否含自由醛/酮基分**还原糖与非还原糖**。",
+"why": "分类框架是糖类全部内容的地图，术语题必答。",
+"tip": "“多羟基醛或酮”这一句就是定义采分点。",
+"link": [
+  "单糖",
+  "寡糖",
+  "多糖"
+]
+},
+{
+"id": "s3-02",
+"cat": "静态生物化学",
+"ch": "糖类",
+"level": "基础",
+"q": "单糖的开链结构与环状结构",
+"def": "开链为多羟基醛酮；环状由羰基与羟基成半缩醛。",
+"ans": "单糖开链形式含**游离醛基（醛糖）或酮基（酮糖）**；在水溶液中，分子内**C1（醛糖）或C2（酮糖）的羰基与C4/C5羟基**反应形成**半缩醛（半缩酮）环**，多为**六元吡喃环**或**五元呋喃环**。环化产生新的手性中心**异头碳**，形成**α/β异头物**。溶液中两者通过**开链形式**互变（**变旋作用**）。",
+"why": "α/β构型、还原性、变旋现象都由环状结构解释，是糖化学根基。",
+"tip": "“异头碳 + α/β + 变旋”是名词解释三件套。",
+"link": [
+  "异头碳",
+  "变旋作用",
+  "还原糖"
+]
+},
+{
+"id": "s3-03",
+"cat": "静态生物化学",
+"ch": "糖类",
+"level": "重点",
+"q": "异头碳与α/β异头物",
+"def": "半缩醛碳称异头碳，据羟基取向分α、β。",
+"ans": "环化后原来的羰基碳变成**半缩醛（酮）碳，即异头碳**（醛糖C1，酮糖C2），它连有4个不同基团而成为新手性中心。以D-葡萄糖为例，**α-D-葡萄糖**的C1—OH与C5上的—CH₂OH处于**反式（Fischer投影中在异侧）**，β型为**顺式（同侧）**。两者称**异头物**，非对映体，可通过开链互变。",
+"why": "α/β决定糖苷键类型（淀粉α-1,4 vs 纤维素β-1,4），直接关联多糖性质与消化。",
+"tip": "答题补一句：α/β只差异头碳构型，其余完全相同。",
+"link": [
+  "单糖的开链结构与环状结构",
+  "糖苷键",
+  "淀粉与纤维素"
+]
+},
+{
+"id": "s3-04",
+"cat": "静态生物化学",
+"ch": "糖类",
+"level": "重点",
+"q": "变旋作用",
+"def": "α、β异头物经开链形式互变，旋光度改变。",
+"ans": "新配制的α-D-葡萄糖（[α]D=+112°）与β-D-葡萄糖（+18.7°）在水溶液中旋光度逐渐变化，最终稳定在**+52.7°的平衡值**，该现象称**变旋**。机制是经**开链醛式**互变，平衡时β型约占64%、α型36%、开链极少。",
+"why": "证明单糖在溶液中以环状为主并能开链，是结构研究的经典证据。",
+"tip": "“经开链形式互变”是机制关键；平衡旋光度+52.7°可作数据支撑。",
+"link": [
+  "异头碳",
+  "单糖的开链结构与环状结构"
+]
+},
+{
+"id": "s3-05",
+"cat": "静态生物化学",
+"ch": "糖类",
+"level": "重点",
+"q": "还原糖",
+"def": "含自由醛基/酮基或能开链产生者，可还原Cu²⁺。",
+"ans": "**含游离醛基或酮基（或能通过变旋产生）**的糖为还原糖，如葡萄糖、果糖、麦芽糖、乳糖。它们能使**斐林试剂（Cu²⁺→Cu₂O砖红色沉淀）**、**班氏试剂**、**Tollens试剂（银镜）**还原。**蔗糖**因两个异头碳都参与糖苷键、不能开链，为**非还原糖**。",
+"why": "糖的鉴定与定量（血糖测定）基础，常与糖苷键类型联动考。",
+"tip": "记忆锚点：蔗糖非还原（葡萄糖+果糖，1↔2糖苷键），其余常见二糖都是还原糖。",
+"link": [
+  "糖苷键",
+  "蔗糖",
+  "斐林试剂"
+]
+},
+{
+"id": "s3-06",
+"cat": "静态生物化学",
+"ch": "糖类",
+"level": "重点",
+"q": "糖苷键与糖苷",
+"def": "异头碳羟基与另一分子羟基脱水形成的键。",
+"ans": "单糖的**异头碳羟基**与另一分子（糖或非糖）的羟基（或氨基）脱水缩合形成的键称**糖苷键**，分**O-糖苷键**与**N-糖苷键**。产物为**糖苷**。按连接方式分α或β，如**麦芽糖（α-1,4）**、**纤维素（β-1,4）**、**蔗糖（α-1,2β）**。核苷中碱基与核糖为**N-糖苷键**。",
+"why": "连接方式决定多糖的物理性质与酶切专一性，是糖类“结构—功能”核心。",
+"tip": "答题必须写出连接碳位与α/β，如“α-1,4-糖苷键”。",
+"link": [
+  "异头碳",
+  "淀粉与纤维素",
+  "核苷酸"
+]
+},
+{
+"id": "s3-07",
+"cat": "静态生物化学",
+"ch": "糖类",
+"level": "基础",
+"q": "常见二糖的结构",
+"def": "麦芽糖α-1,4、乳糖β-1,4、蔗糖α-1,2β。",
+"ans": "**麦芽糖**：葡萄糖α-1,4-葡萄糖，还原糖，淀粉水解产物；**乳糖**：半乳糖β-1,4-葡萄糖，还原糖，存在于乳汁；**蔗糖**：葡萄糖α-1,2-果糖（两异头碳相连），**非还原糖**，日常食用糖。",
+"why": "三种二糖的结构与还原性差异，是选择题和简答题的固定考区。",
+"tip": "还原性判断：看是否有**游离异头碳**。",
+"link": [
+  "还原糖",
+  "糖苷键"
+]
+},
+{
+"id": "s3-08",
+"cat": "静态生物化学",
+"ch": "糖类",
+"level": "重点",
+"q": "同聚多糖与杂多糖",
+"def": "单一单糖组成 vs 多种单糖/衍生物组成。",
+"ans": "**同聚多糖**：由一种单糖组成，如**淀粉、糖原、纤维素、几丁质**；**杂多糖**：由两种以上单糖或糖衍生物组成，如**透明质酸（GlcA+GlcNAc）、肝素、硫酸软骨素、果胶**。杂多糖多为**糖胺聚糖（黏多糖）**，与蛋白质结合形成**蛋白聚糖**。",
+"why": "多糖分类题主干，也是“糖生物学”部分的基础框架。",
+"tip": "糖胺聚糖两个必写成分：**氨基己糖 + 糖醛酸（或硫酸化）**。",
+"link": [
+  "糖胺聚糖",
+  "蛋白聚糖",
+  "糖蛋白"
+]
+},
+{
+"id": "s3-09",
+"cat": "静态生物化学",
+"ch": "糖类",
+"level": "重点",
+"q": "淀粉的结构（直链与支链）",
+"def": "α-1,4主链，支链淀粉另有α-1,6分支。",
+"ans": "**直链淀粉**：葡萄糖以**α-1,4-糖苷键**连成线性长链，遇碘显**深蓝色**，不溶于冷水；**支链淀粉**：在α-1,4主链上每**24~30个残基出现一个α-1,6分支点**，遇碘显**紫红色**，分子更大。整体呈螺旋结构，碘分子进入螺旋空腔显色。",
+"why": "支链/直链比例决定淀粉糊化、老化与消化速度（血糖生成指数）。",
+"tip": "碘显色差异（蓝/紫红）是高频细节，别写反。",
+"link": [
+  "糖苷键",
+  "糖原",
+  "碘反应"
+]
+},
+{
+"id": "s3-10",
+"cat": "静态生物化学",
+"ch": "糖类",
+"level": "重点",
+"q": "糖原的结构",
+"def": "α-1,4主链、α-1,6分支，分支比淀粉更密。",
+"ans": "糖原为动物体内葡萄糖的储存形式，由葡萄糖以**α-1,4-糖苷键**连接，**α-1,6-糖苷键**形成分支，**分支比支链淀粉更密**（每8~12个残基一个分支），呈**树枝状球形**，不还原、遇碘显**红棕色**。高分支使末端多，便于**快速释放葡萄糖**。",
+"why": "与淀粉对比，解释“为什么动物用糖原储能”这一功能-结构题。",
+"tip": "一句话总结：“分支多→末端多→放糖快”。",
+"link": [
+  "淀粉的结构",
+  "糖原的分解"
+]
+},
+{
+"id": "s3-11",
+"cat": "静态生物化学",
+"ch": "糖类",
+"level": "重点",
+"q": "纤维素与半纤维素",
+"def": "β-1,4-葡聚糖，人类不能消化。",
+"ans": "**纤维素**：葡萄糖以**β-1,4-糖苷键**连成**直链**，链间以**氢键**平行排列成**微纤丝**，机械强度高，不溶于水和稀碱。人缺乏**纤维素酶（β-1,4-葡聚糖酶）**，不能消化；反刍动物靠瘤胃微生物分解。**半纤维素**为杂多糖（木糖等），与纤维素共存在于细胞壁。",
+"why": "与淀粉仅差键型（α vs β）而性质迥异，是“结构决定性质”的经典对照。",
+"tip": "答题写清“键型不同→链构象不同→溶解性和酶切不同”，比只写“都是葡萄糖”得分高。",
+"link": [
+  "淀粉的结构",
+  "糖苷键",
+  "膳食纤维"
+]
+},
+{
+"id": "s3-12",
+"cat": "静态生物化学",
+"ch": "糖类",
+"level": "拓展",
+"q": "几丁质（甲壳素）",
+"def": "N-乙酰葡糖胺以β-1,4连接的聚合物。",
+"ans": "由**N-乙酰-D-葡糖胺**以**β-1,4-糖苷键**聚合而成的多糖，是**自然界第二丰富的多糖**（仅次于纤维素），构成节肢动物外骨骼和真菌细胞壁。脱乙酰化后得**壳聚糖**，可降解、生物相容性好，用于止血、敷料、药物载体。",
+"why": "生物材料与药物递送热点，符合苏大生物医药方向。",
+"tip": "写“壳聚糖=脱乙酰化几丁质”，可带出应用。",
+"link": [
+  "同聚多糖与杂多糖",
+  "膳食纤维"
+]
+},
+{
+"id": "s3-13",
+"cat": "静态生物化学",
+"ch": "糖类",
+"level": "重点",
+"q": "糖胺聚糖（GAG）",
+"def": "以重复二糖单位构成的直链杂多糖，多含氨基己糖与糖醛酸。",
+"ans": "又称黏多糖，多数由**氨基己糖（GlcNAc或GalNAc）与糖醛酸（GlcA或IdoA）**形成的重复二糖单位构成，常**硫酸化**，带大量负电荷，**亲水性强、可结合大量水**。包括**透明质酸、硫酸软骨素、硫酸皮肤素、肝素、硫酸角质素**；其中**硫酸角质素不含糖醛酸，主要由半乳糖和GlcNAc等构成**，是组成上的例外。",
+"why": "构成细胞外基质、关节滑液，与肿瘤转移、抗凝血（肝素）相关。",
+"tip": "注意：**透明质酸是唯一不发生硫酸化、不含硫酸基的GAG**。",
+"link": [
+  "蛋白聚糖",
+  "肝素"
+]
+},
+{
+"id": "s3-14",
+"cat": "静态生物化学",
+"ch": "糖类",
+"level": "重点",
+"q": "蛋白聚糖",
+"def": "核心蛋白骨架 + 共价连接的GAG链。",
+"ans": "由**核心蛋白**与一条或多条**糖胺聚糖（GAG）链共价连接**而成的大分子，是细胞外基质的主要成分。典型如**软骨中的蛋白聚糖聚集体**：透明质酸为轴，通过**连接蛋白**结合多个蛋白聚糖单体。特点是**高度水化、带负电、抗压**。",
+"why": "与糖蛋白对比是考试高频对照；功能-结构关系很明确。",
+"tip": "蛋白聚糖 GAG 含量高、糖链长、糖为主；糖蛋白以蛋白为主。",
+"link": [
+  "糖胺聚糖",
+  "糖蛋白"
+]
+},
+{
+"id": "s3-15",
+"cat": "静态生物化学",
+"ch": "糖类",
+"level": "重点",
+"q": "糖蛋白",
+"def": "蛋白质与寡糖链共价结合的复合物。",
+"ans": "由**蛋白质（肽链）与较短寡糖链（通常1~20个单糖）共价连接**形成，糖链含量低，连接方式为**N-连接（Asn的酰胺氮，核心五糖）**与**O-连接（Ser/Thr的羟基，GalNAc起始）**。功能：**识别、受体、免疫、分泌、保护、延长半衰期**（如促红细胞生成素糖基化）。",
+"why": "抗体、膜受体都是糖蛋白，是“糖生物学”与分子生物学交汇点。",
+"tip": "对比记忆：糖蛋白糖短（1~20）、糖含量低；蛋白聚糖糖长（可达数百）、糖为主。",
+"link": [
+  "蛋白聚糖",
+  "糖生物学",
+  "内质网和高尔基体的加工"
+]
+},
+{
+"id": "s3-16",
+"cat": "静态生物化学",
+"ch": "糖类",
+"level": "拓展",
+"q": "糖生物学与凝集素",
+"def": "研究糖链结构与功能的学科，凝集素特意识别糖链。",
+"ans": "**糖生物学**研究糖链的结构、生物合成与功能，被称为“继核酸、蛋白质之后的第三大信息分子”。**凝集素（Lectin）**是能**特异识别并结合糖链**的非酶蛋白（如**ConA、WGA、刀豆蛋白**），用于分离纯化糖蛋白、细胞分型、识别细胞表面糖码；在**细胞黏附、免疫识别、病原体感染**中起关键作用。",
+"why": "近年热点，符合苏大“前沿”倾向；也可接到“糖疫苗”“糖类药物”上。",
+"tip": "举一句应用：凝集素亲和层析纯化糖蛋白。",
+"link": [
+  "糖蛋白",
+  "亲和层析"
+]
+},
+{
+"id": "s4-01",
+"cat": "静态生物化学",
+"ch": "脂质与生物膜",
+"level": "基础",
+"q": "脂质的定义与分类",
+"def": "不溶于水、易溶于有机溶剂的生物分子。",
+"ans": "脂质是**不溶于水、易溶于乙醚/氯仿等非极性溶剂**的生物分子。按结构与功能分为：**①单纯脂**（三酰甘油、蜡）；**②复合脂**（磷脂、糖脂）；**③衍生脂**（固醇、类二十烷酸如前列腺素、脂溶性维生素）；**④结合脂**（脂蛋白）。",
+"why": "分类是脂质部分的地图；注意“脂质不等于脂肪”，脂肪仅指三酰甘油。",
+"tip": "常考判断：“胆固醇属于衍生脂，不是脂肪”。",
+"link": [
+  "三酰甘油",
+  "磷脂",
+  "胆固醇"
+]
+},
+{
+"id": "s4-02",
+"cat": "静态生物化学",
+"ch": "脂质与生物膜",
+"level": "重点",
+"q": "三酰甘油（甘油三酯）的结构",
+"def": "甘油3个羟基与脂肪酸酯化。",
+"ans": "即脂肪，由**1分子甘油与3分子脂肪酸**通过**酯键**（3个酯键）形成，是**中性脂**。C1、C3位多为长链饱和或不饱和脂肪酸，**C2位多为不饱和脂肪酸**。功能：**储能（1g脂肪≈39kJ，是糖的2倍多）、保温、缓冲保护**。",
+"why": "结构、储能效率、皂化值/碘值计算的基础。",
+"tip": "“1甘油+3脂肪酸+3个酯键”三要素背熟。",
+"link": [
+  "脂肪酸",
+  "皂化反应",
+  "碘值"
+]
+},
+{
+"id": "s4-03",
+"cat": "静态生物化学",
+"ch": "脂质与生物膜",
+"level": "重点",
+"q": "脂肪酸的结构与分类",
+"def": "长链羧酸，分饱和与不饱和。",
+"ans": "脂肪酸为**一端带羧基的长烃链**羧酸，天然多为**偶数碳（C16、C18为主）**。**饱和脂肪酸**（硬脂酸C18:0、棕榈酸C16:0）碳链直、可紧密堆积、熔点高；**不饱和脂肪酸**含双键、产生弯折（**顺式**为主）、堆积疏松、熔点低。**必需脂肪酸**：亚油酸（18:2 ω-6）、α-亚麻酸（18:3 ω-3）。",
+"why": "熔点、流动性、膜脂组成都与饱和程度直接相关。",
+"tip": "双键编号两种体系：Δ编号从羧基端、ω/ n编号从甲基端，注意区分。",
+"link": [
+  "三酰甘油",
+  "磷脂",
+  "生物膜的流动性"
+]
+},
+{
+"id": "s4-04",
+"cat": "静态生物化学",
+"ch": "脂质与生物膜",
+"level": "重点",
+"q": "磷脂的分类",
+"def": "甘油磷脂与鞘磷脂。",
+"ans": "①**甘油磷脂**：甘油骨架，C1、C2接脂肪酸，**C3为磷酸基**，再连取代基X（如胆碱、乙醇胺、丝氨酸、肌醇）。如**磷脂酰胆碱（卵磷脂）、磷脂酰乙醇胺（脑磷脂）、磷脂酰丝氨酸、磷脂酰肌醇**；②**鞘磷脂**：鞘氨醇骨架 + 脂肪酸 + 磷酸胆碱。磷脂为**两亲性**分子，是生物膜的主要成分。",
+"why": "磷脂双分子层是所有膜结构的基础；PI衍生物还是信号分子前体。",
+"tip": "写“甘油磷脂=甘油+2脂肪酸+磷酸+X”，一句话拿下结构题。",
+"link": [
+  "生物膜的流动镶嵌模型",
+  "磷脂酰肌醇"
+]
+},
+{
+"id": "s4-05",
+"cat": "静态生物化学",
+"ch": "脂质与生物膜",
+"level": "重点",
+"q": "胆固醇的结构与功能",
+"def": "环戊烷多氢菲骨架的固醇。",
+"ans": "以**环戊烷多氢菲**为核，含**C3位游离羟基、C5~C6双键、C17位侧链**。功能：①**调节膜流动性**（低温防凝固、高温抑流动，双向调节）；②合成**类固醇激素、维生素D₃、胆汁酸**的前体；③**脂蛋白**组成成分。",
+"why": "胆固醇“双向调节流动性”是关键机制，也是动脉粥样硬化题的核心。",
+"tip": "常考：“胆固醇不是膜的骨架，过量有害，但不等于完全有害”。",
+"link": [
+  "生物膜的流动性",
+  "胆固醇的代谢"
+]
+},
+{
+"id": "s4-06",
+"cat": "静态生物化学",
+"ch": "脂质与生物膜",
+"level": "重点",
+"q": "生物膜的组成",
+"def": "脂类（磷脂、胆固醇）+ 蛋白质 + 糖类。",
+"ans": "生物膜主要由**脂类（磷脂为主，含胆固醇、糖脂）+ 膜蛋白 + 糖类**组成。**脂类**构成双分子层骨架、维持屏障；**膜蛋白**（内在/外周蛋白）承担运输、受体、酶、识别功能；**糖类**以糖蛋白/糖脂形式位于膜外表面，参与识别。共同特点是**不对称性**与**流动性**。",
+"why": "组成是膜结构题第一段；“不对称性+流动性”两大特征常作简答。",
+"tip": "答题顺序固定：组成→骨架→特征→功能。",
+"link": [
+  "流动镶嵌模型",
+  "膜的流动性",
+  "膜的不对称性"
+]
+},
+{
+"id": "s4-07",
+"cat": "静态生物化学",
+"ch": "脂质与生物膜",
+"level": "重点",
+"q": "流动镶嵌模型",
+"def": "Singer-Nicolson提出的膜结构模型。",
+"ans": "**1972年Singer与Nicolson**提出：①**磷脂双分子层**构成流动的骨架，蛋白质分子镶嵌、贯穿或附着于其中；②膜具有**流动性**（脂分子与蛋白侧向扩散）；③膜具有**不对称性**（内外脂类和蛋白分布不同）；④蛋白质与脂类存在**相互作用**（脂筏）。",
+"why": "膜结构最核心的模型，简答题必考；需配“流动+镶嵌+不对称”三要点。",
+"tip": "补充发展：**脂筏模型**说明膜存在微区，是热点加分点。",
+"link": [
+  "生物膜的组成",
+  "膜的流动性"
+]
+},
+{
+"id": "s4-08",
+"cat": "静态生物化学",
+"ch": "脂质与生物膜",
+"level": "重点",
+"q": "膜的流动性及其影响因素",
+"def": "脂分子与蛋白侧向运动，受组成和温度影响。",
+"ans": "膜流动性指**脂质分子和蛋白质的侧向扩散与旋转**。影响因素：①**脂肪酸不饱和度**（不饱和度高→流动性大）；②**脂肪酸链长**（链短→流动性大）；③**胆固醇**（双向调节：相变温度以上降低流动性，以下增加流动性）；④**温度**（升高→流动性增加，低于相变温度→凝胶态）；⑤**膜蛋白**（相互作用限制流动）。",
+"why": "解释细胞膜功能、药物透膜、冻存保护的理论基础。",
+"tip": "胆固醇的“双向调节”最容易被忽略，一定要写。",
+"link": [
+  "生物膜的组成",
+  "胆固醇的结构与功能",
+  "相变温度"
+]
+},
+{
+"id": "s4-09",
+"cat": "静态生物化学",
+"ch": "脂质与生物膜",
+"level": "重点",
+"q": "膜的不对称性",
+"def": "膜内外两侧的脂类、蛋白、糖分布不同。",
+"ans": "①**脂类不对称**：磷脂酰胆碱、鞘磷脂主要在**外小叶**；磷脂酰丝氨酸、磷脂酰乙醇胺主要在**内小叶**（PS外翻是凋亡信号）；②**蛋白质不对称**：受体、通道有确定的朝向；③**糖类不对称**：糖链几乎全部位于**膜外侧**（形成糖被）。该性质由**翻转酶、翻轉酶、 scrambling酶**维持。",
+"why": "信号识别、细胞凋亡检测（Annexin V测PS外翻）的技术基础。",
+"tip": "PS外翻=凋亡标志，这是很好的应用举例。",
+"link": [
+  "膜脂的转运",
+  "生物膜的组成",
+  "细胞凋亡"
+]
+},
+{
+"id": "s4-10",
+"cat": "静态生物化学",
+"ch": "脂质与生物膜",
+"level": "拓展",
+"q": "膜脂的转运",
+"def": "翻转酶、翻轉酶、scramblase维持不对称。",
+"ans": "新合成的磷脂在内质网**胞质侧**合成，需转运至另一侧或别的膜：①**翻转（flip-flop）**为跨双层的缓慢过程，需酶催化；②**翻转酶（flippase）**将PS、PE**由外向内**转运（ATP依赖）；③**floppase**由内向外；④**scramblase**双向、非特异、ATP非依赖，导致对称化（如血小板活化时PS外翻促凝血）。",
+"why": "解释膜不对称的建立与凋亡/凝血时的“对称化”事件。",
+"tip": "答题写“三种酶 + 各自方向 + ATP依赖与否”即可满分。",
+"link": [
+  "膜的不对称性"
+]
+},
+{
+"id": "s4-11",
+"cat": "静态生物化学",
+"ch": "脂质与生物膜",
+"level": "重点",
+"q": "膜转运蛋白：载体蛋白与通道蛋白",
+"def": "载体构象改变转运；通道形成亲水孔道。",
+"ans": "**载体蛋白**：与底物特异性结合，通过**构象改变**转运，可进行**主动运输**（需ATP，如Na⁺-K⁺泵），速率可达饱和、有竞争性抑制；**通道蛋白**：形成**亲水孔道**，**不与被转运物结合**，转运快、不饱和，多为**被动运输**（离子通道、水通道蛋白）。",
+"why": "膜转运是“结构与功能”典型：载体“酶学式”、通道“闸门式”。",
+"tip": "对比三句：是否结合、是否饱和、能否主动。",
+"link": [
+  "物质跨膜运输",
+  "Na⁺-K⁺泵"
+]
+},
+{
+"id": "s4-12",
+"cat": "静态生物化学",
+"ch": "脂质与生物膜",
+"level": "重点",
+"q": "物质的跨膜运输方式",
+"def": "简单扩散、协助扩散、主动运输、胞吞胞吐。",
+"ans": "①**简单扩散**（自由扩散）：小分子顺浓度梯度直接透膜，不耗能，如O₂、CO₂、乙醇；②**协助扩散**：顺梯度经载体/通道，不耗能，如葡萄糖进红细胞（GLUT）；③**主动运输**：逆梯度、耗能，如**Na⁺-K⁺泵、小肠吸收葡萄糖（协同运输）**；④**胞吞/胞吐**（大分子、颗粒），需膜融合与能量。",
+"why": "与糖代谢、神经传导、药物吸收多处联动。",
+"tip": "判断耗能看是否“逆浓度梯度”，判断载体看“是否饱和”。",
+"link": [
+  "膜转运蛋白：载体蛋白与通道蛋白",
+  "Na⁺-K⁺泵"
+]
+},
+{
+"id": "s4-13",
+"cat": "静态生物化学",
+"ch": "脂质与生物膜",
+"level": "拓展",
+"q": "Na⁺-K⁺泵（Na⁺,K⁺-ATPase）",
+"def": "每消耗1个ATP泵出3Na⁺、泵入2K⁺。",
+"ans": "属**P型ATP酶**，由α、β亚基组成。每个循环**水解1分子ATP，泵出3个Na⁺、泵入2个K⁺**，形成并维持膜内外**Na⁺外高内低、K⁺内高外低**的梯度。它是**生电性泵**（净移出1个正电荷），维持膜电位、细胞体积与渗透平衡，并为**继发性主动运输（如小肠葡萄糖吸收）**提供驱动力。",
+"why": "与神经动作电位、葡萄糖协同运输、强心苷（乌本苷抑制）药理联动。",
+"tip": "数字“3Na⁺/2K⁺/1ATP”必须准确。",
+"link": [
+  "物质的跨膜运输",
+  "协同运输"
+]
+},
+{
+"id": "s5-01",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "基础",
+"q": "酶的定义与化学本质",
+"def": "活细胞产生的高效专一生物催化剂，多为蛋白质。",
+"ans": "酶是**活细胞产生**的、对底物具有**高度催化效率和高度专一性**的**生物催化剂**。除**核酶（RNA）**和**脱氧核酶（DNA）**外，绝大多数酶的化学本质是**蛋白质**。酶通过**降低反应活化能**而加速反应，不改变平衡常数，反应前后自身不被消耗。",
+"why": "定义句是名词解释标准答案，也是与一般催化剂的对比起点。",
+"tip": "务必写“核酶/脱氧核酶是例外”，这是细节得分点。",
+"link": [
+  "酶的催化特点",
+  "核酶",
+  "活化能"
+]
+},
+{
+"id": "s5-02",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "酶的催化特点",
+"def": "高效、专一、温和、可调、易变性失活。",
+"ans": "①**高效性**：比非催化反应快10⁸~10²⁰倍；②**专一性**：一种酶只作用于一种或一类底物（绝对/相对/立体专一性）；③**反应条件温和**：常温常压近中性pH；④**可调节性**：受变构、共价修饰、酶原激活、含量调控；⑤**不稳定性**：易受温度、pH、变性剂影响而失活。",
+"why": "与化学催化剂的比较题固定五条，是酶学入门必背。",
+"tip": "与无机催化剂对比时说清“相同点：降低活化能、不改平衡；不同点：上述五条”。",
+"link": [
+  "活化能",
+  "酶的专一性"
+]
+},
+{
+"id": "s5-03",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "酶的专一性",
+"def": "一种酶只催化一种或一类底物的反应。",
+"ans": "分三类：①**绝对专一性**：只作用于**唯一底物**，如**脲酶**只水解尿素；②**相对专一性**：作用于**一类结构相似的底物**，如**酯酶**水解多种酯键（又分键专一性与基团专一性）；③**立体专一性**：只作用于某种立体异构体，如**L-乳酸脱氢酶**只作用于L-乳酸。",
+"why": "解释“为什么体内反应有序进行、不互相干扰”，也是药物选择性基础。",
+"tip": "每个类型举一个酶名，答题立刻饱满。",
+"link": [
+  "酶的催化特点",
+  "诱导契合假说",
+  "活性中心"
+]
+},
+{
+"id": "s5-04",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "活化能",
+"def": "底物达到过渡态所需的能量。",
+"ans": "活化能是分子由**基态转变为过渡态（活化态）**所需的最低能量。酶通过**与底物结合形成稳定的酶-底物复合物、稳定过渡态**，从而**显著降低反应活化能**，使更多分子在常温下进入反应，加速反应速率；但**不改变反应的自由能变化与平衡常数**。",
+"why": "酶催化机制的最基本原则，几乎所有机制题都以它为纲。",
+"tip": "用图描述：三条线（无催化、一般催化、酶催化），酶这条最低。",
+"link": [
+  "酶的催化特点",
+  "过渡态互补"
+]
+},
+{
+"id": "s5-05",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "酶的活性中心",
+"def": "结合底物并催化反应的区域。",
+"ans": "活性中心是酶分子中**直接参与底物结合与催化**的特定区域，由**结合部位**和**催化部位**组成，通常由肽链上**相距较远但在空间上靠近**的几个残基构成，多位于**疏水凹穴**中。相关残基称**必需基团**，分**结合基团**与**催化基团**；活性中心外的必需基团称**结构基团**（维持构象）。",
+"why": "是“酶的专一性和高效性”的结构基础，常与诱导契合、化学修饰法联考。",
+"tip": "答题要提“空间邻近而非序列邻近”，这是体现理解的一句。",
+"link": [
+  "必需基团",
+  "诱导契合假说",
+  "过渡态互补"
+]
+},
+{
+"id": "s5-06",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "必需基团",
+"def": "与酶活性直接相关的化学基团。",
+"ans": "酶分子中**与催化活性直接相关**的化学基团，包括**结合基团**（识别、结合底物）与**催化基团**（催化成键/断键）；位于活性中心之外、维持活性中心构象的称**结构基团**。常见必需基团：**—SH、—OH、咪唑基、—COOH、—NH₂**；可由蛋白质侧链或**辅酶/金属离子**提供。",
+"why": "解释化学修饰（如—SH被汞试剂抑制）、重金属中毒的分子机制。",
+"tip": "必需基团≠活性中心：前者是基团，后者是区域。",
+"link": [
+  "酶的活性中心",
+  "辅酶",
+  "不可逆抑制"
+]
+},
+{
+"id": "s5-07",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "诱导契合假说",
+"def": "底物诱导酶活性中心构象改变而互补结合。",
+"ans": "Koshland提出：酶的活性中心与底物在**自由状态时并不完全互补**，底物的接近**诱导酶发生构象改变**，使活性中心与底物（及过渡态）**达到互补的紧密契合**。它修正了“锁-钥匙”学说的刚性观点，能解释**酶的专一性和催化高效性**，并为**过渡态互补**理论铺垫。",
+"why": "酶作用机制三大理论之一（锁钥、诱导契合、过渡态互补），必考。",
+"tip": "建议按“提出者→与锁钥区别→能解释什么”三段式作答。",
+"link": [
+  "酶的活性中心",
+  "过渡态互补"
+]
+},
+{
+"id": "s5-08",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "酶高效催化的作用机制",
+"def": "邻近定向、张力、酸碱催化、共价催化、微环境。",
+"ans": "①**邻近与定向效应**：把两种底物限制在活性中心并正确定向，等效浓度极大提高；②**张力与形变**：底物结合时构象被扭曲，接近过渡态；③**酸碱催化**：以His咪唑基等提供/接受质子；④**共价催化**：形成短暂共价中间物（如丝氨酸酶的酰基-酶）；⑤**微环境效应**：活性中心为疏水低介电区，增强静电相互作用。",
+"why": "这是“酶为什么快”的机制网，可用溶菌酶、丝氨酸蛋白酶举例佐证。",
+"tip": "答5点后一定补例子（溶菌酶：邻近+张力+酸碱；胰凝乳蛋白酶：共价+酸碱）。",
+"link": [
+  "溶菌酶",
+  "丝氨酸蛋白酶",
+  "活化能"
+]
+},
+{
+"id": "s5-09",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "基础",
+"q": "酶的分类（六大类）",
+"def": "氧化还原、转移、水解、裂合、异构、合成/连接酶。",
+"ans": "按催化反应类型分**六大类**：①**氧化还原酶**（脱氢酶、氧化酶）；②**转移酶**（激酶、转氨酶）；③**水解酶**（蛋白酶、淀粉酶）；④**裂合酶**（裂解双键，如醛缩酶、脱水酶）；⑤**异构酶**（变位酶、异构酶）；⑥**连接酶**（催化键形成，通常由ATP等高能辅因子供能，如多数DNA连接酶）。",
+"why": "酶学分类与命名基础，常考“XX酶属于哪一类”。",
+"tip": "不要写成“连接酶一定耗ATP”：常见由ATP供能，但**大肠杆菌DNA连接酶使用NAD⁺**。",
+"link": [
+  "酶的命名",
+  "DNA连接酶"
+]
+},
+{
+"id": "s5-10",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "基础",
+"q": "酶的命名",
+"def": "习惯命名与系统命名。",
+"ans": "**习惯命名**：以底物、反应性质或来源命名（如淀粉酶、胃蛋白酶），简洁但不严格；**系统命名**：以“**底物名 + 反应类型 + 酶**”命名，并赋**EC编号**（如EC 1.1.1.1 乙醇脱氢酶），四段分别代表**大类、亚类、亚亚类、序号**。",
+"why": "EC编号题偶尔出现；命名题常用于解释“同工酶命名差异”。",
+"tip": "记“四段EC编号”即可。",
+"link": [
+  "酶的分类（六大类）",
+  "同工酶"
+]
+},
+{
+"id": "s5-11",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "酶的活力与活力单位",
+"def": "反应速率衡量，IU=每分钟催化1μmol底物。",
+"ans": "**酶活力**指酶催化反应的能力，用**一定条件下单位时间内产物的增加量或底物的减少量**表示。**国际单位（IU）**：在规定条件（25℃、最适pH）下每分钟催化**1μmol底物**转化的酶量；**Katal**：每秒催化1mol。**比活力**=活力/毫克蛋白，反映纯度；**转换数（kcat）**=每个酶分子每秒催化底物的分子数。",
+"why": "酶纯化评价（比活力、纯化倍数）与动力学计算的基础。",
+"tip": "答题区分：活力（U）、比活力（U/mg）、纯化倍数、回收率四个概念。",
+"link": [
+  "比活力",
+  "纯化倍数",
+  "米氏常数"
+]
+},
+{
+"id": "s5-12",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "米氏方程",
+"def": "v = Vmax[S]/(Km+[S])。",
+"ans": "**v = Vmax·[S] / (Km + [S])**，由Michaelis-Menten在**快速平衡假设**下导出。当**[S]≫Km**时v≈Vmax（零级反应）；**[S]≪Km**时v≈(Vmax/Km)[S]（一级反应）。**Km**是v=½Vmax时的底物浓度，单位为浓度。",
+"why": "酶动力学核心公式，作图与抑制判断全靠它。",
+"tip": "写方程 + 说明两个极端情况 + 定义Km，三句拿满。",
+"link": [
+  "米氏常数",
+  "最大反应速度",
+  "林-伯氏作图"
+]
+},
+{
+"id": "s5-13",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "米氏常数（Km）",
+"def": "v=½Vmax时的底物浓度，反映亲和力。",
+"ans": "Km是反应速度达到**最大速度一半时的底物浓度**，单位mol/L。意义：①**Km越小，酶与底物亲和力越大**；②在一定条件下是酶的特征常数（与酶性质、底物、温度pH有关，与酶浓度无关）；③Km可近似反映**生理底物浓度**；④可用于判断**最适底物**和**酶的最适条件**；⑤双底物时Km最小的底物常为最适底物。",
+"why": "酶学定量题的必用参数，也是“如何选择底物”的实践依据。",
+"tip": "“与酶浓度无关”这一点是常考判断陷阱，务必记住。",
+"link": [
+  "米氏方程",
+  "最大反应速度",
+  "林-伯氏作图"
+]
+},
+{
+"id": "s5-14",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "最大反应速度（Vmax）",
+"def": "酶全被底物饱和时的反应速度。",
+"ans": "Vmax是**所有酶分子都被底物饱和（以ES形式存在）**时的反应速度，**Vmax = kcat·[E]t**。它与**酶的总浓度成正比**，因此Vmax可用于表示酶量。测定时须在底物饱和条件下进行。",
+"why": "Vmax与Km是双倒数作图的两个截距，是抑制类型判别的依据。",
+"tip": "注意：Vmax是理论值，实际难达到，故用双倒数外推。",
+"link": [
+  "米氏常数",
+  "转换数",
+  "林-伯氏作图"
+]
+},
+{
+"id": "s5-15",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "转换数（kcat）与催化效率",
+"def": "每个酶分子每秒转化底物的分子数。",
+"ans": "**kcat（转换数）= Vmax/[E]t**，表示在底物饱和时**每个酶分子每秒催化底物转化的分子数**，反映酶的催化能力；**催化效率 = kcat/Km**，综合体现亲和力与催化能力，是不同酶间比较优劣的最佳指标（可达10⁸~10⁹ M⁻¹s⁻¹的“扩散极限”）。",
+"why": "“如何比较两种酶谁更高效”类题的标准答案。",
+"tip": "单看kcat或Km都会误导，必须用kcat/Km。",
+"link": [
+  "米氏常数",
+  "最大反应速度"
+]
+},
+{
+"id": "s5-16",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "林-伯氏（Lineweaver-Burk）双倒数作图",
+"def": "1/v对1/[S]作图求Km与Vmax。",
+"ans": "将米氏方程取倒数得 **1/v = (Km/Vmax)(1/[S]) + 1/Vmax**，以**1/v对1/[S]**作图得直线：**纵轴截距=1/Vmax，横轴截距=−1/Km，斜率=Km/Vmax**。优点是便于准确求参数与判别抑制类型；缺点是低浓度点误差被放大。",
+"why": "抑制类型判断的核心工具：**竞争性→截距不变、斜率变；非竞争性→横截距不变；反竞争性→平行**。",
+"tip": "把三种抑制的图形特征背成表，考试直接画图更得分。",
+"link": [
+  "米氏常数",
+  "竞争性抑制",
+  "非竞争性抑制"
+]
+},
+{
+"id": "s5-17",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "底物浓度对酶促反应速度的影响",
+"def": "双曲线：低浓度一级，高浓度零级。",
+"ans": "在酶浓度、温度、pH恒定时，v随[S]增加呈**矩形双曲线**：**[S]低时v与[S]近似成正比（一级反应）**；**[S]很高时酶被饱和，v趋于Vmax（零级反应）**；**[S]=Km时v=½Vmax**。可用米氏方程定量描述。",
+"why": "这是米氏方程的实验依据，也是理解“饱和现象”的关键。",
+"tip": "答“为什么高浓度后速度不再增加”：酶活性中心被占满（饱和）。",
+"link": [
+  "米氏方程",
+  "米氏常数"
+]
+},
+{
+"id": "s5-18",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "酶浓度对反应速度的影响",
+"def": "底物充足时v与[E]成正比。",
+"ans": "在**底物足够（饱和）**、其他条件恒定时，反应速度与**酶浓度成正比**（**v = k[E]**）。若底物不足，则增加酶浓度不能线性提高速度。这是用初速度法测定酶活力的理论依据。",
+"why": "临床酶活力测定必须保证底物过量，正是基于此。",
+"tip": "答题前提句“底物饱和时”不可省。",
+"link": [
+  "米氏方程",
+  "酶的活力与活力单位"
+]
+},
+{
+"id": "s5-19",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "温度对酶促反应的影响与最适温度",
+"def": "双重影响，呈钟形曲线。",
+"ans": "温度升高**加快反应速度**（分子运动加快），但同时**增加酶蛋白变性失活的速率**；两者综合导致**钟形曲线**，峰值对应**最适温度**。大多数动物酶最适温度**35~40℃**，植物酶可更高（如50~60℃）；最适温度**不是恒定常数**，与反应时间有关（时间越长最适温度越低）。低温**只抑制不破坏**，升温可恢复。",
+"why": "解释消毒灭菌（高温）、冷藏保存（低温）、PCR（Taq酶耐热）。",
+"tip": "“低温不变性、高温变性不可逆”是必写对比句。",
+"link": [
+  "酶的变性失活",
+  "Taq DNA聚合酶"
+]
+},
+{
+"id": "s5-20",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "pH对酶促反应的影响与最适pH",
+"def": "影响必需基团解离状态，呈钟形曲线。",
+"ans": "pH通过改变**酶活性中心必需基团及底物的解离状态**影响结合与催化，也可能影响酶的空间构象，故表现出**最适pH**（多数酶在**中性附近**，如唾液淀粉酶≈6.8；胃蛋白酶≈1.5~2.0；胰蛋白酶≈8.0）。过酸过碱会使酶**变性失活**。",
+"why": "解释胃蛋白酶在胃酸中工作、肠道酶偏碱性的生理意义。",
+"tip": "最适pH也非特征常数，与底物种类和缓冲液有关。",
+"link": [
+  "必需基团",
+  "酶的变性失活"
+]
+},
+{
+"id": "s5-21",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "激活剂",
+"def": "提高酶活性的物质。",
+"ans": "**激活剂**是能提高酶活性的物质。分：①**无机离子**（如**Mg²⁺激活激酶**、Cl⁻激活唾液淀粉酶、Ca²⁺激活凝血酶原）；②**小分子有机物**（如**半胱氨酸、二巯基丙醇**保护—SH，还原型谷胱甘肽）；③**大分子激活剂**（如胰蛋白酶原被肠激酶激活）。**必需激活剂**缺少则无活性，**非必需激活剂**仅提高活性。",
+"why": "与抑制剂对称的概念，常用“金属离子+激酶”举例。",
+"tip": "强调激活剂多为金属离子，且与变构激活区分（前者直接参与催化/结合）。",
+"link": [
+  "抑制剂",
+  "酶原激活"
+]
+},
+{
+"id": "s5-22",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "抑制剂与抑制作用",
+"def": "降低酶活性甚至使酶失活的物质。",
+"ans": "**抑制剂**是能**降低或使酶失活**的物质，但不使酶蛋白变性（区别于变性剂）。按结合方式分**可逆抑制**（非共价、可透析去除，如竞争性、非竞争性、反竞争性）与**不可逆抑制**（共价结合、不能去除，如有机磷、重金属）。抑制作用具有**选择性**，是药物设计的重要基础。",
+"why": "抑制类型的区分是酶学最高频的考点（尤其双倒数图）。",
+"tip": "先判断“能否透析去除”区分可逆/不可逆，再判断方式。",
+"link": [
+  "竞争性抑制",
+  "不可逆抑制",
+  "酶的抑制"
+]
+},
+{
+"id": "s5-23",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "竞争性抑制",
+"def": "抑制剂与底物竞争活性中心，Vmax不变、Km增大。",
+"ans": "抑制剂**结构与底物相似**，与底物**竞争结合酶的活性中心**；增加底物浓度可减弱抑制（**可被高浓度底物解除**）。动力学：**Vmax不变，Km表观增大**；双倒数图中**纵轴截距不变、横轴截距变小（−1/Km'更靠近原点）、斜率增大**。例：**丙二酸抑制琥珀酸脱氢酶、磺胺药抑制二氢蝶酸合酶、甲氨蝶呤抑制二氢叶酸还原酶**。",
+"why": "药物设计最经典的机制（磺胺、他汀类），必考。",
+"tip": "核心记忆：“争位置 → Vmax不变，Km变大”。",
+"link": [
+  "林-伯氏作图",
+  "酶的抑制",
+  "磺胺类药物"
+]
+},
+{
+"id": "s5-24",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "非竞争性抑制",
+"def": "结合活性中心外，Km不变、Vmax降低。",
+"ans": "抑制剂结合在**活性中心以外的部位**，与底物**无竞争关系**，底物和抑制剂可同时与酶结合，形成**ESI三元复合物**，但该复合物**不能进一步催化**。动力学：**Km不变，Vmax降低**；双倒数图：**横轴截距不变、纵轴截距增大，斜率增大，直线交于横轴**。",
+"why": "与竞争性抑制的图形区分点就是“哪条截距不变”。",
+"tip": "记忆：“不争位置 → Km不变，Vmax下降”。",
+"link": [
+  "林-伯氏作图",
+  "酶的抑制",
+  "竞争性抑制"
+]
+},
+{
+"id": "s5-25",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "反竞争性抑制",
+"def": "只与ES复合物结合，Km与Vmax同比例下降。",
+"ans": "抑制剂**只与酶-底物复合物（ES）结合**，不与游离酶结合，形成ESI后不能催化，使有效ES减少。动力学：**Km降低，Vmax降低，两者降低比例相同**；双倒数图：**斜线平行、纵轴截距增大**。常见于**底物类似物在双底物反应（乒乓机制）**中，或某些金属离子螯合。",
+"why": "三种可逆抑制里最易混，也是图形判别题的高频区分点。",
+"tip": "记忆：“只认ES → 平行线、Km与Vmax同降”。",
+"link": [
+  "竞争性抑制",
+  "非竞争性抑制",
+  "林-伯氏作图"
+]
+},
+{
+"id": "s5-26",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "不可逆抑制",
+"def": "共价结合，不能透析去除，酶永久失活。",
+"ans": "抑制剂以**共价键**与酶的必需基团结合，使酶**永久失活**，**不能被透析、超滤去除**，也不能通过增加底物解除（因结合后不可逆）。典型：①**有机磷农药**与胆碱酯酶活性中心**Ser的—OH**共价结合，致乙酰胆碱堆积（用**解磷定+阿托品**解救）；②**重金属（Hg²⁺、Pb²⁺）**与—SH结合；③**氰化物**与细胞色素氧化酶的铁结合。",
+"why": "毒理学与药物机制核心，配合中毒解救是经典简答。",
+"tip": "必须写“共价”“不可逆”“不可被底物解除”三点，还要举例。",
+"link": [
+  "抑制剂与抑制作用",
+  "必需基团",
+  "竞争性抑制"
+]
+},
+{
+"id": "s5-27",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "可逆抑制与不可逆抑制的比较",
+"def": "能否透析去除、是否共价。",
+"ans": "**可逆抑制**：非共价结合，**可用透析/超滤去除**，去除后活性恢复，底物浓度可影响抑制程度；分**竞争性、非竞争性、反竞争性**。**不可逆抑制**：共价结合，**不能去除**，酶活性永久丧失，底物浓度不能解除；如有机磷、重金属、氰化物。",
+"why": "抑制类型题的“第一层判断”，答错方向其余全错。",
+"tip": "答题顺序：判断可逆性 → 再看动力学 → 最后举例。",
+"link": [
+  "抑制剂与抑制作用",
+  "不可逆抑制",
+  "竞争性抑制"
+]
+},
+{
+"id": "s5-28",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "酶的调节方式",
+"def": "变构、共价修饰、酶原激活、含量调节、区隔化。",
+"ans": "①**变构调节（别构调节）**：效应物非共价结合调节亚基，快速；②**共价修饰调节**：磷酸化/去磷酸化、腺苷化等，级联放大，较慢但可逆；③**酶原激活**：不可逆的有限水解，如胰蛋白酶原→胰蛋白酶；④**酶含量的调节**：诱导/阻遏基因表达，改变合成速率（最慢）；⑤**区隔化**与**多酶复合体/多酶体系**提高效率。",
+"why": "代谢调节的统一框架，糖代谢、脂代谢调节题都靠它。",
+"tip": "答题按“快→慢”排序：变构<共价修饰<酶原激活（不可逆）<含量调节。",
+"link": [
+  "别构酶",
+  "共价修饰调节",
+  "酶原激活"
+]
+},
+{
+"id": "s5-29",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "别构酶与别构调节",
+"def": "寡聚酶，效应物结合调节部位改变构象。",
+"ans": "**别构酶**为**寡聚酶**，除活性中心外还有**调节部位（别构部位）**；**别构效应物**非共价结合后引起构象改变，从而激活或抑制酶。动力学上不服从米氏方程，曲线呈**S形**（正协同）或**双曲线**（负协同），可用**齐变（MWC）**与**序变（KNF）**模型解释。常位于代谢途径的**第一步或分支点**，是**限速步骤**的典型。",
+"why": "代谢调节的核心机制，糖酵解中PFK-1、己糖激酶都靠此调节。",
+"tip": "S形曲线 + 反馈抑制 + 位于途径首步，这是别构酶三连。",
+"link": [
+  "协同效应",
+  "反馈抑制",
+  "多酶体系"
+]
+},
+{
+"id": "s5-30",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "共价修饰调节",
+"def": "通过可逆共价修饰改变酶活性。",
+"ans": "酶蛋白上的特定基团在**另一种酶的催化下**发生**可逆的共价修饰**，从而改变活性，最常见的是**磷酸化/去磷酸化**（由**蛋白激酶**与**磷酸酶**催化，修饰位点Ser/Thr/Tyr的—OH），还有**腺苷化、乙酰化、甲基化**等。特点是**有级联放大效应**、速度快、可逆，是激素调节代谢的主要方式。",
+"why": "肾上腺素→cAMP→PKA→磷酸化酶b激酶的级联是经典案例。",
+"tip": "写“两酶双向（激酶+磷酸酶）”“级联放大”，这是采分点。",
+"link": [
+  "酶的调节方式",
+  "糖原的分解",
+  "蛋白激酶A"
+]
+},
+{
+"id": "s5-31",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "酶原与酶原激活",
+"def": "无活性的前体经有限水解转变为有活性的酶。",
+"ans": "**酶原**是酶的无活性前体，在特定条件下被**特异的蛋白水解酶切割掉一段肽段**，导致**构象改变形成活性中心**，从而变为有活性的酶。例：**胰蛋白酶原**被**肠激酶**切除N端6肽激活；**胃蛋白酶原**被盐酸激活；**凝血酶原**经级联激活。意义：**防止自身消化（保护性）**、使活性在需要时出现（**可调控、放大**）。",
+"why": "“为什么消化酶以酶原形式分泌”是经典简答；也解释急性胰腺炎机制。",
+"tip": "机制必写：“有限水解 + 构象改变 + 出现活性中心”，不可写成“分解成氨基酸”。",
+"link": [
+  "酶的调节方式",
+  "胃蛋白酶"
+]
+},
+{
+"id": "s5-32",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "基础",
+"q": "核酶（ribozyme）",
+"def": "具有催化活性的RNA。",
+"ans": "**核酶**是具**催化活性**的RNA，如**锤头核酶、发夹核酶**能自我切割，**RNase P的RNA组分**催化tRNA前体5'端成熟，**核糖体23S rRNA（肽酰转移酶中心）**催化肽键形成。1982年Cech等发现，支持**RNA世界假说**——生命起源早期可能由RNA同时承担遗传与催化功能。",
+"why": "颠覆“酶必为蛋白质”的传统认识，是重要概念题与前沿题。",
+"tip": "举例必写：RNase P + 核糖体肽酰转移酶中心（这是最有力的证据）。",
+"link": [
+  "酶的定义与化学本质",
+  "RNA世界假说"
+]
+},
+{
+"id": "s5-33",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "重点",
+"q": "同工酶",
+"def": "催化同一反应但结构不同的酶。",
+"ans": "**同工酶**是**催化同一化学反应**但**分子结构（氨基酸序列）、理化性质、电泳行为或动力学参数不同**的一组酶。源于**不同基因或同一基因的不同mRNA剪接/翻译后修饰**。典型：**乳酸脱氢酶（LDH₁~LDH₅）**由H、M两种亚基（四聚体）组合而成，心肌以LDH₁为主、肝以LDH₅为主。临床测定同工酶谱可定位组织损伤。",
+"why": "组织特异性+临床诊断，是苏大生物医药方向高频应用点。",
+"tip": "答题写“同反应、不同结构、可不同组织分布、用于诊断”。",
+"link": [
+  "酶的命名",
+  "临床酶学诊断"
+]
+},
+{
+"id": "s5-34",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "拓展",
+"q": "多酶体系与多酶复合体",
+"def": "多个酶协同完成序列反应，可提高效率和调节。",
+"ans": "**多酶体系**指一个途径中的多个酶共同协作完成系列反应；其中**多酶复合体**是各酶以非共价（或共价）方式**结合在一起形成的结构复合物**（如**丙酮酸脱氢酶复合体、脂肪酸合成酶复合体**）。优点：**减少中间物扩散、提高催化效率（通道效应）**、便于**协同调节**、防止中间产物被其他途径消耗。",
+"why": "解释代谢途径高效有序，是“代谢调节”部分的重要论据。",
+"tip": "答“优点”时写“通道效应/底物通道”，显得专业。",
+"link": [
+  "丙酮酸脱氢酶复合体",
+  "脂肪酸合成酶"
+]
+},
+{
+"id": "s5-35",
+"cat": "静态生物化学",
+"ch": "酶",
+"level": "拓展",
+"q": "抗体酶与固定化酶",
+"def": "人工改造具有催化活性的抗体；酶被固定于载体重复使用。",
+"ans": "**抗体酶（abzyme）**：以**过渡态类似物**为半抗原免疫动物，获得的抗体能结合并稳定过渡态，从而具催化活性——是“过渡态互补”的直接证据。**固定化酶**：将酶固定在载体（吸附、共价、包埋）上，可**重复使用、易与产物分离、提高稳定性**，广泛用于工业生产与生物传感器。",
+"why": "前沿应用型考点，体现“酶学原理—技术应用”的贯通。",
+"tip": "抗体酶一定要写“过渡态类似物”，这是它的原理核心。",
+"link": [
+  "过渡态互补",
+  "酶的固定化"
+]
+},
+{
+"id": "s6-01",
+"cat": "静态生物化学",
+"ch": "维生素与辅酶",
+"level": "基础",
+"q": "维生素的定义与分类",
+"def": "机体不能合成或不足，需少量供给的有机营养素。",
+"ans": "维生素是**机体生长和代谢所必需、体内一般不能合成（或合成不足）、必须由食物提供**的**微量有机化合物**。按溶解性分**脂溶性维生素（A、D、E、K）**与**水溶性维生素（B族、C）**。多数水溶性维生素以**辅酶或辅基**形式参与代谢。",
+"why": "维生素与酶、代谢紧密耦合，是“名解+功能+缺乏症”三连题。",
+"tip": "定义里“微量、必需、不能合成”三个词是采分点。",
+"link": [
+  "辅酶与辅基",
+  "水溶性维生素",
+  "脂溶性维生素"
+]
+},
+{
+"id": "s6-02",
+"cat": "静态生物化学",
+"ch": "维生素与辅酶",
+"level": "基础",
+"q": "脂溶性与水溶性维生素的比较",
+"def": "吸收、储存、排泄、毒性不同。",
+"ans": "**脂溶性（A、D、E、K）**：随脂类吸收，需**胆汁酸和脂肪**；储存于**肝和脂肪组织**，排泄慢；**缺乏症出现较慢**；过量易**蓄积中毒**（尤其A、D）。**水溶性（B族、C）**：溶于水直接吸收，**体内不储存**（或很少），多余随尿排出；**缺乏症出现快**，需每日补充；**一般不易中毒**（大剂量C、B₆例外）。",
+"why": "比较题，也是“为什么脂溶性维生素易中毒”的原因。",
+"tip": "答题用表格化思路：吸收—储存—排泄—缺乏速度—毒性。",
+"link": [
+  "维生素的定义与分类",
+  "维生素A",
+  "维生素C"
+]
+},
+{
+"id": "s6-03",
+"cat": "静态生物化学",
+"ch": "维生素与辅酶",
+"level": "重点",
+"q": "辅酶与辅基",
+"def": "与酶结合的非蛋白有机小分子/金属。",
+"ans": "酶的**非蛋白部分**称**辅助因子**，分**辅酶**与**辅基**：**辅酶**与酶蛋白**结合疏松**，可用**透析去除**，如**NAD⁺、NADP⁺、CoA**；**辅基**与酶蛋白**结合紧密甚至共价**，**不能透析去除**，如**FAD、FMN、血红素、生物素**（部分教材按结合强度区分，非绝对）。两者决定酶的催化类型，而**酶蛋白决定专一性**。",
+"why": "“酶蛋白决定专一性，辅因子决定反应类型”是酶组成部分的黄金句。",
+"tip": "举NAD⁺作辅酶、FAD作辅基，最稳妥。",
+"link": [
+  "酶的化学组成",
+  "NAD⁺与NADP⁺",
+  "FAD与FMN"
+]
+},
+{
+"id": "s6-04",
+"cat": "静态生物化学",
+"ch": "维生素与辅酶",
+"level": "重点",
+"q": "NAD⁺与NADP⁺（维生素PP）",
+"def": "烟酰胺腺嘌呤二核苷酸（磷酸）。",
+"ans": "由**烟酸（维生素PP，尼克酸/尼克酰胺）**衍生。**NAD⁺（辅酶Ⅰ）**主要参与**分解代谢中的氧化脱氢反应**（呼吸链、糖酵解、TCA循环），接收氢生成**NADH**进入呼吸链产能；**NADP⁺（辅酶Ⅱ）**主要参与**合成代谢的还原反应**（脂肪酸合成、磷酸戊糖途径产生NADPH）。缺乏烟酸引起**癞皮病（糙皮病，3D：皮炎、腹泻、痴呆）**。",
+"why": "“NADH产ATP、NADPH供还原力”是代谢中的核心分工。",
+"tip": "一句话记住：**NADH→产能，NADPH→合成**。",
+"link": [
+  "呼吸链",
+  "磷酸戊糖途径",
+  "辅酶与辅基"
+]
+},
+{
+"id": "s6-05",
+"cat": "静态生物化学",
+"ch": "维生素与辅酶",
+"level": "重点",
+"q": "FAD与FMN（维生素B₂）",
+"def": "核黄素的辅基形式，传递2H。",
+"ans": "由**核黄素（维生素B₂）**衍生，**FMN（黄素单核苷酸）**与**FAD（黄素腺嘌呤二核苷酸）**是**氧化还原酶**的辅基，在**呼吸链中作为电子传递体**（如**复合体Ⅰ、Ⅱ**），可传递**2个氢（2e⁻+2H⁺）**。缺乏B₂引起**口角炎、舌炎、脂溢性皮炎**。",
+"why": "连接维生素—呼吸链—氧化磷酸化，是“电子传递链组成”的要点。",
+"tip": "FAD与FMN在TCA循环（琥珀酸脱氢酶、二氢硫辛酸脱氢酶）中同样关键。",
+"link": [
+  "呼吸链",
+  "维生素B₂",
+  "复合体Ⅱ"
+]
+},
+{
+"id": "s6-06",
+"cat": "静态生物化学",
+"ch": "维生素与辅酶",
+"level": "重点",
+"q": "维生素B₁与TPP",
+"def": "硫胺素焦磷酸是脱羧和转酮酶的辅酶。",
+"ans": "**维生素B₁（硫胺素）**在体内转变为**TPP（硫胺素焦磷酸）**，是**α-酮酸氧化脱羧酶复合体**（丙酮酸脱氢酶、α-酮戊二酸脱氢酶）和**转酮醇酶**的辅酶。缺乏引起**脚气病**（多发性神经炎、心力衰竭）及**韦尼克-科尔萨科夫综合征**。",
+"why": "把糖代谢（PDH、TCA、PPP）三个环节串在一起，是极佳的综合考点。",
+"tip": "答题写“TPP = 脱羧 + 转酮”双功能，能显示系统性理解。",
+"link": [
+  "丙酮酸脱氢酶复合体",
+  "磷酸戊糖途径",
+  "转酮醇酶"
+]
+},
+{
+"id": "s6-07",
+"cat": "静态生物化学",
+"ch": "维生素与辅酶",
+"level": "重点",
+"q": "维生素B₆与磷酸吡哆醛",
+"def": "转氨酶、脱羧酶的辅酶。",
+"ans": "**维生素B₆**包括吡哆醇、吡哆醛、吡哆胺，活性形式为**磷酸吡哆醛（PLP）**。作为**转氨酶**（ALT、AST）的辅酶，通过**希夫碱（Schiff碱）中间物**转移氨基；也是**氨基酸脱羧酶**（合成GABA、5-羟色胺、多巴胺）、**丝氨酸羟甲基转移酶**、**胱硫醚合成酶**的辅酶；参与**血红素合成**（ALA合酶）。",
+"why": "连接氨基酸代谢、神经递质合成、血红素合成三大板块，覆盖面极广。",
+"tip": "写“Schiff碱机制”是加分点，体现机制理解。",
+"link": [
+  "转氨基作用",
+  "氨基酸脱羧",
+  "血红素合成"
+]
+},
+{
+"id": "s6-08",
+"cat": "静态生物化学",
+"ch": "维生素与辅酶",
+"level": "重点",
+"q": "生物素（维生素H）",
+"def": "羧化酶的辅基。",
+"ans": "生物素作为**羧化酶**的辅基，通过共价键与酶的**赖氨酸ε-氨基**结合（生物胞素），**活化CO₂**并转移给底物。关键酶：**丙酮酸羧化酶**（糖异生）、**乙酰CoA羧化酶**（脂肪酸合成第1步、限速步骤）、**丙酰CoA羧化酶**。生鸡蛋清中的**抗生物素蛋白（avidin）**能结合生物素，长期生食蛋清可引起缺乏。",
+"why": "糖异生与脂肪酸合成的共同关键辅基，是代谢交织点。",
+"tip": "写“活化CO₂、羧化反应”，并举例乙酰CoA羧化酶，能覆盖两章知识。",
+"link": [
+  "乙酰CoA羧化酶",
+  "糖异生",
+  "丙酮酸羧化酶"
+]
+},
+{
+"id": "s6-09",
+"cat": "静态生物化学",
+"ch": "维生素与辅酶",
+"level": "重点",
+"q": "泛酸与辅酶A",
+"def": "CoA的组成成分，携带酰基。",
+"ans": "**泛酸（维生素B₅）**是**辅酶A（CoA-SH）**的组成成分，其**巯基（—SH）**可结合并携带**酰基（乙酰CoA、脂酰CoA）**，是**酰基转移的通用载体**；也参与**脂肪酸氧化与合成、TCA循环、胆固醇与酮体合成**。缺乏较少见。",
+"why": "“乙酰CoA是代谢枢纽”这个话题直接引到CoA。",
+"tip": "答“乙酰CoA的代谢来源与去路”时，CoA的作用可作补充说明。",
+"link": [
+  "乙酰CoA",
+  "脂肪酸的β-氧化"
+]
+},
+{
+"id": "s6-10",
+"cat": "静态生物化学",
+"ch": "维生素与辅酶",
+"level": "重点",
+"q": "叶酸与四氢叶酸",
+"def": "一碳单位转移的辅酶。",
+"ans": "**叶酸**还原为**四氢叶酸（THF，FH₄）**后，作为**一碳单位（甲基、甲酰基、亚甲基等）的载体**，参与**嘌呤与胸腺嘧啶（dTMP）合成**、**丝氨酸-甘氨酸互变**、**甲硫氨酸循环（同型半胱氨酸甲基化）**。缺乏导致**巨幼红细胞性贫血**；**甲氨蝶呤**抑制二氢叶酸还原酶用于抗肿瘤。",
+"why": "核酸代谢、氨基酸代谢、贫血与抗肿瘤药物的交汇点，是苏大常考综合题。",
+"tip": "务必写出“一碳单位载体 + dTMP合成 + 甲氨蝶呤抑制DHFR”。",
+"link": [
+  "核苷酸的生物合成",
+  "一碳单位",
+  "甲氨蝶呤"
+]
+},
+{
+"id": "s6-11",
+"cat": "静态生物化学",
+"ch": "维生素与辅酶",
+"level": "重点",
+"q": "维生素B₁₂与甲基钴胺素",
+"def": "参与甲基转移，与叶酸代谢相关。",
+"ans": "**维生素B₁₂（钴胺素）**含**钴**，活性形式为**甲基钴胺素**与**5'-脱氧腺苷钴胺素**。前者参与**甲硫氨酸合成酶**反应（同型半胱氨酸→甲硫氨酸，同时使THF再生）；后者是**甲基丙二酰CoA变位酶**的辅酶。缺乏引起**巨幼红细胞性贫血**（与叶酸缺乏相似）、**神经系统损害**（亚急性联合变性）；内因子缺乏导致吸收障碍（恶性贫血）。",
+"why": "B₁₂与叶酸的“甲基陷阱”是经典机制题。",
+"tip": "答题写“甲基陷阱学说 + 神经系统症状”可显著拔高。",
+"link": [
+  "叶酸与四氢叶酸",
+  "甲硫氨酸循环",
+  "巨幼红细胞性贫血"
+]
+},
+{
+"id": "s6-12",
+"cat": "静态生物化学",
+"ch": "维生素与辅酶",
+"level": "重点",
+"q": "维生素C（抗坏血酸）",
+"def": "抗氧化剂与羟化酶辅因子。",
+"ans": "维生素C是**水溶性抗氧化剂**（可还原自由基、再生维生素E），也是**羟化酶的辅因子**：参与**胶原蛋白中脯氨酸、赖氨酸的羟化**（缺乏→胶原合成障碍→**坏血病**：牙龈出血、皮下瘀斑、伤口愈合不良）；还参与**神经递质（去甲肾上腺素）合成**、**胆固醇转化为胆汁酸**、**铁的吸收（Fe³⁺→Fe²⁺）**以及**免疫支持**。",
+"why": "结构（胶原）与功能（氧化还原）双线考点，缺乏症经典。",
+"tip": "“胶原羟化需维生素C”是必写点，不能只说“抗氧化”。",
+"link": [
+  "胶原蛋白",
+  "抗氧化"
+]
+},
+{
+"id": "s6-13",
+"cat": "静态生物化学",
+"ch": "维生素与辅酶",
+"level": "重点",
+"q": "维生素A与视黄醛",
+"def": "构成视紫红质，维持视觉和上皮完整。",
+"ans": "维生素A包括**视黄醇、视黄醛、视黄酸**。**11-顺视黄醛**与**视蛋白**结合成**视紫红质**，光照下异构化为全反式，引发**视觉信号**（缺乏→**夜盲症**）；视黄酸调节**基因表达**（RAR/RXR受体），维持**上皮组织分化**（缺乏→干眼症、角膜软化）；也参与免疫与抗氧化。**过量可致中毒（致畸）**。",
+"why": "“维生素—受体—基因表达”的经典例子，可联系核受体调控。",
+"tip": "答题分三层：视觉、上皮、基因调控，层次分明。",
+"link": [
+  "脂溶性维生素",
+  "核受体"
+]
+},
+{
+"id": "s6-14",
+"cat": "静态生物化学",
+"ch": "维生素与辅酶",
+"level": "拓展",
+"q": "维生素D与钙磷代谢",
+"def": "1,25-(OH)₂-D₃促进钙吸收。",
+"ans": "维生素D₃经**肝25-羟化酶**、**肾1α-羟化酶**作用生成活性形式**1,25-二羟维生素D₃（骨化三醇）**，作用于肠道**促进钙结合蛋白合成、增加钙磷吸收**，作用于骨促进钙化，作用于肾促进钙重吸收。缺乏儿童患**佝偻病**、成人患**骨软化症**；过量致高钙血症与肾结石。",
+"why": "激素样作用的维生素，涉及“两次羟化 + 三靶器官”的固定答法。",
+"tip": "写清“肝25位、肾1位”两处羟化，是采分点。",
+"link": [
+  "钙磷代谢",
+  "脂溶性维生素"
+]
+},
+{
+"id": "s6-15",
+"cat": "静态生物化学",
+"ch": "维生素与辅酶",
+"level": "拓展",
+"q": "维生素E与维生素K",
+"def": "E为抗氧化剂，K参与凝血因子γ-羧化。",
+"ans": "**维生素E（生育酚）**：**脂溶性抗氧化剂**，保护生物膜中不饱和脂肪酸免遭过氧化，与GSH、维生素C协同；缺乏可致红细胞脆性增加、生殖障碍。**维生素K**：是**γ-谷氨酰羧化酶**的辅因子，使凝血因子**Ⅱ、Ⅶ、Ⅸ、Ⅹ**及蛋白C、S的Glu残基**γ-羧化**（形成Ca²⁺结合位点），缺乏→**出血倾向**；**华法林**通过拮抗维生素K起抗凝作用。",
+"why": "维生素K机制与抗凝药物直接挂钩，是药理交叉高频点。",
+"tip": "写“γ-羧化 + 凝血因子Ⅱ/Ⅶ/Ⅸ/Ⅹ + 华法林拮抗”。",
+"link": [
+  "凝血",
+  "抗氧化"
+]
+},
+{
+"id": "s7-01",
+"cat": "静态生物化学",
+"ch": "核酸",
+"level": "基础",
+"q": "核酸的元素组成与基本单位",
+"def": "C、H、O、N、P（P约9%~10%），单位为核苷酸。",
+"ans": "核酸由**C、H、O、N、P**组成，**磷含量较恒定（约9%~10%）**，故可用定磷法测定核酸。基本组成单位是**核苷酸**，由**磷酸 + 戊糖 + 含氮碱基**组成；核苷酸再水解为**核苷（戊糖+碱基）**与磷酸。",
+"why": "元素与单位是核酸章节开篇必答点；定磷法是常考方法。",
+"tip": "“含磷量恒定→定磷法”是重要实践结论。",
+"link": [
+  "核苷酸",
+  "碱基",
+  "定磷法"
+]
+},
+{
+"id": "s7-02",
+"cat": "静态生物化学",
+"ch": "核酸",
+"level": "重点",
+"q": "碱基的种类",
+"def": "DNA：A、G、C、T；RNA：A、G、C、U。",
+"ans": "**嘌呤碱**：腺嘌呤（A）、鸟嘌呤（G），为双环；**嘧啶碱**：胞嘧啶（C）、胸腺嘧啶（T）、尿嘧啶（U），为单环。**DNA**主要含**A、G、C、T**，**RNA**主要含**A、G、C、U**（T被U取代）。此外有**稀有碱基**（如tRNA中的二氢尿嘧啶、假尿苷）。",
+"why": "碱基配对与DNA/RNA差异的基础；识图题常直接画结构。",
+"tip": "写清“嘌呤双环、嘧啶单环”，是结构式题的关键。",
+"link": [
+  "核苷酸",
+  "DNA双螺旋",
+  "tRNA"
+]
+},
+{
+"id": "s7-03",
+"cat": "静态生物化学",
+"ch": "核酸",
+"level": "重点",
+"q": "核苷酸的结构",
+"def": "磷酸-戊糖-碱基，N-糖苷键，3',5'-磷酸二酯键。",
+"ans": "核苷酸由**碱基与戊糖以N-糖苷键相连**（嘌呤连于C1'的N9，嘧啶连于N1），戊糖的**5'-OH与磷酸成酯键**。核苷酸之间通过**3',5'-磷酸二酯键**连接成多核苷酸链。常见核苷酸：**AMP、ADP、ATP、GMP、dTMP**，以及**cAMP、cGMP**（第二信使）。",
+"why": "连接方式决定链的方向性（5'→3'），是复制、转录方向的依据。",
+"tip": "注意“N-糖苷键（碱基-糖）”与“磷酸二酯键（糖-磷酸-糖）”不要混。",
+"link": [
+  "多核苷酸链的方向性",
+  "cAMP"
+]
+},
+{
+"id": "s7-04",
+"cat": "静态生物化学",
+"ch": "核酸",
+"level": "重点",
+"q": "DNA的一级结构",
+"def": "脱氧核苷酸的排列顺序，方向5'→3'。",
+"ans": "DNA的一级结构指**脱氧核苷酸（dAMP、dGMP、dCMP、dTMP）的排列顺序**，通过**3',5'-磷酸二酯键**连接，链有**5'端（游离磷酸）与3'端（游离羟基）**，书写习惯**5'→3'**。一级结构储存**遗传信息**，是复制、转录的模板基础。",
+"why": "一级结构→二级结构→功能的主线起点；测序结果即一级结构。",
+"tip": "答题必写方向性，且与“反向平行”呼应。",
+"link": [
+  "DNA双螺旋",
+  "多核苷酸链的方向性"
+]
+},
+{
+"id": "s7-05",
+"cat": "静态生物化学",
+"ch": "核酸",
+"level": "重点",
+"q": "Chargaff规则",
+"def": "A=T，G=C，A+G=T+C。",
+"ans": "Chargaff发现：①**A = T，G = C**；②**嘌呤总数 = 嘧啶总数（A+G = T+C）**；③不同物种的(A+T)/(G+C)比值不同，体现**物种特异性**；④同种生物不同组织DNA碱基组成相同（**无组织特异性**）。该规则是**碱基互补配对**的实验依据。",
+"why": "DNA双螺旋模型的实验基础之一，也常用于计算题（如求G含量）。",
+"tip": "计算技巧：已知A%或T%，可推出G=C=(100−2A)/2。",
+"link": [
+  "DNA双螺旋",
+  "碱基互补配对"
+]
+},
+{
+"id": "s7-06",
+"cat": "静态生物化学",
+"ch": "核酸",
+"level": "重点",
+"q": "DNA双螺旋结构模型要点",
+"def": "反向平行、右手、碱基内配对、螺距3.4nm。",
+"ans": "**1953年Watson与Crick**提出（依据Franklin的X射线衍射照片）：①两条**反向平行**的脱氧核糖核酸链围绕**同一中心轴**盘绕成**右手螺旋**；②**磷酸-脱氧核糖骨架在外侧**，**碱基在内侧**；③**A与T配对（2个氢键），G与C配对（3个氢键）**，维持两条链等长；④螺旋直径**2nm**，每圈**10个碱基对**，螺距**3.4nm**，相邻碱基对间距**0.34nm**；⑤两条链靠**氢键**与**碱基堆积力**（主要）维系。",
+"why": "全书最高频的论述题，几乎每年都涉及；数据需精准。",
+"tip": "写“碱基堆积力是主要稳定力”比只写氢键更专业；数字一个都不能错。",
+"link": [
+  "Chargaff规则",
+  "碱基互补配对",
+  "DNA的变性与复性"
+]
+},
+{
+"id": "s7-07",
+"cat": "静态生物化学",
+"ch": "核酸",
+"level": "重点",
+"q": "碱基互补配对与氢键数目",
+"def": "A-T两个氢键，G-C三个氢键。",
+"ans": "**A与T配对形成2个氢键，G与C配对形成3个氢键**。因此**GC含量越高，DNA越稳定**（解链温度Tm越高）、密度越大。配对规则保证了遗传信息复制的**准确性**与两条链的**等长**。",
+"why": "直接解释Tm与GC含量的关系、PCR引物设计、杂交特异性。",
+"tip": "常考计算：GC含量→Tm估算（Tm ≈ 69.3 + 0.41×(G+C)%）。",
+"link": [
+  "Chargaff规则",
+  "DNA的变性与复性",
+  "Tm值"
+]
+},
+{
+"id": "s7-08",
+"cat": "静态生物化学",
+"ch": "核酸",
+"level": "重点",
+"q": "维持DNA双螺旋稳定的作用力",
+"def": "碱基堆积力为主，辅以氢键、离子键。",
+"ans": "①**碱基堆积力**：疏水碱基平面间π-π相互作用与疏水效应，**是主要稳定因素**（位于内部避水）；②**氢键**：配对碱基间形成；③**离子键**：带负电的磷酸骨架与阳离子（Mg²⁺、Na⁺、组蛋白碱性残基）中和静电斥力。",
+"why": "解释Tm、变性、蛋白质-DNA结合、盐浓度对DNA的影响。",
+"tip": "排序题：“堆积力 > 氢键 > 离子键”，写这个顺序得分最高。",
+"link": [
+  "DNA双螺旋结构模型要点",
+  "DNA的变性与复性"
+]
+},
+{
+"id": "s7-09",
+"cat": "静态生物化学",
+"ch": "核酸",
+"level": "重点",
+"q": "DNA的其他构象（A、B、Z型）",
+"def": "B型最常见，A型较粗，Z型左手。",
+"ans": "**B-DNA**：生理条件下最常见的**右手**双螺旋，10bp/圈，螺距3.4nm，与Watson-Crick模型一致；**A-DNA**：**右手**，11bp/圈，较粗短，见于脱水条件及**DNA-RNA杂交、dsRNA**；**Z-DNA**：**左手**螺旋，12bp/圈，骨架呈锯齿状（zigzag），GC交替序列易形成，可能与**基因调控**相关。",
+"why": "构象多样性体现DNA的柔性，也是理解转录、蛋白识别的结构基础。",
+"tip": "三者区分要点：手性（右手/右手/左手）+ 每圈bp数。",
+"link": [
+  "DNA双螺旋结构模型要点",
+  "DNA的柔性"
+]
+},
+{
+"id": "s7-10",
+"cat": "静态生物化学",
+"ch": "核酸",
+"level": "重点",
+"q": "DNA的三级结构（超螺旋）",
+"def": "双螺旋进一步盘绕形成超螺旋。",
+"ans": "DNA三级结构指在二级结构基础上进一步盘绕形成的**超螺旋结构**。**负超螺旋**（盘绕方向与双螺旋相反）使DNA更紧、有利于**解链**（复制、转录）；**正超螺旋**使DNA更紧致。**拓扑异构酶**通过切断-重接改变**连接数（L = T + W）**调节超螺旋水平。原核生物DNA为**环状超螺旋**，真核生物以**核小体**为基础形成染色质。",
+"why": "解释复制/转录时的拓扑问题及喹诺酮类、喜树碱类药靶。",
+"tip": "写“L = T + W”并说明拓扑异构酶的作用，会显得非常扎实。",
+"link": [
+  "核小体",
+  "拓扑异构酶",
+  "DNA的复制"
+]
+},
+{
+"id": "s7-11",
+"cat": "静态生物化学",
+"ch": "核酸",
+"level": "重点",
+"q": "核小体",
+"def": "组蛋白八聚体核心+146bp DNA绕1.75圈。",
+"ans": "核小体是**染色质的基本结构单位**：由**H2A、H2B、H3、H4各两分子**组成**组蛋白八聚体核心**，**约146bp的DNA盘绕1.75圈**在其表面，**H1**结合于DNA进出位点稳定结构。核小体串联形成**10nm串珠结构**，再折叠为30nm纤丝、进而形成更高层次的染色质。",
+"why": "连接DNA结构与基因表达调控（组蛋白修饰、染色质重塑）。",
+"tip": "数字“146bp、1.75圈、八聚体”必须准确。",
+"link": [
+  "DNA的三级结构",
+  "组蛋白修饰",
+  "染色质重塑"
+]
+},
+{
+"id": "s7-12",
+"cat": "静态生物化学",
+"ch": "核酸",
+"level": "重点",
+"q": "RNA的种类与功能",
+"def": "mRNA、tRNA、rRNA及其他非编码RNA。",
+"ans": "①**mRNA**：信使，携带遗传信息，模板；②**tRNA**：转运氨基酸，含**三叶草/倒L形**结构、**反密码子**与**CCA-3'端**；③**rRNA**：与蛋白构成**核糖体**，催化肽键形成；④**其他**：**snRNA**（剪接）、**snoRNA**（rRNA修饰）、**miRNA/siRNA**（基因沉默）、**lncRNA**（调控）、**circRNA**。RNA通常为**单链**，局部可形成发夹/茎环。",
+"why": "RNA种类题是转录后加工、表达调控的入口。",
+"tip": "答题按“三类主要 + 若干非编码”结构作答，显得系统。",
+"link": [
+  "tRNA的结构",
+  "核糖体",
+  "miRNA"
+]
+},
+{
+"id": "s7-13",
+"cat": "静态生物化学",
+"ch": "核酸",
+"level": "重点",
+"q": "tRNA的结构特点",
+"def": "三叶草二级、倒L三级，含稀有碱基。",
+"ans": "①**二级结构呈三叶草形**：**氨基酸臂**（3'端**CCA-OH**，连接氨基酸）、**D环**、**反密码子环**（含**反密码子**）、**TψC环**、可变环；②**三级结构呈倒L形**；③含**稀有碱基**（二氢尿嘧啶D、假尿苷ψ、次黄嘌呤I、甲基化碱基）；④5'端多为pG，3'端为CCA。功能：**识别密码子并转运特定氨基酸**。",
+"why": "翻译章节的“结构-功能”核心，常就“CCA端、反密码子、稀有碱基”设问。",
+"tip": "三叶草四臂+倒L形+CCA，就是标准答案骨架。",
+"link": [
+  "RNA的种类与功能",
+  "遗传密码",
+  "氨酰-tRNA合成酶"
+]
+},
+{
+"id": "s7-14",
+"cat": "静态生物化学",
+"ch": "核酸",
+"level": "重点",
+"q": "DNA的紫外吸收",
+"def": "260nm最大吸收，由碱基共轭体系引起。",
+"ans": "嘌呤、嘧啶碱基含**共轭双键**，使核酸在**260nm**有最大紫外吸收。**单链/变性DNA**因碱基暴露，**A260升高（增色效应）**；双链DNA碱基堆积，吸收较低（**减色效应**）。可用于核酸**定量**（A260=1 约相当于50μg/mL dsDNA、33μg/mL ssDNA、40μg/mL RNA）与**纯度判断**（A260/A280≈1.8为纯DNA）。",
+"why": "增色/减色效应是核酸变性的监测手段，几乎所有实验都用。",
+"tip": "A260/A280比值必须记：DNA≈1.8，RNA≈2.0。",
+"link": [
+  "增色效应",
+  "DNA的变性与复性",
+  "核酸的定量"
+]
+},
+{
+"id": "s7-15",
+"cat": "静态生物化学",
+"ch": "核酸",
+"level": "重点",
+"q": "DNA的变性",
+"def": "氢键断裂、双链解开为单链，不破坏共价键。",
+"ans": "在**高温、强酸强碱、尿素、甲酰胺**等作用下，DNA双链间的**氢键和碱基堆积力被破坏**，**双链解开为单链**，但**磷酸二酯键不断裂（一级结构不变）**。表现为**A260升高（增色效应）**、黏度下降、生物活性丧失。变性是**可逆**的（可复性）。",
+"why": "PCR、杂交、测序的基础；与蛋白质变性类比易记。",
+"tip": "关键句：“只断氢键，不断磷酸二酯键”。",
+"link": [
+  "增色效应",
+  "DNA的复性",
+  "Tm值"
+]
+},
+{
+"id": "s7-16",
+"cat": "静态生物化学",
+"ch": "核酸",
+"level": "重点",
+"q": "Tm值（解链温度）",
+"def": "50%DNA变性时的温度，与GC含量正相关。",
+"ans": "**Tm**是DNA双链**一半解链为单链（变性达50%）**时的温度，此时A260升至最大值的一半。影响因素：①**GC含量**越高Tm越高（G-C有3个氢键，堆积力强）；②**离子强度**越高Tm越高（中和磷酸电负性）；③**pH**（极端pH降低Tm）；④DNA长度与序列。经验式：**Tm ≈ 69.3 + 0.41×(G+C)%**。",
+"why": "PCR退火温度设定、杂交严格度控制、物种DNA比较都依赖Tm。",
+"tip": "答题写“GC含量 + 离子强度 + pH”三因素，比只说GC全面。",
+"link": [
+  "DNA的变性",
+  "碱基互补配对",
+  "PCR"
+]
+},
+{
+"id": "s7-17",
+"cat": "静态生物化学",
+"ch": "核酸",
+"level": "重点",
+"q": "增色效应与减色效应",
+"def": "变性A260升高；复性A260降低。",
+"ans": "**增色效应**：DNA变性时双链解开，碱基暴露、共轭体系与邻近碱基相互作用减弱，**A260升高**；**减色效应**：变性DNA复性重新形成双链时，碱基重新堆积，**A260降低**。两效应是监测变性与复性的直接手段，也可反映DNA的**双链程度**。",
+"why": "实验题常问“如何判断DNA是否复性”——监测A260下降。",
+"tip": "记住“单链吸收高、双链吸收低”这个反直觉结论。",
+"link": [
+  "DNA的变性",
+  "DNA的复性",
+  "DNA的紫外吸收"
+]
+},
+{
+"id": "s7-18",
+"cat": "静态生物化学",
+"ch": "核酸",
+"level": "重点",
+"q": "DNA的复性",
+"def": "变性DNA在适宜条件下重新形成双链。",
+"ans": "变性DNA在**缓慢降温、适宜温度（比Tm低约25℃）及合适盐浓度**下，互补单链重新配对，恢复双螺旋与部分生物活性。复性速度受**DNA浓度、片段长度、序列复杂度、离子强度、温度**影响。**Cot曲线**（浓度×时间）可反映基因组复杂度。",
+"why": "杂交技术（Southern、原位杂交、PCR）的理论基础。",
+"tip": "注意“缓慢降温”而非骤冷（骤冷得到无规卷曲，无法复性）。",
+"link": [
+  "增色效应",
+  "核酸分子杂交",
+  "Tm值"
+]
+},
+{
+"id": "s7-19",
+"cat": "静态生物化学",
+"ch": "核酸",
+"level": "重点",
+"q": "核酸分子杂交",
+"def": "不同来源变性单链按互补序列形成杂合双链。",
+"ans": "将不同来源的**变性单链核酸**混合，若存在**互补序列**，即可复性形成**杂合双链（DNA-DNA或DNA-RNA）**。基于**碱基互补**与**特异性**，可用于**基因定位、表达检测、亲缘关系分析**。技术形式：**Southern blot（DNA）、Northern blot（RNA）、原位杂交、DNA微阵列**。",
+"why": "分子生物学核心技术族，苏大“DNA技术应用”类题的必答内容。",
+"tip": "答题写“变性→互补配对→检测标记”，并举Southern/Northern区分。",
+"link": [
+  "DNA的复性",
+  "Southern印迹",
+  "原位杂交"
+]
+},
+{
+"id": "s7-20",
+"cat": "静态生物化学",
+"ch": "核酸",
+"level": "拓展",
+"q": "核酸的定量与纯度判断",
+"def": "A260定量，A260/A280判断纯度。",
+"ans": "**A260法定量**：A260=1 对应于约**50μg/mL双链DNA、33μg/mL单链DNA（寡核苷酸20μg/mL）、40μg/mL RNA**。**纯度**：纯DNA **A260/A280≈1.8**、纯RNA≈**2.0**；比值偏低说明**蛋白/酚污染**；比值偏高（>2.0）说明可能有RNA残留或降解。另外可用**荧光染料法（如Qubit）**、**定磷法**、**琼脂糖电泳**定量与判断完整性。",
+"why": "分子实验的第一步永远是核酸质量和浓度，实验设计题必写。",
+"tip": "把三个换算系数记牢，这是常考的计算数据。",
+"link": [
+  "DNA的紫外吸收",
+  "核酸的变性",
+  "凝胶电泳"
+]
+},
+{
+"id": "s7-21",
+"cat": "静态生物化学",
+"ch": "核酸",
+"level": "基础",
+"q": "定磷法与二苯胺、苔黑酚反应",
+"def": "测磷定核酸；二苯胺测DNA；苔黑酚测RNA。",
+"ans": "**定磷法**：核酸含磷量恒定（约9%~10%），用钼蓝比色测定磷即可推算核酸总量；**二苯胺法**：DNA在酸性条件下与二苯胺加热生成**蓝色**产物，用于DNA定量（RNA干扰小）；**苔黑酚（orcinol）法**：RNA核糖与苔黑酚反应生成**绿色**产物，用于RNA定量（DNA干扰较大）。",
+"why": "三种经典定量法，选择题高频，注意颜色与专属性差异。",
+"tip": "颜色对应：二苯胺-蓝（DNA）、苔黑酚-绿（RNA）。",
+"link": [
+  "核酸的定量与纯度判断",
+  "核酸的元素组成与基本单位"
+]
+},
+{
+"id": "s8-01",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "基础",
+"q": "糖酵解（EMP）途径",
+"def": "葡萄糖在胞液中净生成2ATP、2NADH、2丙酮酸。",
+"ans": "糖酵解是**葡萄糖→2分子丙酮酸**的**无氧分解**途径，全部酶在**胞液**中。分两阶段：**耗能阶段**（葡萄糖→1,6-二磷酸果糖，消耗**2ATP**）与**产能阶段**（→2丙酮酸，产生**4ATP + 2NADH**）。净结果：**葡萄糖 + 2NAD⁺ + 2ADP + 2Pi → 2丙酮酸 + 2NADH + 2H⁺ + 2ATP + 2H₂O**。总反应无O₂参与，产物丙酮酸去向取决于氧供与 organism。",
+"why": "所有糖代谢的总入口，后续TCA、糖异生、发酵都以此为基础。",
+"tip": "数字精确：净2ATP、2NADH、2丙酮酸；消耗2ATP在己糖激酶和PFK-1。",
+"link": [
+  "糖酵解的调节",
+  "丙酮酸的去路",
+  "糖异生"
+]
+},
+{
+"id": "s8-02",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "重点",
+"q": "糖酵解的三个关键酶",
+"def": "己糖激酶（葡萄糖激酶）、PFK-1、丙酮酸激酶。",
+"ans": "糖酵解中催化**不可逆反应**的三个关键酶：①**己糖激酶**主要受产物G-6-P抑制；肝和胰岛β细胞的**葡萄糖激酶**对葡萄糖亲和力低，主要受胰岛素诱导及GKRP等调控；②**PFK-1**是最重要的别构调节位点，受ATP、柠檬酸抑制，AMP、F-2,6-BP激活；③**丙酮酸激酶**受别构调节，肝同工酶还可被PKA磷酸化抑制。**不能笼统说三者都靠自身磷酸化开关调控**。",
+"why": "“限速步骤在哪”是代谢调节题的核心，PFK-1是第一答案。",
+"tip": "务必写出PFK-1是“最主要限速酶”，并说明其受ATP、柠檬酸抑制，AMP、F-2,6-BP激活。",
+"link": [
+  "糖酵解（EMP）途径",
+  "糖酵解的调节",
+  "PFK-1"
+]
+},
+{
+"id": "s8-03",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "重点",
+"q": "糖酵解的能量计算",
+"def": "净生成2ATP和2个胞质NADH；有氧时总当量取决于穿梭方式。",
+"ans": "每分子葡萄糖经糖酵解**净生成2 ATP**（产能4、耗能2）和**2个胞质NADH**。按现代P/O比，苹果酸-天冬氨酸穿梭时每个胞质NADH约2.5 ATP，故糖酵解合计约**7 ATP**；甘油-3-磷酸穿梭时每个约1.5 ATP，故合计约**5 ATP**。旧算法按3或2 ATP/NADH计算，相应为**8或6 ATP**。",
+"why": "能量计算题必考，注意穿梭系统和新旧P/O算法不同。",
+"tip": "先写“净2 ATP”，再写穿梭：现代算法**7或5**，旧算法**8或6**；无氧时2 NADH用于乳酸生成，不额外产能。",
+"link": [
+  "糖酵解（EMP）途径",
+  "NADH穿梭系统",
+  "氧化磷酸化"
+]
+},
+{
+"id": "s8-04",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "重点",
+"q": "底物水平磷酸化",
+"def": "底物高能键转移给ADP生成ATP。",
+"ans": "在分解代谢中，**底物分子上形成的高能磷酸键（或高能硫酯键）直接转移给ADP（或GDP）生成ATP（GTP）**，不依赖呼吸链与氧，称为底物水平磷酸化。糖酵解中3处：**1,3-BPG→3-PG、PEP→丙酮酸**；TCA中：**琥珀酰CoA→琥珀酸（生成GTP）**。",
+"why": "与氧化磷酸化并列为两大产能方式，产能题必答之一。",
+"tip": "举3个具体反应位点，比只写定义得分高。",
+"link": [
+  "氧化磷酸化",
+  "三羧酸循环"
+]
+},
+{
+"id": "s8-05",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "重点",
+"q": "丙酮酸的去路",
+"def": "有氧入线粒体氧化；无氧还原为乳酸或乙醇。",
+"ans": "①**有氧**：丙酮酸经**线粒体丙酮酸转运体**进入线粒体，由**丙酮酸脱氢酶复合体**氧化脱羧为**乙酰CoA**，进入TCA循环彻底氧化；②**无氧（动物/乳酸菌）**：在**乳酸脱氢酶**作用下还原为**乳酸**（再生NAD⁺）；③**无氧（酵母）**：经**丙酮酸脱羧酶（TPP）**生成乙醛，再由**乙醇脱氢酶**还原为**乙醇**（酒精发酵）。糖异生时丙酮酸还可**羧化为草酰乙酸**。",
+"why": "连接糖酵解、发酵、TCA与糖异生的枢纽点。",
+"tip": "四个方向全写：乙酰CoA、乳酸、乙醇、草酰乙酸。",
+"link": [
+  "丙酮酸脱氢酶复合体",
+  "乳酸发酵",
+  "糖异生"
+]
+},
+{
+"id": "s8-06",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "重点",
+"q": "丙酮酸脱氢酶复合体",
+"def": "三种酶+五种辅酶，氧化脱羧生成乙酰CoA。",
+"ans": "存在于**线粒体基质**，由**三种酶**组成：**丙酮酸脱氢酶（E1，TPP）**、**二氢硫辛酰胺转乙酰酶（E2，硫辛酸、CoA）**、**二氢硫辛酰胺脱氢酶（E3，FAD、NAD⁺）**，共**5种辅酶（TPP、硫辛酸、CoA、FAD、NAD⁺）**。反应：**丙酮酸 + CoA-SH + NAD⁺ → 乙酰CoA + CO₂ + NADH + H⁺**，不可逆。受**乙酰CoA、NADH、ATP抑制**，**AMP、CoA、NAD⁺激活**，并受**磷酸化修饰**抑制。",
+"why": "代谢枢纽酶，涉及维生素B₁缺乏（脚气病）机制与糖脂代谢分流。",
+"tip": "“3酶5辅酶 + 不可逆 + 受产物抑制”就是完整答案。",
+"link": [
+  "丙酮酸的去路",
+  "三羧酸循环",
+  "维生素B₁与TPP"
+]
+},
+{
+"id": "s8-07",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "重点",
+"q": "三羧酸循环（TCA/Krebs循环）",
+"def": "乙酰CoA彻底氧化，每轮4次脱氢、2次脱羧。",
+"ans": "在线粒体基质中进行：**乙酰CoA + 3NAD⁺ + FAD + GDP + Pi + 2H₂O → 2CO₂ + 3NADH + FADH₂ + GTP + CoA + 3H⁺**。每轮：**2次脱羧（异柠檬酸脱氢酶、α-酮戊二酸脱氢酶）产生2CO₂**；**4次氧化脱氢**（异柠檬酸脱氢酶→NADH、α-酮戊二酸脱氢酶→NADH、琥珀酸脱氢酶→FADH₂、苹果酸脱氢酶→NADH）；**1次底物水平磷酸化**（琥珀酰CoA→琥珀酸，生成GTP）。",
+"why": "三大营养物质代谢的最终共同通路，是全书最核心的循环。",
+"tip": "“2CO₂、3NADH、1FADH₂、1GTP”四个数字要一口报出。",
+"link": [
+  "TCA循环的调节",
+  "氧化磷酸化",
+  "草酰乙酸"
+]
+},
+{
+"id": "s8-08",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "重点",
+"q": "TCA循环的关键酶",
+"def": "柠檬酸合酶、异柠檬酸脱氢酶、α-酮戊二酸脱氢酶。",
+"ans": "三个关键酶：①**柠檬酸合酶**（乙酰CoA+草酰乙酸→柠檬酸，限速之一，受ATP、NADH、琥珀酰CoA、柠檬酸抑制）；②**异柠檬酸脱氢酶**（**主要限速酶**，受ADP激活、ATP/NADH抑制）；③**α-酮戊二酸脱氢酶复合体**（受产物琥珀酰CoA、NADH、ATP抑制）。此外**琥珀酸脱氢酶**是唯一嵌在**线粒体内膜**上的TCA酶（复合体Ⅱ）。",
+"why": "调节题必答；也常考“哪些酶位于线粒体内膜”。",
+"tip": "记住琥珀酸脱氢酶是膜结合酶（丙二酸竞争性抑制），这是高频细节。",
+"link": [
+  "三羧酸循环（TCA/Krebs循环）",
+  "竞争性抑制",
+  "TCA循环的调节"
+]
+},
+{
+"id": "s8-09",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "重点",
+"q": "TCA循环的生理意义",
+"def": "最终氧化通路、三大物质联系枢纽、提供合成前体。",
+"ans": "①**糖、脂、蛋白质彻底氧化的共同通路**（三大物质最终都变成乙酰CoA进入TCA）；②**产生大量NADH/FADH₂**，通过氧化磷酸化提供能量（是主要产能环节）；③**是物质代谢联系的枢纽**：草酰乙酸←→天冬氨酸、α-酮戊二酸←→谷氨酸（**转氨基作用**）、琥珀酰CoA参与血红素合成；④提供**合成前体**（草酰乙酸→糖异生、柠檬酸→脂肪酸合成、α-酮戊二酸→氨基酸）。",
+"why": "苏大论述题常问“TCA的地位”，这四点就是标准框架。",
+"tip": "写“枢纽”时要给出“草酰乙酸-天冬氨酸、α-酮戊二酸-谷氨酸”两对具体例子。",
+"link": [
+  "三羧酸循环（TCA/Krebs循环）",
+  "转氨基作用",
+  "糖异生"
+]
+},
+{
+"id": "s8-10",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "重点",
+"q": "TCA循环的调节",
+"def": "主要受NADH/ATP/ADP能荷与产物反馈调节。",
+"ans": "①**能荷调节**：**NADH/NAD⁺比值升高、ATP/ADP升高抑制**关键酶（柠檬酸合酶、异柠檬酸脱氢酶、α-酮戊二酸脱氢酶），**ADP激活**异柠檬酸脱氢酶；②**产物反馈**：琥珀酰CoA、乙酰CoA、柠檬酸抑制；③**Ca²⁺**激活（肌肉收缩时）；④**底物供应**（乙酰CoA、草酰乙酸）也能影响通量。总原则：**能量充足时抑制，能量不足时激活**。",
+"why": "“代谢调节”题的通用逻辑：能荷+产物反馈+共价修饰。",
+"tip": "答题先给总原则，再列具体酶与效应物，条理清晰。",
+"link": [
+  "三羧酸循环（TCA/Krebs循环）",
+  "TCA循环的关键酶",
+  "磷酸果糖激酶-1的调节"
+]
+},
+{
+"id": "s8-11",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "重点",
+"q": "底物水平磷酸化与氧化磷酸化的区别",
+"def": "直接转移高能键 vs 依赖呼吸链与氧。",
+"ans": "**底物水平磷酸化**：底物上的高能键**直接转移**给ADP/GDP生成ATP/GTP，不需要呼吸链与O₂，如糖酵解、TCA中的琥珀酰CoA反应。**氧化磷酸化**：代谢物脱下的氢经**电子传递链**传递，形成**质子电化学梯度**，由**ATP合酶**将ADP+Pi合成ATP，需要**O₂（作为最终电子受体）**，是**体内ATP的主要来源**。",
+"why": "“两种产能方式比较”是高频简答/论述题，需举例并说明能量来源不同。",
+"tip": "对比表格：是否需要O₂、是否有呼吸链、是否有质子梯度、产能占比。",
+"link": [
+  "氧化磷酸化",
+  "底物水平磷酸化",
+  "ATP合酶"
+]
+},
+{
+"id": "s8-12",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "重点",
+"q": "磷酸戊糖途径（PPP/HMP）",
+"def": "产生NADPH和核糖-5-磷酸。",
+"ans": "在**胞液**中进行，分**氧化阶段（不可逆）**和**非氧化阶段（可逆）**。关键酶：**葡糖-6-磷酸脱氢酶（G6PD，限速酶，受NADPH抑制）**、6-磷酸葡糖酸脱氢酶。产物：**NADPH**（还原力，用于脂肪酸/胆固醇合成、维持GSH）与**核糖-5-磷酸**（核苷酸合成原料），以及**4-磷酸赤藓糖**（芳香族氨基酸前体）。",
+"why": "与糖酵解共用G-6-P，是糖代谢的重要分支；G6PD缺乏是常见遗传病。",
+"tip": "答题必写“两条产物 + G6PD为限速酶 + 转酮/转醛酶”。",
+"link": [
+  "NADPH",
+  "G6PD缺乏症",
+  "核苷酸的生物合成"
+]
+},
+{
+"id": "s8-13",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "重点",
+"q": "磷酸戊糖途径的生理意义",
+"def": "供NADPH与核糖，参与抗氧化与合成。",
+"ans": "①**提供NADPH**：用于**还原性合成**（脂肪酸、胆固醇、类固醇激素）、维持**谷胱甘肽还原态**（保护红细胞膜，抗氧化）、参与**巨噬细胞呼吸爆发（NADPH氧化酶）**；②**提供核糖-5-磷酸**：为**核苷酸和核酸合成**提供骨架；③**提供4-磷酸赤藓糖**：合成芳香族氨基酸；④是糖代谢的**旁路**，与糖酵解/糖异生通过**F-6-P、G-3-P**互通。",
+"why": "“为什么红细胞依赖PPP”是经典简答（无核、不能合成新酶，靠GSH抗氧化）。",
+"tip": "举例：G6PD缺乏→NADPH不足→GSH低→红细胞膜氧化损伤（蚕豆病）。",
+"link": [
+  "磷酸戊糖途径（PPP/HMP）",
+  "G6PD缺乏症",
+  "NADPH"
+]
+},
+{
+"id": "s8-14",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "重点",
+"q": "G6PD缺乏症（蚕豆病）",
+"def": "G6PD活性降低，NADPH不足，红细胞易溶血。",
+"ans": "**葡糖-6-磷酸脱氢酶（G6PD）**基因缺陷使**NADPH生成减少**，GSH难以维持还原态，红细胞膜和血红蛋白易被氧化损伤；接触**蚕豆、某些药物（磺胺、抗疟药、阿司匹林）或感染**时发生**急性溶血性贫血**。特点是**男性发病多见**（X染色体连锁）。",
+"why": "PPP意义的最佳临床案例，也是苏大生物医药方向常考的综合点。",
+"tip": "机制链：G6PD↓→NADPH↓→GSH↓→膜脂过氧化→溶血。",
+"link": [
+  "磷酸戊糖途径（PPP/HMP）",
+  "谷胱甘肽（GSH）"
+]
+},
+{
+"id": "s8-15",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "重点",
+"q": "糖酵解的调节（PFK-1）",
+"def": "PFK-1是最重要限速酶，受能荷与F-2,6-BP调节。",
+"ans": "**PFK-1催化F-6-P→F-1,6-BP**，是糖酵解**最重要的限速反应**。**抑制剂**：**ATP、柠檬酸、H⁺（酸中毒）**；**激活剂**：**AMP、ADP、F-2,6-二磷酸果糖（最强，由PFK-2/果糖二磷酸酶-2双功能酶调节，激素通过cAMP/PKA调控其活性）**。此外己糖激酶受G-6-P抑制，丙酮酸激酶受ATP、丙氨酸抑制，受F-1,6-BP激活（前馈）。",
+"why": "“胰岛素/胰高血糖素如何调节糖酵解”的题眼就在F-2,6-BP。",
+"tip": "务必写出“F-2,6-BP是最强激活剂”及“PFK-2受激素调控”这一层。",
+"link": [
+  "糖酵解（EMP）途径",
+  "果糖-2,6-二磷酸",
+  "激素调节血糖"
+]
+},
+{
+"id": "s8-16",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "重点",
+"q": "果糖-2,6-二磷酸（F-2,6-BP）",
+"def": "最强PFK-1激活剂，由双功能酶合成/水解。",
+"ans": "**F-2,6-BP**由**PFK-2**催化F-6-P磷酸化生成，由**果糖二磷酸酶-2（FBPase-2）**水解。这两个活性位于**同一双功能酶（PFK-2/FBPase-2）**的两个结构域。**胰高血糖素/肾上腺素**通过**cAMP-PKA**使该酶**磷酸化**：激酶活性降低、磷酸酶活性升高→F-2,6-BP减少→抑制糖酵解、促进糖异生；**胰岛素**则相反。",
+"why": "激素双向调控糖酵解与糖异生的分子开关，论述题必引。",
+"tip": "一句话概括：“同一蛋白、两种活性、磷酸化开关、方向可逆”。",
+"link": [
+  "糖酵解的调节（PFK-1）",
+  "糖异生的调节",
+  "激素调节血糖"
+]
+},
+{
+"id": "s8-17",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "重点",
+"q": "糖异生",
+"def": "非糖物质合成葡萄糖，主要在肝（肾）。",
+"ans": "**糖异生**是由**乳酸、甘油、生糖氨基酸、丙酮酸**等非糖物质合成葡萄糖的途径，主要在**肝脏**（肾皮质在长期饥饿时参与）。它并非糖酵解的简单逆转：糖酵解中3个不可逆反应需**4个关键酶**绕行：**①丙酮酸羧化酶（线粒体，丙酮酸→草酰乙酸，需生物素、ATP）；②磷酸烯醇式丙酮酸羧激酶（PEPCK）；③果糖-1,6-二磷酸酶-1（FBPase-1）；④葡糖-6-磷酸酶（肝/肾特有）**。",
+"why": "血糖调节必考；四个绕行酶是固定答案。",
+"tip": "“3个不可逆反应 + 4个关键酶”这一组数字很关键（丙酮酸到PEP需两步）。",
+"link": [
+  "糖酵解（EMP）途径",
+  "乳酸循环",
+  "血糖的调节"
+]
+},
+{
+"id": "s8-18",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "重点",
+"q": "糖异生的原料与生理意义",
+"def": "乳酸、甘油、生糖氨基酸；维持血糖、清乳酸、调节酸碱。",
+"ans": "**原料**：①**乳酸**（肌肉无氧酵解，经**乳酸循环/Cori循环**到肝再生成糖）；②**甘油**（脂肪分解）；③**生糖氨基酸**（脱氨后成丙酮酸或TCA中间物）；④**丙酮酸**。**意义**：①**空腹/饥饿时维持血糖**（尤其脑、红细胞依赖葡萄糖）；②**回收乳酸**，防止乳酸酸中毒；③**调节酸碱平衡**（消耗H⁺）；④**补充肝糖原**；⑤协助氨基酸代谢。",
+"why": "“长时间饥饿为什么血糖仍正常”的答案就是糖异生。",
+"tip": "答题按“原料—器官—关键酶—意义”四段式，结构清晰好得分。",
+"link": [
+  "糖异生",
+  "乳酸循环",
+  "血糖的调节"
+]
+},
+{
+"id": "s8-19",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "重点",
+"q": "乳酸循环（Cori循环）",
+"def": "肌肉产乳酸，肝糖异生再送回葡萄糖。",
+"ans": "肌肉剧烈运动时经糖酵解产生**乳酸**，乳酸经血液运至**肝脏**，在肝内**异生为葡萄糖**，再经血液返回肌肉利用，构成循环。意义：**回收乳酸中的能量、避免乳酸堆积酸中毒、维持血糖**。消耗能量（肝中糖异生耗6ATP/葡萄糖），但保证肌肉持续供能。",
+"why": "连接肌肉与肝的代谢协作，常与“运动后为何疲劳恢复”结合考。",
+"tip": "写清方向：肌肉→血→肝（糖异生）→血→肌肉。",
+"link": [
+  "糖异生",
+  "糖酵解（EMP）途径"
+]
+},
+{
+"id": "s8-20",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "重点",
+"q": "糖异生与糖酵解的调节差异",
+"def": "激素与F-2,6-BP反向调节两条途径。",
+"ans": "两者**不会同时高速进行**（否则形成无效循环）。**胰高血糖素/肾上腺素**→cAMP↑→PKA→**磷酸化**：抑制PFK-2（F-2,6-BP↓）、激活FBPase-2；同时**抑制丙酮酸激酶**、**诱导PEPCK、FBPase-1、G6Pase**→**促进糖异生、抑制糖酵解**。**胰岛素**相反：**去磷酸化**→PFK-2激活（F-2,6-BP↑）→促进糖酵解、抑制糖异生。**乙酰CoA**激活丙酮酸羧化酶（饥饿时脂肪酸氧化↑→促进糖异生）。",
+"why": "“激素如何双向调节糖代谢”是苏大论述题的热门。",
+"tip": "用“一个激素、两个方向、三个酶”句式作答，逻辑最清楚。",
+"link": [
+  "果糖-2,6-二磷酸",
+  "糖异生",
+  "激素调节血糖"
+]
+},
+{
+"id": "s8-21",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "重点",
+"q": "糖原的合成",
+"def": "UDP-葡萄糖为供体，糖原合酶催化，α-1,4加α-1,6分支。",
+"ans": "在**胞液**进行：**葡萄糖→G-6-P→G-1-P→UDP-葡萄糖（UDPG，需UTP）**，由**糖原合酶**将UDPG的葡萄糖基转移到糖原引物非还原端形成**α-1,4-糖苷键**；**分支酶（淀粉-(1,4→1,6)-转糖苷酶）**切下一段6~7个残基的糖链转移到内部形成**α-1,6分支**。关键酶：**糖原合酶（限速，受胰岛素激活、PKA磷酸化而失活）**；起始需**糖原蛋白（glycogenin）**自糖基化。",
+"why": "糖原合成与分解的调控差异（磷酸化对两酶效应相反）是常考对照。",
+"tip": "记“UDPG供体 + α-1,4合酶 + 分支酶 + 糖原蛋白引物”。",
+"link": [
+  "糖原的分解",
+  "糖原累积症",
+  "激素调节血糖"
+]
+},
+{
+"id": "s8-22",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "重点",
+"q": "糖原的分解",
+"def": "糖原磷酸化酶切α-1,4，脱支酶处理分支。",
+"ans": "**糖原磷酸化酶**从糖原非还原端逐个切下**葡萄糖-1-磷酸（G-1-P）**（不耗ATP，磷解作用）；**脱支酶（寡聚(1,4→1,6)-葡聚糖转移酶 + α-1,6-葡糖苷酶）**转移并水解分支点的α-1,6键，释放**游离葡萄糖**。G-1-P经**磷酸葡萄糖变位酶**→G-6-P，在**肝（有葡糖-6-磷酸酶）**水解释放葡萄糖入血；**肌肉无此酶**，G-6-P只能进入糖酵解。",
+"why": "“为什么肝糖原能升血糖、肌糖原不能”是经典简答题。",
+"tip": "关键句：肝脏有G6Pase、肌肉没有。",
+"link": [
+  "糖原的合成",
+  "糖原磷酸化酶",
+  "血糖的调节"
+]
+},
+{
+"id": "s8-23",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "重点",
+"q": "糖原磷酸化酶的调节",
+"def": "磷酸化（a型）有活性，去磷酸化（b型）失活。",
+"ans": "糖原磷酸化酶以**二聚体**存在：**磷酸化酶b（去磷酸化，低活性，需AMP激活）**与**磷酸化酶a（磷酸化，高活性）**。**肾上腺素/胰高血糖素**→cAMP→PKA→**磷酸化酶b激酶**→磷酸化酶磷酸化（b→a，激活），同时PKA磷酸化并抑制糖原合酶，实现“分解↑合成↓”。肝中还有**葡萄糖**作为别构抑制剂（血糖高时降低糖原分解）。",
+"why": "共价修饰调节的教科书案例，兼顾“双向调节”与“级联放大”。",
+"tip": "写“同一磷酸化事件对合酶和磷酸化酶效应相反”，这是最亮的点。",
+"link": [
+  "共价修饰调节",
+  "糖原的分解",
+  "糖原的合成"
+]
+},
+{
+"id": "s8-24",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "重点",
+"q": "糖原累积症",
+"def": "糖原代谢酶缺陷导致糖原异常堆积。",
+"ans": "由于**糖原合成或分解酶的遗传性缺陷**，糖原在肝、肌等组织**异常堆积**或结构异常，引起**肝大、低血糖、肌无力、发育迟缓**。如**von Gierke病（Ⅰ型，葡糖-6-磷酸酶缺陷，严重空腹低血糖、肝大）**、**Pompe病（Ⅱ型，溶酶体α-1,4-葡糖苷酶缺陷，心肌受累）**、**McArdle病（Ⅴ型，肌磷酸化酶缺陷，运动后肌痛）**。",
+"why": "连接酶缺陷—代谢中断—临床表现，是综合应用型考点。",
+"tip": "重点记Ⅰ型和Ⅴ型（肝型vs肌型），其余可泛泛。",
+"link": [
+  "糖原的分解",
+  "糖原的合成"
+]
+},
+{
+"id": "s8-25",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "重点",
+"q": "血糖的来源与去路",
+"def": "来源：食物、糖原分解、糖异生；去路：氧化、合成糖原、转化为脂肪等。",
+"ans": "**来源**：①**食物糖消化吸收**；②**肝糖原分解**；③**糖异生**（乳酸、甘油、生糖氨基酸）。**去路**：①**各组织氧化供能**（最主要）；②**合成肝/肌糖原**；③**转变为脂肪及非必需氨基酸**；④**转变为其他糖类（核糖等，经PPP）**；⑤**随尿排出（超过肾糖阈时，即血糖>8.9~10mmol/L）**。",
+"why": "苏大真题直接考过“简述哺乳动物血糖的主要来源和去路”，是必背题。",
+"tip": "按“3来源 + 5去路”作答，并注明肾糖阈数值。",
+"link": [
+  "血糖的调节",
+  "糖异生",
+  "糖原的分解"
+]
+},
+{
+"id": "s8-26",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "重点",
+"q": "血糖的调节",
+"def": "胰岛素降糖，胰高血糖素等升糖，激素为主。",
+"ans": "**降血糖**：**胰岛素**（唯一降糖激素）——促进葡萄糖摄取（GLUT4转位）、糖原合成、糖氧化、脂肪合成，抑制糖异生与糖原分解。**升血糖**：**胰高血糖素**（主要）、**肾上腺素**、**糖皮质激素**（促糖异生）、**生长激素**、**甲状腺激素**。此外**神经调节**（交感神经促升糖）与**肝、肾器官调节**参与。正常空腹血糖**3.9~6.1 mmol/L**。",
+"why": "激素调节与糖代谢各途径之间的“总控”，是压轴题的常见落点。",
+"tip": "每种激素举一个“机制动词”（如胰岛素促GLUT4转位）更有说服力。",
+"link": [
+  "血糖的来源与去路",
+  "胰岛素",
+  "胰高血糖素"
+]
+},
+{
+"id": "s8-27",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "拓展",
+"q": "糖无氧氧化与有氧氧化的比较",
+"def": "终产物、产能、部位、关键酶不同。",
+"ans": "**无氧氧化（糖酵解）**：胞液，终产物**乳酸**，净产**2 ATP**，不耗氧，关键酶PK等，意义是缺氧时快速供能；**有氧氧化**：胞液+线粒体，终产物**CO₂和H₂O**，1分子葡萄糖彻底氧化约产**30~32 ATP**（按现代P/O计算），需O₂，关键酶含**PDH、异柠檬酸脱氢酶、α-KGDH**，意义是**主要供能方式**。两者共用糖酵解前段。",
+"why": "比较题几乎必考，注意ATP数要用“新算法”，旧教材为38 ATP。",
+"tip": "写“旧教材38 ATP，现代按P/O计约30~32 ATP”显得严谨。",
+"link": [
+  "糖酵解（EMP）途径",
+  "三羧酸循环（TCA/Krebs循环）",
+  "氧化磷酸化"
+]
+},
+{
+"id": "s8-28",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "拓展",
+"q": "糖醛酸途径与糖的其他代谢",
+"def": "UDP-葡糖醛酸用于解毒与GAG合成。",
+"ans": "**糖醛酸途径**：G-1-P→UDP-葡萄糖→**UDP-葡糖醛酸（UDPGA）**，是**葡糖醛酸**的来源，用于：①**肝脏解毒（与药物、胆红素结合成水溶性物排出）**；②合成**糖胺聚糖（透明质酸、硫酸软骨素）**；③合成**维生素C**（植物与多数动物，人因缺古洛糖酸内酯氧化酶不能合成）。此外还有**多元醇途径**（山梨醇，与糖尿病白内障、神经病变相关）。",
+"why": "联系解毒、结缔组织、糖尿病并发症，是综合性强的拓展点。",
+"tip": "“UDPGA供葡糖醛酸、用于解毒和GAG合成”是最核心的一句。",
+"link": [
+  "糖胺聚糖（GAG）",
+  "胆红素代谢"
+]
+},
+{
+"id": "s8-29",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "拓展",
+"q": "糖代谢与脂代谢的联系（乙酰CoA枢纽）",
+"def": "糖过量转脂肪，脂肪不足时酮体供能。",
+"ans": "**糖→脂**：葡萄糖→丙酮酸→乙酰CoA→（柠檬酸-丙酮酸循环出线粒体）→脂肪酸与胆固醇合成；糖还可经**磷酸二羟丙酮→甘油**。**脂→糖的限制**：脂肪酸β-氧化产生乙酰CoA，**乙酰CoA不能净生成葡萄糖**（丙酮酸脱氢酶反应不可逆），只有**甘油**可生糖。**糖不足→脂动员→乙酰CoA过量→酮体**。",
+"why": "“为什么糖吃多了会胖、饿久了会有酮体”的分子答案。",
+"tip": "这句话是采分点：“偶数碳脂肪酸不能净糖异生，只有甘油能生糖”。",
+"link": [
+  "丙酮酸的去路",
+  "脂肪酸的β-氧化",
+  "酮体"
+]
+},
+{
+"id": "s9-01",
+"cat": "动态生物化学",
+"ch": "生物氧化",
+"level": "基础",
+"q": "生物氧化",
+"def": "营养物质在体内氧化分解生成CO₂、H₂O和能量的过程。",
+"ans": "**生物氧化**指糖、脂、蛋白质等营养物质在**细胞内氧化分解**，最终生成**CO₂和H₂O**，并**逐步释放能量**（以ATP形式储存）的过程。特点：**在温和条件（常温、近中性、水溶液）下进行**；**能量逐步释放**；**CO₂由脱羧产生，H₂O由脱氢经呼吸链与O₂结合产生**；**受酶调控**。分**线粒体氧化体系**与**非线粒体氧化体系**。",
+"why": "与燃烧的本质区别（逐步、酶催化、能量有效捕获）是概念题要点。",
+"tip": "写“CO₂来自脱羧、H₂O来自脱氢+氧”，这两句很见功底。",
+"link": [
+  "呼吸链",
+  "氧化磷酸化"
+]
+},
+{
+"id": "s9-02",
+"cat": "动态生物化学",
+"ch": "生物氧化",
+"level": "重点",
+"q": "呼吸链（电子传递链）",
+"def": "线粒体内膜上按序排列的递氢/递电子体。",
+"ans": "**呼吸链**是线粒体**内膜**上由**四个蛋白复合体（Ⅰ、Ⅱ、Ⅲ、Ⅳ）**及两个**可移动电子载体（CoQ、细胞色素c）**组成的电子传递系统。代谢物脱下的**NADH/FADH₂**将电子交给复合体，经**CoQ→复合体Ⅲ→Cyt c→复合体Ⅳ**，最终传递给**O₂生成H₂O**；同时**泵出H⁺建立跨膜质子梯度**驱动ATP合成。",
+"why": "生物氧化的核心装置，是所有能量计算的物理基础。",
+"tip": "必须写出“内膜、4个复合体、CoQ与Cyt c为流动载体、最终电子受体是O₂”。",
+"link": [
+  "NADH氧化呼吸链",
+  "FADH₂氧化呼吸链",
+  "氧化磷酸化"
+]
+},
+{
+"id": "s9-03",
+"cat": "动态生物化学",
+"ch": "生物氧化",
+"level": "重点",
+"q": "NADH氧化呼吸链的组成与顺序",
+"def": "复合体Ⅰ→CoQ→Ⅲ→Cyt c→Ⅳ→O₂。",
+"ans": "即**NADH呼吸链（主呼吸链）**，顺序：**NADH → 复合体Ⅰ（NADH-泛醌还原酶，含FMN、Fe-S）→ CoQ → 复合体Ⅲ（泛醌-细胞色素c还原酶，含b₅₆₂、b₅₆₆、c₁、Fe-S）→ Cyt c → 复合体Ⅳ（细胞色素c氧化酶，含a、a₃、Cu）→ O₂ → H₂O**。**氧化1分子NADH泵出10个H⁺**，产生约**2.5 ATP**。",
+"why": "顺序题必考，P/O比（2.5）也在此确定。",
+"tip": "把“三个泵（Ⅰ、Ⅲ、Ⅳ）+ 两个流动载体（CoQ、Cyt c）”的结构记牢。",
+"link": [
+  "FADH₂氧化呼吸链",
+  "氧化磷酸化",
+  "P/O比"
+]
+},
+{
+"id": "s9-04",
+"cat": "动态生物化学",
+"ch": "生物氧化",
+"level": "重点",
+"q": "FADH₂氧化呼吸链的组成与顺序",
+"def": "复合体Ⅱ→CoQ→Ⅲ→Cyt c→Ⅳ→O₂。",
+"ans": "即**琥珀酸呼吸链**：**琥珀酸 → 复合体Ⅱ（琥珀酸脱氢酶，含FAD、Fe-S）→ CoQ → 复合体Ⅲ → Cyt c → 复合体Ⅳ → O₂**。电子**跳过复合体Ⅰ**（不泵H⁺），故**只泵出6个H⁺，产生约1.5 ATP**，P/O比低于NADH。**脂酰CoA脱氢酶、α-磷酸甘油脱氢酶**也通过此链（经ETF/CoQ）传递。",
+"why": "“为什么FADH₂产ATP少于NADH”的答案就在这里。",
+"tip": "核心一句：“复合体Ⅱ不泵质子，所以少产ATP”。",
+"link": [
+  "NADH氧化呼吸链",
+  "复合体Ⅱ",
+  "P/O比"
+]
+},
+{
+"id": "s9-05",
+"cat": "动态生物化学",
+"ch": "生物氧化",
+"level": "重点",
+"q": "细胞色素类",
+"def": "含血红素的电子传递蛋白，靠Fe³⁺/Fe²⁺变价传递电子。",
+"ans": "**细胞色素（Cyt）**是含**铁卟啉（血红素）**辅基的电子传递蛋白，通过**Fe³⁺⇌Fe²⁺**的变价传递**电子（不传氢）**。呼吸链中：**Cyt b₅₆₂、b₅₆₆、c₁（复合体Ⅲ）、Cyt c（可流动）、Cyt a、a₃（复合体Ⅳ，a₃与Cu构成双核中心，结合O₂）**。**细胞色素c易溶于水、位于膜外侧**，是研究最充分的电子载体。",
+"why": "细胞色素分类、CO/CN⁻抑制Cyt a₃等细节常考。",
+"tip": "“传递电子不传氢、Fe变价、Cyt c可溶”三点最实用。",
+"link": [
+  "呼吸链（电子传递链）",
+  "细胞色素c氧化酶"
+]
+},
+{
+"id": "s9-06",
+"cat": "动态生物化学",
+"ch": "生物氧化",
+"level": "重点",
+"q": "复合体Ⅳ（细胞色素c氧化酶）",
+"def": "将电子传给O₂生成H₂O，泵出质子。",
+"ans": "**复合体Ⅳ**即**细胞色素c氧化酶**，含**Cyt a、Cyt a₃和两个铜中心（CuA、CuB）**，接受来自Cyt c的电子，最终将**O₂还原为2H₂O**（**4e⁻ + O₂ + 4H⁺ → 2H₂O**），同时**泵出2个H⁺**。它是**呼吸链的末端氧化酶**，是**唯一直接利用O₂的环节**，受**CN⁻、N₃⁻、CO、H₂S**抑制。",
+"why": "氰化物中毒机制（抑制Cyt a₃→细胞窒息）即源于此。",
+"tip": "答题点：“末端氧化酶 + 结合O₂ + 被CN⁻/CO抑制”。",
+"link": [
+  "细胞色素类",
+  "呼吸链抑制剂"
+]
+},
+{
+"id": "s9-07",
+"cat": "动态生物化学",
+"ch": "生物氧化",
+"level": "重点",
+"q": "氧化磷酸化",
+"def": "NADH/FADH₂氧化释能与ADP磷酸化偶联生成ATP。",
+"ans": "**氧化磷酸化**是**代谢物脱氢经呼吸链氧化释放能量，驱动ADP与Pi合成ATP**的偶联过程，发生在**线粒体内膜**。其机制由**化学渗透假说（Mitchell，1978诺奖）**解释：电子传递时泵出的H⁺形成**跨膜质子电化学梯度（质子动力势，Δp = Δψ + ΔpH）**，H⁺经**ATP合酶（F₀F₁）**回流，驱动ATP合成。",
+"why": "能量代谢的核心机制，与“呼吸链抑制剂/解偶联剂”一起考。",
+"tip": "必写“化学渗透假说 + 质子梯度 + ATP合酶”三要素。",
+"link": [
+  "化学渗透假说",
+  "ATP合酶",
+  "解偶联剂"
+]
+},
+{
+"id": "s9-08",
+"cat": "动态生物化学",
+"ch": "生物氧化",
+"level": "重点",
+"q": "化学渗透假说",
+"def": "Mitchell提出，质子梯度驱动ATP合成。",
+"ans": "**1978年诺贝尔化学奖得主Mitchell**提出：电子沿呼吸链传递时，复合体**Ⅰ、Ⅲ、Ⅳ**将H⁺从**线粒体基质泵到膜间隙**，形成**跨膜质子电化学梯度**（外侧H⁺浓度高、带正电）；H⁺顺梯度经**ATP合酶F₀通道**回流至基质，释放的能量驱动**F₁的β亚基旋转催化**ADP+Pi→ATP。该假说统一解释了氧化与磷酸化的偶联。",
+"why": "生物能力学最重要的理论，论述题常要求“详述氧化磷酸化机制”。",
+"tip": "答题顺序：电子传递→泵H⁺→梯度建立→H⁺回流→ATP合酶旋转→合成ATP。",
+"link": [
+  "氧化磷酸化",
+  "ATP合酶"
+]
+},
+{
+"id": "s9-09",
+"cat": "动态生物化学",
+"ch": "生物氧化",
+"level": "重点",
+"q": "ATP合酶（F₀F₁复合体）",
+"def": "F₀质子通道 + F₁催化部，旋转催化。",
+"ans": "ATP合酶由**F₀（疏水，嵌入内膜，构成H⁺通道，含c环与a亚基）**与**F₁（突出于基质，含α₃β₃γδε，具有催化活性）**组成，还有**OSCP、b₂、寡霉素敏感蛋白**等连接。H⁺流经F₀使**c环与γ轴旋转**，引起β亚基构象在**L（松散）、T（紧合）、O（开放）**三态间循环（**结合改变机制**），每3个H⁺合成1个ATP。**寡霉素**抑制F₀质子通道。",
+"why": "结构-机制题，把“旋转催化”说清即为高分。",
+"tip": "写“F₀通道、F₁催化、γ轴旋转、β亚基三态”，四个关键词。",
+"link": [
+  "化学渗透假说",
+  "氧化磷酸化的抑制剂"
+]
+},
+{
+"id": "s9-10",
+"cat": "动态生物化学",
+"ch": "生物氧化",
+"level": "重点",
+"q": "P/O比",
+"def": "每消耗1个氧原子所消耗的无机磷（合成ATP）的摩尔数。",
+"ans": "**P/O比**指在氧化磷酸化中，**每消耗1个氧原子（½O₂）所消耗的无机磷（即合成ATP）的摩尔数**，反映偶联效率。现代公认：**NADH氧化P/O≈2.5，FADH₂氧化P/O≈1.5**（旧教材为3和2）。据此1分子葡萄糖彻底氧化产**30或32 ATP**（取决于NADH穿梭方式）。",
+"why": "能量计算题的基准参数，常考“计算1mol葡萄糖产ATP量”。",
+"tip": "务必写“1个氧原子、不是1分子O₂”；同时提新旧值的差异。",
+"link": [
+  "NADH氧化呼吸链",
+  "氧化磷酸化",
+  "能量的计算"
+]
+},
+{
+"id": "s9-11",
+"cat": "动态生物化学",
+"ch": "生物氧化",
+"level": "重点",
+"q": "能量计算：1分子葡萄糖彻底氧化",
+"def": "约30~32 ATP（新算法）。",
+"ans": "**糖酵解**（胞液）：净**2 ATP + 2 NADH**；**丙酮酸氧化脱羧**（2次）：**2 NADH**；**TCA**（2轮）：**2 GTP + 6 NADH + 2 FADH₂**。合计：**10 NADH + 2 FADH₂ + 4 ATP（含GTP）**。按P/O（2.5/1.5）计算：10×2.5 + 2×1.5 + 4 = **32 ATP**（胞液NADH经甘油磷酸穿梭则减2 ATP = **30 ATP**）；旧算法（3/2）为**38 ATP**。",
+"why": "生化最经典的计算题，苏大考纲明确“有计算内容”。",
+"tip": "一定要说明“胞液NADH需经穿梭，穿梭方式不同结果不同”，这才是满分答案。",
+"link": [
+  "P/O比",
+  "NADH穿梭系统",
+  "糖的有氧氧化"
+]
+},
+{
+"id": "s9-12",
+"cat": "动态生物化学",
+"ch": "生物氧化",
+"level": "重点",
+"q": "NADH穿梭系统",
+"def": "胞液NADH经穿梭进入线粒体，决定ATP产量。",
+"ans": "胞液中的NADH不能直接穿过线粒体内膜，需借助穿梭：①**甘油-3-磷酸穿梭**（脑、骨骼肌）：NADH→磷酸二羟丙酮→3-磷酸甘油→进入复合体Ⅱ（FADH₂）→只产**1.5 ATP**；②**苹果酸-天冬氨酸穿梭**（心、肝）：NADH经苹果酸脱氢酶转移给线粒体NAD⁺→进入复合体Ⅰ→产**2.5 ATP**。",
+"why": "解释不同组织同一葡萄糖产能不同的原因。",
+"tip": "记忆：肌肉/脑走甘油磷酸穿梭（少），心肝走苹果酸-天冬氨酸穿梭（多）。",
+"link": [
+  "P/O比",
+  "能量的计算"
+]
+},
+{
+"id": "s9-13",
+"cat": "动态生物化学",
+"ch": "生物氧化",
+"level": "重点",
+"q": "呼吸链抑制剂",
+"def": "阻断电子传递，抑制氧化磷酸化。",
+"ans": "作用于呼吸链不同部位的抑制剂：①**复合体Ⅰ**：**鱼藤酮、安密妥、异戊巴比妥**；②**复合体Ⅱ**：**丙二酸**（竞争性抑制琥珀酸脱氢酶）；③**复合体Ⅲ**：**抗霉素A**；④**复合体Ⅳ**：**氰化物（CN⁻）、叠氮化物、CO、H₂S**（与Cyt a₃结合，阻断电子给O₂）。结果：**电子传递中断→质子梯度消失→ATP不能合成**，细胞「窒息」死亡。",
+"why": "与解偶联剂、ATP合酶抑制剂形成三类对照，是必考的表格题。",
+"tip": "按“作用位点—代表物质—结果”列表作答，最清晰。",
+"link": [
+  "解偶联剂",
+  "氧化磷酸化的抑制剂",
+  "细胞色素c氧化酶"
+]
+},
+{
+"id": "s9-14",
+"cat": "动态生物化学",
+"ch": "生物氧化",
+"level": "重点",
+"q": "解偶联剂",
+"def": "不阻断电子传递，但破坏质子梯度，使氧化与磷酸化解偶联。",
+"ans": "**解偶联剂**使**电子传递仍进行（耗氧继续）**，但**质子梯度被破坏，ATP不能合成**，能量以**热能**形式散失。代表：**2,4-二硝基苯酚（DNP）、双香豆素、胆红素、脂肪酸、甲状腺激素（生理性）**。特点：**耗氧不变（甚至增加）、P/O降低**。**棕色脂肪**用**解偶联蛋白1（UCP1）**产热。",
+"why": "减肥药DNP的毒性、发热机制都源于此。",
+"tip": "区分口诀：呼吸链抑制剂“断电子”，解偶联剂“漏质子”，ATP合酶抑制剂“堵回流”。",
+"link": [
+  "呼吸链抑制剂",
+  "氧化磷酸化的抑制剂",
+  "产热"
+]
+},
+{
+"id": "s9-15",
+"cat": "动态生物化学",
+"ch": "生物氧化",
+"level": "重点",
+"q": "氧化磷酸化抑制剂（ATP合酶抑制）",
+"def": "直接抑制ATP合酶，电子传递因梯度堆积而受阻。",
+"ans": "**寡霉素、二环己基碳二亚胺（DCCD）**直接作用于**ATP合酶**：寡霉素结合F₀、阻断H⁺通道；DCCD与F₀的c亚基结合。结果：**H⁺无法回流→质子梯度持续升高→电子传递最终被抑制（耗氧下降）→ATP不能合成**。",
+"why": "与解偶联剂的区别在于“梯度是否被破坏”——此处梯度是“过高”而非消失。",
+"tip": "判断关键：解偶联剂耗氧↑、ATP↓；ATP合酶抑制剂耗氧↓、ATP↓。",
+"link": [
+  "解偶联剂",
+  "ATP合酶",
+  "呼吸链抑制剂"
+]
+},
+{
+"id": "s9-16",
+"cat": "动态生物化学",
+"ch": "生物氧化",
+"level": "重点",
+"q": "影响氧化磷酸化的因素",
+"def": "ADP、甲状腺激素、抑制剂、年龄与线粒体状态。",
+"ans": "①**ADP（呼吸控制）**：ADP↑→ATP合成加快→耗氧增加（**呼吸控制**）；②**甲状腺激素**：诱导Na⁺-K⁺-ATPase与解偶联，基础代谢率升高；③**抑制剂**：呼吸链、ATP合酶、解偶联剂；④**线粒体完整性**（损伤则偶联丧失）；⑤**辅酶与营养素**（维生素B₂、PP、Fe、Mg²⁺等）；⑥**年龄与疾病状态**。",
+"why": "“甲状腺功能亢进为何怕热、消瘦”的生化解释。",
+"tip": "ADP是“最重要的生理调节因素”，这一条必须突出。",
+"link": [
+  "氧化磷酸化",
+  "解偶联剂"
+]
+},
+{
+"id": "s9-17",
+"cat": "动态生物化学",
+"ch": "生物氧化",
+"level": "拓展",
+"q": "非线粒体氧化体系",
+"def": "微粒体加单氧酶、过氧化物酶体酶类。",
+"ans": "①**微粒体（内质网）加单氧酶系（混合功能氧化酶）**：以**Cyt P450**为核心，需**NADPH + O₂**，催化底物羟化，参与**药物/毒物代谢、类固醇激素合成、维生素D活化**；②**过氧化物酶体**：**过氧化氢酶、过氧化物酶、超氧化物歧化酶（SOD）**分解H₂O₂和超氧阴离子，**不产生ATP**；③**需氧脱氢酶**（如黄嘌呤氧化酶）直接以O₂为受氢体生成H₂O₂。",
+"why": "解释肝脏解毒、抗氧化防御、自由基损伤，是药理学交叉高频。",
+"tip": "写“P450 + NADPH + O₂ → 羟化 → 解毒/合成”，一句到位。",
+"link": [
+  "抗氧化体系",
+  "药物代谢"
+]
+},
+{
+"id": "s9-18",
+"cat": "动态生物化学",
+"ch": "生物氧化",
+"level": "拓展",
+"q": "体内抗氧化体系",
+"def": "SOD、过氧化氢酶、谷胱甘肽过氧化物酶与抗氧化剂。",
+"ans": "**活性氧（ROS）**包括超氧阴离子O₂⁻、H₂O₂、羟自由基·OH。清除系统：①**超氧化物歧化酶（SOD）**：2O₂⁻+2H⁺→H₂O₂+O₂；②**过氧化氢酶（触酶）**：2H₂O₂→2H₂O+O₂；③**谷胱甘肽过氧化物酶（GSH-Px，含硒）**：用GSH还原H₂O₂和脂质过氧化物；④**抗氧化剂**：维生素C、E、GSH、β-胡萝卜素、辅酶Q。",
+"why": "解释衰老、缺血再灌注损伤、放射损伤，也是药理学热点。",
+"tip": "三条酶促反应式写出来，答题非常醒目。",
+"link": [
+  "谷胱甘肽（GSH）",
+  "非线粒体氧化体系"
+]
+},
+{
+"id": "s9-19",
+"cat": "动态生物化学",
+"ch": "生物氧化",
+"level": "拓展",
+"q": "线粒体与细胞凋亡",
+"def": "细胞色素c释放激活caspase级联。",
+"ans": "线粒体在凋亡中起核心作用：**Bax/Bak**形成孔道，**细胞色素c从膜间隙释放到胞质**，与**Apaf-1**结合形成**凋亡体**，招募并激活**caspase-9**，再激活**caspase-3**执行凋亡；同时**Smac/DIABLO**拮抗IAP。**Bcl-2**抑制此过程。此外线粒体还释放AIF等。",
+"why": "连接生物氧化（细胞色素c作用）与分子生物学（凋亡），是跨章综合题的好素材。",
+"tip": "写“Cyt c释放→Apaf-1→caspase-9→caspase-3”这条主线。",
+"link": [
+  "细胞色素类",
+  "细胞凋亡"
+]
+},
+{
+"id": "s10-01",
+"cat": "动态生物化学",
+"ch": "脂质代谢",
+"level": "基础",
+"q": "脂肪的动员",
+"def": "脂肪酶水解三酰甘油为甘油和脂肪酸。",
+"ans": "**脂肪动员**指储存在脂肪细胞中的**三酰甘油在脂肪酶作用下水解为游离脂肪酸和甘油**，释放入血供全身利用。关键酶：**激素敏感性甘油三酯脂肪酶（HSL）**，受**肾上腺素、胰高血糖素、ACTH、TSH通过cAMP-PKA磷酸化激活**，被**胰岛素抑制**；此外**脂肪甘油三酯脂肪酶（ATGL）**和**单酰甘油脂肪酶（MGL）**也参与。产物**甘油**入肝糖异生，**脂肪酸**与**清蛋白**结合运输。",
+"why": "脂肪分解的第一步，也是“脂解激素/抗脂解激素”调节的核心。",
+"tip": "写明“HSL是限速酶、磷酸化激活、胰岛素抑制”。",
+"link": [
+  "脂肪酸的β-氧化",
+  "甘油代谢",
+  "激素调节"
+]
+},
+{
+"id": "s10-02",
+"cat": "动态生物化学",
+"ch": "脂质代谢",
+"level": "重点",
+"q": "脂肪酸的活化",
+"def": "脂酰CoA合成酶催化，消耗2个高能磷酸键。",
+"ans": "脂肪酸在**胞液**中由**脂酰CoA合成酶（硫激酶）**催化，与**CoA-SH**结合生成**脂酰CoA**，反应消耗**ATP（生成AMP+PPi，相当于2个高能磷酸键）**。**长链脂酰CoA不能直接穿过线粒体内膜**，需经**肉碱穿梭系统**转运。",
+"why": "活化是“耗能”的关键点，也是能量计算易漏项。",
+"tip": "记住“消耗2个高能磷酸键”，计算时要减去。",
+"link": [
+  "肉碱穿梭系统",
+  "脂肪酸的β-氧化"
+]
+},
+{
+"id": "s10-03",
+"cat": "动态生物化学",
+"ch": "脂质代谢",
+"level": "重点",
+"q": "肉碱穿梭系统",
+"def": "长链脂酰CoA经肉碱转运进入线粒体。",
+"ans": "**长链脂酰CoA**在**线粒体外膜**上由**肉碱脂酰转移酶Ⅰ（CPT-Ⅰ，限速酶）**催化转为**脂酰肉碱**，经**肉碱-脂酰肉碱转位酶**穿过内膜，在基质内由**CPT-Ⅱ**重新转为**脂酰CoA**。**丙二酰CoA抑制CPT-Ⅰ**（脂肪酸合成时抑制分解），是“糖多不烧脂”的分子开关之一。",
+"why": "脂肪酸氧化的限速步骤；也是“为什么吃饱后脂肪不被分解”的解释。",
+"tip": "答题写“CPT-Ⅰ为限速酶，丙二酰CoA抑制之”。",
+"link": [
+  "脂肪酸的活化",
+  "脂肪酸的β-氧化",
+  "乙酰CoA羧化酶"
+]
+},
+{
+"id": "s10-04",
+"cat": "动态生物化学",
+"ch": "脂质代谢",
+"level": "重点",
+"q": "脂肪酸的β-氧化",
+"def": "脱氢、加水、再脱氢、硫解四步为一轮。",
+"ans": "在线粒体基质中循环进行，每轮四步：**①脂酰CoA脱氢酶（FAD）→反-Δ²-烯脂酰CoA；②烯脂酰CoA水化酶→L-β-羟脂酰CoA；③β-羟脂酰CoA脱氢酶（NAD⁺）→β-酮脂酰CoA；④β-酮脂酰CoA硫解酶（加CoA）→乙酰CoA + 缩短2C的脂酰CoA**。每轮生成**1 FADH₂ + 1 NADH + 1 乙酰CoA**。**偶数碳饱和脂肪酸**最终全部生成乙酰CoA。",
+"why": "脂代谢核心循环，产能计算与β-氧化障碍病都由它派生。",
+"tip": "四步顺序和两个辅酶（FAD→第1步、NAD⁺→第3步）必须记准。",
+"link": [
+  "脂肪酸氧化的能量计算",
+  "酮体",
+  "肉碱穿梭系统"
+]
+},
+{
+"id": "s10-05",
+"cat": "动态生物化学",
+"ch": "脂质代谢",
+"level": "重点",
+"q": "脂肪酸氧化的能量计算",
+"def": "软脂酸净产106 ATP（旧法129 ATP）。",
+"ans": "以**软脂酸（C16:0）**为例：需**7轮β-氧化**，生成**8乙酰CoA + 7 FADH₂ + 7 NADH**；活化消耗**2个高能键**。能量：8乙酰CoA×10 ATP（进TCA：3NADH+1FADH₂+1GTP）=80；7 FADH₂×1.5=10.5；7 NADH×2.5=17.5；合计**108 − 2 = 106 ATP**（旧算法为**129 ATP**）。",
+"why": "苏大考纲提到“计算内容”，脂肪酸产能是除葡萄糖外最可能的计算题。",
+"tip": "答题列出“7轮、8乙酰CoA、活化−2”三个关键量，再套P/O值。",
+"link": [
+  "脂肪酸的β-氧化",
+  "P/O比",
+  "能量的计算"
+]
+},
+{
+"id": "s10-06",
+"cat": "动态生物化学",
+"ch": "脂质代谢",
+"level": "重点",
+"q": "不饱和脂肪酸的氧化",
+"def": "需异构酶与还原酶，少产FADH₂。",
+"ans": "**单不饱和脂肪酸**（如油酸，Δ⁹）：β-氧化到顺-Δ³-烯脂酰CoA时，需**Δ³,Δ²-烯脂酰CoA异构酶**转为反-Δ²-烯脂酰CoA，**跳过脂酰CoA脱氢酶，不产FADH₂**。**多不饱和脂肪酸**（如亚油酸）：还需**2,4-二烯脂酰CoA还原酶（NADPH）**处理双键。故不饱和脂肪酸产能**低于同碳数饱和脂肪酸**。",
+"why": "“为什么不饱和脂肪酸产能少”是常见计算/判断题。",
+"tip": "核心：遇到顺-Δ³需异构酶（跳过脱氢），遇2,4-二烯需还原酶（耗NADPH）。",
+"link": [
+  "脂肪酸的β-氧化",
+  "脂肪酸氧化的能量计算"
+]
+},
+{
+"id": "s10-07",
+"cat": "动态生物化学",
+"ch": "脂质代谢",
+"level": "重点",
+"q": "奇数碳脂肪酸的氧化",
+"def": "产生丙酰CoA，经羧化、变位进入TCA。",
+"ans": "奇数碳脂肪酸最后一轮β-氧化生成**丙酰CoA**。丙酰CoA经**①丙酰CoA羧化酶（生物素、ATP）→D-甲基丙二酰CoA；②甲基丙二酰CoA消旋酶→L型；③甲基丙二酰CoA变位酶（维生素B₁₂辅酶）→琥珀酰CoA**，进入TCA循环。**维生素B₁₂缺乏**则甲基丙二酸堆积（尿中排出，是B₁₂缺乏的指标）。",
+"why": "苏大2025年真题考过“C15:0脂肪酸的来源”，这个知识正是答案的支点。",
+"tip": "三步酶 + 两种辅酶（生物素、B₁₂）必须写全。",
+"link": [
+  "酮体",
+  "维生素B₁₂与甲基钴胺素"
+]
+},
+{
+"id": "s10-08",
+"cat": "动态生物化学",
+"ch": "脂质代谢",
+"level": "重点",
+"q": "酮体",
+"def": "乙酰乙酸、β-羟丁酸、丙酮，肝内生成肝外利用。",
+"ans": "**酮体**包括**乙酰乙酸（约30%）、β-羟丁酸（约70%）、丙酮（微量）**，在**肝线粒体**中合成：2乙酰CoA→**乙酰乙酰CoA（硫解酶）**→HMG-CoA（**HMG-CoA合酶，限速酶**）→**HMG-CoA裂解酶**→乙酰乙酸（可还原为β-羟丁酸或脱羧为丙酮）。**肝脏缺乏琥珀酰CoA转硫酶，不能利用酮体**，只能输出到肝外（脑、心、肾、骨骼肌）。",
+"why": "“肝生成不利用”是经典考点，也是糖尿病酮症的机制基础。",
+"tip": "酶记三个：硫解酶、HMG-CoA合酶（限速）、HMG-CoA裂解酶；转运关键酶是琥珀酰CoA转硫酶。",
+"link": [
+  "酮体的利用与酮症",
+  "脂肪酸的β-氧化",
+  "糖尿病"
+]
+},
+{
+"id": "s10-09",
+"cat": "动态生物化学",
+"ch": "脂质代谢",
+"level": "重点",
+"q": "酮体的利用与酮症",
+"def": "肝外组织再裂解为乙酰CoA供能；过量则酮症酸中毒。",
+"ans": "肝外组织：β-羟丁酸→乙酰乙酸（**β-羟丁酸脱氢酶**）；乙酰乙酸经**琥珀酰CoA转硫酶（或乙酰乙酰CoA硫解酶）**活化为乙酰乙酰CoA，再硫解为**2乙酰CoA**进入TCA。**饥饿、糖尿病、高脂低糖饮食**时**脂肪动员增加，草酰乙酸被耗尽**，乙酰CoA不能进入TCA而转向酮体生成，出现**酮血症、酮尿症、酮症酸中毒**（呼气有烂苹果味）。",
+"why": "苏大常考“为什么糖尿病会酮症”，把TCA草酰乙酸不足的逻辑讲清即可。",
+"tip": "关键逻辑链：糖不足→草酰乙酸少→乙酰CoA入TCA受阻→转向酮体。",
+"link": [
+  "酮体",
+  "三羧酸循环（TCA/Krebs循环）",
+  "糖异生"
+]
+},
+{
+"id": "s10-10",
+"cat": "动态生物化学",
+"ch": "脂质代谢",
+"level": "重点",
+"q": "甘油的代谢",
+"def": "甘油激酶活化后进入糖酵解或糖异生。",
+"ans": "脂肪动员释放的**甘油**在**肝（及肾、肠）**由**甘油激酶**磷酸化为**3-磷酸甘油**（耗ATP；**脂肪组织缺乏甘油激酶**，故不能利用甘油），再由**磷酸甘油脱氢酶**转为**磷酸二羟丙酮**，进入**糖酵解**或**糖异生**。",
+"why": "脂肪与糖代谢的连接点，也解释“脂肪组织不能利用甘油”。",
+"tip": "记忆锚点：脂肪组织缺甘油激酶。",
+"link": [
+  "脂肪的动员",
+  "糖异生"
+]
+},
+{
+"id": "s10-11",
+"cat": "动态生物化学",
+"ch": "脂质代谢",
+"level": "重点",
+"q": "脂肪酸的从头合成（部位与原料）",
+"def": "胞液中进行，原料乙酰CoA、NADPH、ATP。",
+"ans": "**部位**：**胞液**（与β-氧化在线粒体相反）。**原料**：**乙酰CoA**（经**柠檬酸-丙酮酸循环**出线粒体）、**NADPH**（来自PPP与苹果酸酶）、**ATP**、HCO₃⁻、Mn²⁺。**产物**为**软脂酸（C16:0）**。关键酶：**乙酰CoA羧化酶**。合成时先形成**丙二酰CoA**，再以**ACP**为载体逐轮延长2C。",
+"why": "“合成在胞液、分解在线粒体”是必考对照；柠檬酸穿梭也是热点。",
+"tip": "答题四要素：部位、原料、关键酶、终产物。",
+"link": [
+  "乙酰CoA羧化酶",
+  "柠檬酸-丙酮酸循环",
+  "脂肪酸合成酶复合体"
+]
+},
+{
+"id": "s10-12",
+"cat": "动态生物化学",
+"ch": "脂质代谢",
+"level": "重点",
+"q": "乙酰CoA羧化酶",
+"def": "脂肪酸合成的限速酶，受柠檬酸激活、软脂酰CoA抑制。",
+"ans": "催化**乙酰CoA + HCO₃⁻ + ATP → 丙二酰CoA**，是**脂肪酸合成的限速步骤**，辅基为**生物素**。调节：①**别构激活**：**柠檬酸、异柠檬酸**；**别构抑制**：**软脂酰CoA（产物反馈）**；②**共价修饰**：**AMPK磷酸化使其失活**（能量不足时关闭合成），**胰岛素/柠檬酸通过去磷酸化激活**；③**酶量调节**（高碳水化合物、低脂饮食及胰岛素有利于诱导脂肪合成酶系；高脂饮食、饥饿通常抑制）。",
+"why": "“糖过量为何变脂肪”“运动为何减脂”的分子答案就在这里（AMPK）。",
+"tip": "“AMPK磷酸化抑制、柠檬酸激活、产物软脂酰CoA抑制”三点必记。",
+"link": [
+  "脂肪酸的从头合成",
+  "AMPK",
+  "柠檬酸-丙酮酸循环"
+]
+},
+{
+"id": "s10-13",
+"cat": "动态生物化学",
+"ch": "脂质代谢",
+"level": "重点",
+"q": "柠檬酸-丙酮酸循环",
+"def": "将乙酰CoA从线粒体运到胞液用于脂肪酸合成。",
+"ans": "线粒体内**乙酰CoA + 草酰乙酸 → 柠檬酸（柠檬酸合酶）**，柠檬酸经**三羧酸转运体**出线粒体，在胞液由**ATP-柠檬酸裂解酶**分解为**乙酰CoA + 草酰乙酸**；草酰乙酸→苹果酸→**丙酮酸（苹果酸酶，同时生成NADPH）**，丙酮酸再回线粒体羧化为草酰乙酸。意义：**转运乙酰CoA + 提供NADPH**。",
+"why": "乙酰CoA不能自由穿膜，此循环是“跨膜转运+供氢”的双重解决方案。",
+"tip": "答题要点：“出线粒体运乙酰CoA，回程产NADPH”。",
+"link": [
+  "脂肪酸的从头合成",
+  "NADPH"
+]
+},
+{
+"id": "s10-14",
+"cat": "动态生物化学",
+"ch": "脂质代谢",
+"level": "重点",
+"q": "脂肪酸合成酶复合体与合成过程",
+"def": "动物为多功能二聚体，ACP载体，还原用NADPH。",
+"ans": "动物**脂肪酸合成酶（FAS）**是**多功能酶的二聚体**，含**ACP、KS、MAT、KR、DH、ER、TE**等结构域。过程：**①起始（乙酰CoA→乙酰-ACP，丙二酰CoA→丙二酰-ACP）；②每轮“缩合→还原（KR，NADPH）→脱水（DH）→再还原（ER，NADPH）”，延长2C**；③7轮后由**硫酯酶（TE）**释放**软脂酸（C16:0）**。与β-氧化正好相反（合成用NADPH、ACP；分解用NAD⁺/FAD、CoA）。",
+"why": "“合成与分解的对比”是脂代谢最典型的比较题。",
+"tip": "做一张对比表：部位、载体、辅酶、酶系、方向，得分稳。",
+"link": [
+  "脂肪酸的从头合成",
+  "脂肪酸的β-氧化",
+  "乙酰CoA羧化酶"
+]
+},
+{
+"id": "s10-15",
+"cat": "动态生物化学",
+"ch": "脂质代谢",
+"level": "重点",
+"q": "脂肪酸碳链的延长与去饱和",
+"def": "延长在线粒体/内质网，去饱和在内质网。",
+"ans": "**延长**：**线粒体延长系统**（用乙酰CoA，类似β-氧化逆过程，但需NADPH）与**内质网延长系统**（用丙二酰CoA），可生成**硬脂酸（C18:0）**及更长链。**去饱和**：由**内质网去饱和酶（混合功能氧化酶，需O₂、NADPH、Cyt b₅）**引入双键，**人不能合成ω-6（亚油酸）和ω-3（α-亚麻酸）**，故为**必需脂肪酸**。",
+"why": "解释“为什么必需脂肪酸必须从食物获得”。",
+"tip": "“人缺乏Δ12和Δ15去饱和酶”这一句是关键。",
+"link": [
+  "脂肪酸的结构与分类",
+  "脂肪酸的从头合成"
+]
+},
+{
+"id": "s10-16",
+"cat": "动态生物化学",
+"ch": "脂质代谢",
+"level": "重点",
+"q": "甘油磷脂的合成",
+"def": "CDP-二酰甘油或CDP-胆碱途径。",
+"ans": "**①甘油二酯途径**（主要）：**胆碱→磷酸胆碱→CDP-胆碱（CTP）**，与**甘油二酯**反应生成**磷脂酰胆碱（卵磷脂）**；乙醇胺类似生成**磷脂酰乙醇胺（脑磷脂）**。**②CDP-二酰甘油途径**：磷脂酸 + CTP → CDP-二酰甘油，再与肌醇、丝氨酸等反应生成**PI、PS**。合成需**ATP、CTP、脂肪酸、甘油**。",
+"why": "肝内磷脂合成不足与脂肪肝形成相关（脂蛋白装配障碍）。",
+"tip": "关键活化形式：**CDP-胆碱、CDP-乙醇胺、CDP-二酰甘油**。",
+"link": [
+  "磷脂的分类",
+  "脂肪肝",
+  "甘油磷脂的降解"
+]
+},
+{
+"id": "s10-17",
+"cat": "动态生物化学",
+"ch": "脂质代谢",
+"level": "重点",
+"q": "胆固醇的合成",
+"def": "以乙酰CoA为原料，HMG-CoA还原酶为限速酶。",
+"ans": "**部位**：**胞液与内质网**。**原料**：**乙酰CoA（经甲羟戊酸）**、NADPH、ATP。途径：乙酰CoA→乙酰乙酰CoA→**HMG-CoA**→（**HMG-CoA还原酶，限速酶**）→**甲羟戊酸（MVA）**→异戊烯焦磷酸→鲨烯→羊毛固醇→**胆固醇（27C）**。调节：**胆固醇、胆汁酸、LDL反馈抑制HMG-CoA还原酶**；**胰岛素诱导，胰高血糖素抑制**；他汀类药物为其竞争性抑制剂。",
+"why": "他汀类药物的靶点，是药理与生化结合的高频考点。",
+"tip": "记“3个关键分子”：HMG-CoA、MVA（甲羟戊酸）、鲨烯。",
+"link": [
+  "胆固醇的转化与去路",
+  "他汀类药物",
+  "胆固醇的结构与功能"
+]
+},
+{
+"id": "s10-18",
+"cat": "动态生物化学",
+"ch": "脂质代谢",
+"level": "重点",
+"q": "胆固醇的转化与去路",
+"def": "转化为胆汁酸、类固醇激素、维生素D₃。",
+"ans": "胆固醇在体内不能彻底氧化为CO₂和H₂O，其去路：①在**肝**转变为**胆汁酸**（胆酸、鹅脱氧胆酸，与甘氨酸/牛磺酸结合，是**最主要的去路**，促进脂类乳化吸收）；②在**肾上腺皮质、睾丸、卵巢**转变为**类固醇激素**（皮质醇、醛固酮、睾酮、雌二醇）；③**7-脱氢胆固醇是胆固醇合成途径中的前体**，在皮肤经紫外线照射转变为**维生素D₃**。",
+"why": "“胆固醇过高为什么要吃胆汁酸螯合剂”等药理问题的基础。",
+"tip": "去路三条：胆汁酸、类固醇激素、维生素D₃，必背。",
+"link": [
+  "胆固醇的合成",
+  "胆汁酸"
+]
+},
+{
+"id": "s10-19",
+"cat": "动态生物化学",
+"ch": "脂质代谢",
+"level": "重点",
+"q": "血浆脂蛋白的分类与功能",
+"def": "CM、VLDL、LDL、HDL。",
+"ans": "按密度（超速离心）或电泳分为：**乳糜微粒（CM，运输外源性TG）**、**VLDL（前β，运输内源性TG）**、**LDL（β，运输胆固醇到外周）**、**HDL（α，胆固醇逆向转运回肝）**。组成特点：**密度越大脂类越少、蛋白越多**；**CM含TG最多、LDL含胆固醇最多、HDL含蛋白最多**。",
+"why": "血脂异常、动脉粥样硬化、降脂药物机制的核心框架。",
+"tip": "一句话功能：CM运外源脂、VLDL运内源脂、LDL送胆固醇、HDL回收胆固醇。",
+"link": [
+  "LDL与动脉粥样硬化",
+  "载脂蛋白"
+]
+},
+{
+"id": "s10-20",
+"cat": "动态生物化学",
+"ch": "脂质代谢",
+"level": "重点",
+"q": "载脂蛋白（apo）",
+"def": "脂蛋白的蛋白部分，识别受体、激活酶。",
+"ans": "**载脂蛋白**位于脂蛋白表面，功能：①**维持结构**；②**作为配体识别受体**（**apoB-100→LDL受体，apoE→LDL受体相关蛋白，apoA-Ⅰ→HDL受体/SR-B1**）；③**激活或抑制酶**（**apoC-Ⅱ激活脂蛋白脂肪酶LPL**，apoA-Ⅰ激活LCAT，apoC-Ⅲ抑制LPL）；④参与脂蛋白间脂质交换。apoA-Ⅰ是HDL主要蛋白，apoB-100是LDL唯一蛋白。",
+"why": "“为何LDL高致动脉粥样硬化、HDL高保护”的分子解释。",
+"tip": "记三对：apoB-100-LDL受体、apoC-Ⅱ-LPL、apoA-Ⅰ-LCAT。",
+"link": [
+  "血浆脂蛋白的分类与功能",
+  "LDL与动脉粥样硬化"
+]
+},
+{
+"id": "s10-21",
+"cat": "动态生物化学",
+"ch": "脂质代谢",
+"level": "重点",
+"q": "LDL与动脉粥样硬化",
+"def": "LDL被氧化、巨噬细胞吞噬成泡沫细胞。",
+"ans": "血浆LDL升高时，LDL可进入血管内膜并被**氧化修饰（ox-LDL）**，被**巨噬细胞清道夫受体**识别吞噬，形成**泡沫细胞**，堆积成**脂纹与斑块**；同时损伤内皮、引发炎症与血栓。**HDL**通过**胆固醇逆向转运（RCT）**把外周胆固醇运回肝，故为**抗动脉粥样硬化因素**。",
+"why": "“为什么LDL是坏胆固醇、HDL是好胆固醇”的标准答案。",
+"tip": "答题写“氧化修饰 + 清道夫受体不受反馈调节 + 泡沫细胞”这条链。",
+"link": [
+  "血浆脂蛋白的分类与功能",
+  "载脂蛋白",
+  "胆固醇的转化与去路"
+]
+},
+{
+"id": "s10-22",
+"cat": "动态生物化学",
+"ch": "脂质代谢",
+"level": "拓展",
+"q": "脂肪肝",
+"def": "肝内脂肪（TG）堆积过多。",
+"ans": "当**肝脏合成TG超过其转运能力**或**脂蛋白合成/分泌障碍**时，脂肪在肝内堆积，形成**脂肪肝**。原因：①**磷脂或载脂蛋白合成不足**（缺乏必需脂肪酸、胆碱、蛋白质）；②**脂肪动员过度**（饥饿、糖尿病、酗酒）；③**糖转化为脂肪过多**（高糖饮食）；④**肝细胞损伤**（酒精、药物）。",
+"why": "把磷脂合成、载脂蛋白、脂肪动员、糖脂转化四个知识点串成一道综合题。",
+"tip": "答题按“合成↑、转运↓、分解↓”三条主线展开。",
+"link": [
+  "甘油磷脂的合成",
+  "载脂蛋白",
+  "脂肪的动员"
+]
+},
+{
+"id": "s10-23",
+"cat": "动态生物化学",
+"ch": "脂质代谢",
+"level": "拓展",
+"q": "激素对脂代谢的调节",
+"def": "胰高血糖素/肾上腺素促分解，胰岛素促合成。",
+"ans": "**促脂解**：**肾上腺素、胰高血糖素、ACTH、TSH、生长激素**→cAMP-PKA→磷酸化激活**HSL**与**ATGL**，同时磷酸化抑制**乙酰CoA羧化酶**。**抗脂解/促合成**：**胰岛素**→激活**乙酰CoA羧化酶**、**FAS**、**LPL**，促进葡萄糖转化为脂肪，抑制HSL。**AMPK**在能量不足时磷酸化抑制ACC，减少脂肪合成、促进氧化。",
+"why": "“为什么减肥要运动+控糖”“AMPK为何成为减肥靶点”的答案。",
+"tip": "抓住“磷酸化 → 分解酶激活、合成酶抑制”的统一逻辑。",
+"link": [
+  "脂肪的动员",
+  "乙酰CoA羧化酶",
+  "AMPK"
+]
+},
+{
+"id": "s11-01",
+"cat": "动态生物化学",
+"ch": "氨基酸代谢",
+"level": "基础",
+"q": "蛋白质的降解途径",
+"def": "溶酶体途径（非选择）与泛素-蛋白酶体途径（选择）。",
+"ans": "①**溶酶体（组织蛋白酶）途径**：**非选择性**，降解**外源蛋白、膜蛋白及长寿命蛋白**，不耗ATP（自噬时耗能）；②**泛素-蛋白酶体途径**：**高度选择性**，需**ATP**，短寿命蛋白、异常蛋白被**泛素（Ub）**标记后被**26S蛋白酶体**降解；③**钙依赖蛋白酶（calpain）**参与局部水解。",
+"why": "近年常考“泛素-蛋白酶体系统”，与药物（硼替佐米）和神经退行性疾病相关。",
+"tip": "对比点：是否需ATP、是否选择性、降解场所。",
+"link": [
+  "泛素-蛋白酶体系统",
+  "蛋白质的营养价值"
+]
+},
+{
+"id": "s11-02",
+"cat": "动态生物化学",
+"ch": "氨基酸代谢",
+"level": "重点",
+"q": "蛋白质的营养价值与互补作用",
+"def": "必需氨基酸种类和比例决定价值，混合食用可互补。",
+"ans": "**蛋白质营养价值**取决于**必需氨基酸的种类、数量与比例**是否与人体需要接近（参考**鸡蛋蛋白/乳蛋白**为完全蛋白）。**蛋白质互补作用**指**两种或多种食物蛋白质混合食用，其必需氨基酸互相补充**，提高营养价值（如谷类缺赖氨酸、豆类缺蛋氨酸，混合食用效果好）。评价指标：**生物价（BV）、蛋白质功效比值（PER）、氨基酸评分**。",
+"why": "营养学应用题，也常以“为什么米面+豆类更好”形式出现。",
+"tip": "举一个互补例子（米饭+豆类）即可得分。",
+"link": [
+  "必需氨基酸（成人8种）",
+  "蛋白质的降解途径"
+]
+},
+{
+"id": "s11-03",
+"cat": "动态生物化学",
+"ch": "氨基酸代谢",
+"level": "基础",
+"q": "氨基酸代谢库",
+"def": "体内游离氨基酸的总和，来源与去路保持动态平衡。",
+"ans": "**氨基酸代谢库**指体内所有**游离氨基酸**的总和（主要在肝、肌肉、肾）。**来源**：①食物蛋白消化吸收；②组织蛋白分解；③体内合成非必需氨基酸。**去路**：①合成组织蛋白；②合成**特殊生物活性物质**（嘌呤、卟啉、神经递质、激素）；③**脱氨基后进入代谢**（氧化供能、转氨基、生糖生酮）；④合成其他含氮物。",
+"why": "氨基酸代谢章节的总纲，答题时用来搭框架。",
+"tip": "按“3来源 + 4去路”回答，与血糖题同一套路。",
+"link": [
+  "脱氨基作用",
+  "转氨基作用"
+]
+},
+{
+"id": "s11-04",
+"cat": "动态生物化学",
+"ch": "氨基酸代谢",
+"level": "重点",
+"q": "转氨基作用",
+"def": "氨基转移给α-酮酸，由转氨酶催化，PLP为辅酶。",
+"ans": "**转氨基作用**是**α-氨基酸的氨基转移到α-酮酸**上，生成新的α-酮酸和新的氨基酸，由**转氨酶**催化，辅酶为**磷酸吡哆醛（PLP）**。**丙氨酸氨基转移酶（ALT，GPT）**催化丙氨酸+α-酮戊二酸⇌丙酮酸+谷氨酸；**天冬氨酸氨基转移酶（AST，GOT）**催化天冬氨酸+α-酮戊二酸⇌草酰乙酸+谷氨酸。转氨基**不产生游离氨**，是**非氧化脱氨基**，常与氧化脱氨基偶联（**联合脱氨基**）。",
+"why": "ALT/AST是肝功能指标，机制+临床双考点，苏大极易考。",
+"tip": "答题补一句：转氨酶主要存在于细胞内，血中升高提示肝细胞损伤。",
+"link": [
+  "联合脱氨基作用",
+  "ALT与AST",
+  "脱氨基作用"
+]
+},
+{
+"id": "s11-05",
+"cat": "动态生物化学",
+"ch": "氨基酸代谢",
+"level": "重点",
+"q": "ALT与AST（临床意义）",
+"def": "血中升高提示肝细胞损伤，AST/ALT比值有诊断价值。",
+"ans": "**ALT（GPT）**主要存在于**肝细胞胞浆**，**AST（GOT）**主要存在于**心肌、肝细胞线粒体**。正常人血清含量低，**肝细胞损伤时释放入血**，故两者升高提示肝损伤：**急性肝炎时ALT升高显著、AST/ALT＜1**；**肝硬化或酒精性肝病时AST/ALT＞1**（线粒体损伤重）；**心肌梗死**时AST升高明显。",
+"why": "肝功能检测的经典指标，是“酶学+代谢”结合的最佳范例。",
+"tip": "记住比值方向：急性肝炎Q1，肝硬化>1。",
+"link": [
+  "转氨基作用",
+  "临床酶学诊断"
+]
+},
+{
+"id": "s11-06",
+"cat": "动态生物化学",
+"ch": "氨基酸代谢",
+"level": "重点",
+"q": "氧化脱氨基作用",
+"def": "L-谷氨酸脱氢酶催化，生成α-酮戊二酸和NH₃。",
+"ans": "**L-谷氨酸脱氢酶**（存在于**肝、肾、脑线粒体**）催化**L-谷氨酸 + NAD(P)⁺ + H₂O ⇌ α-酮戊二酸 + NH₃ + NAD(P)H + H⁺**，是**体内唯一重要的氧化脱氨基反应**。该酶活性高、分布广，受**ATP、GTP抑制，ADP、GDP激活**（能荷调节）。它是**联合脱氨基作用的核心酶**。",
+"why": "体内产生游离氨的主要途径之一，是氨代谢的入口。",
+"tip": "务必写出酶名与“能荷调节”方向。",
+"link": [
+  "联合脱氨基作用",
+  "氨的代谢",
+  "转氨基作用"
+]
+},
+{
+"id": "s11-07",
+"cat": "动态生物化学",
+"ch": "氨基酸代谢",
+"level": "重点",
+"q": "联合脱氨基作用",
+"def": "转氨基与谷氨酸氧化脱氨基偶联，是主要脱氨方式。",
+"ans": "**氨基酸先与α-酮戊二酸转氨基**，生成**谷氨酸**；**谷氨酸再由L-谷氨酸脱氢酶氧化脱氨**，生成α-酮戊二酸和**NH₃**。该过程把多种氨基酸的氨基集中到谷氨酸上再释放氨，是**体内氨基酸脱氨基的主要方式**，在**肝、肾**中进行。**骨骼肌**中因谷氨酸脱氢酶活性低，主要经**嘌呤核苷酸循环**脱氨。",
+"why": "“体内氨从哪来”的核心答案，必考。",
+"tip": "一定要写“转氨基+谷氨酸氧化脱氨”两步骤和“肝、肾”部位。",
+"link": [
+  "转氨基作用",
+  "氧化脱氨基作用",
+  "嘌呤核苷酸循环"
+]
+},
+{
+"id": "s11-08",
+"cat": "动态生物化学",
+"ch": "氨基酸代谢",
+"level": "拓展",
+"q": "嘌呤核苷酸循环",
+"def": "肌肉中通过腺苷酸脱氨释放氨。",
+"ans": "**骨骼肌、心肌**谷氨酸脱氢酶活性低，通过此方式脱氨：**天冬氨酸 + IMP → 腺苷酸代琥珀酸（腺苷酸代琥珀酸合成酶）→ AMP + 延胡索酸**；**AMP经腺苷酸脱氨酶水解为IMP + NH₃**，循环进行。该循环把氨基酸的氨基经转氨基传给天冬氨酸，最终以**嘌呤核苷酸**为中介释放氨。",
+"why": "常与“心肌、骨骼肌如何脱氨”搭配考；也是“运动后血氨升高”的解释。",
+"tip": "记住关键酶：腺苷酸代琥珀酸合成酶、腺苷酸脱氨酶。",
+"link": [
+  "联合脱氨基作用",
+  "氨的代谢"
+]
+},
+{
+"id": "s11-09",
+"cat": "动态生物化学",
+"ch": "氨基酸代谢",
+"level": "重点",
+"q": "尿素循环（鸟氨酸循环）",
+"def": "肝内将NH₃转变为尿素，需5种酶，耗3ATP。",
+"ans": "在**肝细胞**中进行（**线粒体 + 胞液**）：①**NH₃ + CO₂ + 2ATP → 氨基甲酰磷酸**（CPS-Ⅰ，限速酶，需N-乙酰谷氨酸AGA激活）；②氨基甲酰磷酸 + 鸟氨酸 → **瓜氨酸**（OTC）；③瓜氨酸出线粒体，与**天冬氨酸**缩合成**精氨酸代琥珀酸**（精氨酸代琥珀酸合成酶，耗ATP→AMP+PPi）；④裂解为**精氨酸 + 延胡索酸**；⑤精氨酸水解为**尿素 + 鸟氨酸**（精氨酸酶）。**总反应（计入PPi水解）：NH₃ + 天冬氨酸 + CO₂ + 3ATP + 2H₂O → 尿素 + 延胡索酸 + 2ADP + AMP + 4Pi**。",
+"why": "苏大考纲明确考“尿素循环”，是氨基酸代谢最重要的论述题。",
+"tip": "三大采分点：**5个酶、两个氮源（游离NH₃和天冬氨酸）、3ATP折合4个高能磷酸键**。",
+"link": [
+  "氨的代谢",
+  "高氨血症",
+  "精氨酸"
+]
+},
+{
+"id": "s11-10",
+"cat": "动态生物化学",
+"ch": "氨基酸代谢",
+"level": "重点",
+"q": "尿素循环的调节与意义",
+"def": "CPS-Ⅰ为限速酶，AGA激活；避免氨中毒。",
+"ans": "**限速酶为氨基甲酰磷酸合成酶Ⅰ（CPS-Ⅰ）**，需**N-乙酰谷氨酸（AGA）**变构激活（AGA由乙酰CoA+谷氨酸合成，受精氨酸激活）；**高蛋白饮食**可诱导酶合成，提高尿素生成。**意义**：把**有毒的氨转变为无毒的尿素**由肾脏排出，是**解氨毒的主要方式**；同时把氨基酸碳骨架与TCA循环（延胡索酸）联系起来。",
+"why": "“为什么肝病会血氨升高”“高蛋白饮食为何尿尿素多”的机制。",
+"tip": "答题补“延胡索酸进入TCA”这一句，体现代谢联系。",
+"link": [
+  "尿素循环（鸟氨酸循环）",
+  "高氨血症"
+]
+},
+{
+"id": "s11-11",
+"cat": "动态生物化学",
+"ch": "氨基酸代谢",
+"level": "重点",
+"q": "氨的来源与去路",
+"def": "来源：脱氨、肠道吸收、肾泌氨；去路：合成尿素、合成谷氨酰胺、排铵盐。",
+"ans": "**来源**：①氨基酸**脱氨基**；②**肠道吸收**（细菌腐败产生的氨、尿素分解）；③**肾小管泌氨**（谷氨酰胺分解）。**去路**：①**肝合成尿素**（最主要）；②**合成谷氨酰胺**（脑、肌肉，运输氨的无毒形式，由**谷氨酰胺合成酶**催化，耗ATP）；③**肾排出铵盐（NH₄⁺）**，并调节酸碱平衡；④合成其他含氮物。",
+"why": "氨代谢的框架题；谷氨酰胺的“运输+解毒+酸碱调节”三重功能很常考。",
+"tip": "“谷氨酰胺是氨的运输形式、丙氨酸是肌肉到肝的运输形式”这组对比很好用。",
+"link": [
+  "尿素循环（鸟氨酸循环）",
+  "谷氨酰胺",
+  "高氨血症"
+]
+},
+{
+"id": "s11-12",
+"cat": "动态生物化学",
+"ch": "氨基酸代谢",
+"level": "重点",
+"q": "高氨血症与肝性脑病",
+"def": "血氨升高损伤中枢神经系统。",
+"ans": "当**肝功能严重障碍**（肝硬化、暴发性肝炎）或**尿素循环酶缺陷**时，血氨升高（**高氨血症**）。氨在脑内与**α-酮戊二酸结合生成谷氨酸**，消耗TCA中间物，导致**TCA循环受阻、ATP生成减少**；同时促进**谷氨酰胺合成**引起脑细胞渗透压升高、水肿，最终出现**肝性脑病**（意识障碍、昏迷）。治疗：**低蛋白饮食、口服乳果糖（酸化肠道减少氨吸收）、精氨酸/鸟氨酸**。",
+"why": "把尿素循环、TCA循环、脑代谢串起来的综合题，苏大生物医药方向偏爱。",
+"tip": "机制主线：“耗α-酮戊二酸→TCA受阻→ATP↓→脑水肿”。",
+"link": [
+  "尿素循环（鸟氨酸循环）",
+  "氨的来源与去路",
+  "三羧酸循环（TCA/Krebs循环）"
+]
+},
+{
+"id": "s11-13",
+"cat": "动态生物化学",
+"ch": "氨基酸代谢",
+"level": "重点",
+"q": "α-酮酸的代谢去路",
+"def": "再氨基化、转变成生糖/生酮物质、氧化供能。",
+"ans": "氨基酸脱氨后生成的**α-酮酸**去路：①**再氨基化**生成非必需氨基酸（如丙酮酸→丙氨酸）；②**转变为糖或酮体**：**生糖氨基酸**（碳骨架成丙酮酸或TCA中间物）、**生酮氨基酸**（**亮氨酸、赖氨酸**只能生酮）、**生糖兼生酮氨基酸**（**异亮氨酸、苯丙氨酸、酪氨酸、色氨酸**）；③**氧化为CO₂和H₂O供能**（经TCA）。",
+"why": "“哪些氨基酸是生酮/生糖”是高频记忆题。",
+"tip": "口诀：“生酮只有亮、赖”；“生糖兼生酮：异亮、苯丙、酪、色”。",
+"link": [
+  "脱氨基作用",
+  "糖异生"
+]
+},
+{
+"id": "s11-14",
+"cat": "动态生物化学",
+"ch": "氨基酸代谢",
+"level": "重点",
+"q": "一碳单位代谢",
+"def": "由丝氨酸、甘氨酸等产生，THF携带，用于合成核苷酸。",
+"ans": "**一碳单位**是**只含一个碳原子的基团**（如甲基—CH₃、亚甲基—CH₂—、甲酰基—CHO、亚氨甲基—CH=NH），由**丝氨酸、甘氨酸、组氨酸、色氨酸**分解产生，载体是**四氢叶酸（THF）**。主要用于**嘌呤（C2、C8）与嘧啶（胸腺嘧啶C5甲基）合成**，参与**甲硫氨酸循环**。载体缺乏→核苷酸合成障碍→**巨幼红细胞性贫血**。",
+"why": "氨基酸代谢与核苷酸代谢的桥梁，贫血与抗肿瘤药物的关联点。",
+"tip": "必写四个来源氨基酸、THF载体、两个用途。",
+"link": [
+  "叶酸与四氢叶酸",
+  "核苷酸的生物合成",
+  "甲硫氨酸循环"
+]
+},
+{
+"id": "s11-15",
+"cat": "动态生物化学",
+"ch": "氨基酸代谢",
+"level": "拓展",
+"q": "甲硫氨酸循环",
+"def": "提供活性甲基（SAM），与叶酸、B₁₂相关。",
+"ans": "**甲硫氨酸（Met）+ ATP → S-腺苷甲硫氨酸（SAM，活性甲基供体）**，SAM提供甲基后转为**S-腺苷同型半胱氨酸→同型半胱氨酸**；同型半胱氨酸可经**甲硫氨酸合成酶（维生素B₁₂为辅酶）**，由**N⁵-甲基THF**提供甲基，再生甲硫氨酸。该循环连接**叶酸与B₁₂代谢**，是“**甲基陷阱**”机制的基础；**同型半胱氨酸升高**是心血管疾病的独立危险因素。",
+"why": "“B₁₂与叶酸缺乏为何症状相似”的答案，也是热点（同型半胱氨酸）。",
+"tip": "写“SAM是活性甲基供体，B₁₂提供甲基再生Met”。",
+"link": [
+  "维生素B₁₂与甲基钴胺素",
+  "一碳单位代谢"
+]
+},
+{
+"id": "s11-16",
+"cat": "动态生物化学",
+"ch": "氨基酸代谢",
+"level": "重点",
+"q": "个别氨基酸代谢（芳香族）",
+"def": "苯丙氨酸→酪氨酸→多巴、儿茶酚胺、黑色素。",
+"ans": "**苯丙氨酸**经**苯丙氨酸羟化酶（辅酶BH₄）**转变为**酪氨酸**（该酶缺陷→**苯丙酮尿症PKU**，苯丙酮酸堆积，智力障碍，需低苯丙氨酸饮食）。酪氨酸进一步：①经**酪氨酸酶**合成**黑色素**（缺陷→**白化病**）；②合成**儿茶酚胺（多巴、多巴胺、去甲肾上腺素、肾上腺素）**；③分解产生**延胡索酸+乙酰乙酸**（生糖兼生酮）。",
+"why": "PKU与白化病的对比是经典考点（前者是苯丙氨酸羟化酶、后者是酪氨酸酶）。",
+"tip": "务必区分两种酶缺陷对应两种病。",
+"link": [
+  "α-酮酸的代谢去路",
+  "神经递质"
+]
+},
+{
+"id": "s11-17",
+"cat": "动态生物化学",
+"ch": "氨基酸代谢",
+"level": "重点",
+"q": "氨基酸脱羧作用与生物活性胺",
+"def": "脱羧生成胺，PLP为辅酶。",
+"ans": "**氨基酸脱羧酶**（辅酶PLP）催化氨基酸脱羧生成相应**胺类**：**谷氨酸→γ-氨基丁酸（GABA，抑制性神经递质）**；**组氨酸→组胺（过敏介质、促胃酸分泌）**；**色氨酸→5-羟色胺（血清素，情绪与睡眠）**；**多巴→多巴胺**；**鸟氨酸→腐胺/精胺（多胺）**。胺类**生物活性强**，过量有害（如肝病时假性神经递质），体内有**胺氧化酶（MAO）**降解。",
+"why": "连接氨基酸代谢与神经递质、过敏反应、抗抑郁药（MAO抑制剂）。",
+"tip": "至少背4个对应关系（Glu-GABA、His-组胺、Trp-5-HT、多巴-多巴胺）。",
+"link": [
+  "维生素B₆与磷酸吡哆醛",
+  "神经递质"
+]
+},
+{
+"id": "s11-18",
+"cat": "动态生物化学",
+"ch": "氨基酸代谢",
+"level": "重点",
+"q": "氨基酸的生物合成（碳骨架来源）",
+"def": "按碳骨架与α-酮戊二酸等对应分族。",
+"ans": "按碳骨架来源分**六族**：①**谷氨酸族（α-酮戊二酸）**：Glu、Gln、Pro、Arg；②**天冬氨酸族（草酰乙酸）**：Asp、Asn、Lys、Thr、Met、Ile；③**丙酮酸族（丙酮酸）**：Ala、Val、Leu；④**丝氨酸族（3-磷酸甘油酸）**：Ser、Gly、Cys；⑤**芳香族（磷酸赤藓糖+磷酸烯醇式丙酮酸）**：Phe、Tyr、Trp；⑥**组氨酸族（PRPP/ATP）**：His。**必需氨基酸**只能靠食物。",
+"why": "综合题“氨基酸与糖代谢的联系”可直接由此展开。",
+"tip": "答“必需氨基酸为何必需”时说“人体缺少相应合成途径的关键酶，或合成量不足”。",
+"link": [
+  "必需氨基酸（成人8种）",
+  "糖代谢与脂代谢的联系"
+]
+},
+{
+"id": "s11-19",
+"cat": "动态生物化学",
+"ch": "氨基酸代谢",
+"level": "拓展",
+"q": "谷氨酰胺的功能",
+"def": "氨的运输形式、氮源供体、免疫细胞燃料。",
+"ans": "**谷氨酰胺（Gln）**由**谷氨酰胺合成酶**（Glu + NH₃ + ATP）在脑、肌肉合成，是**氨的无毒运输形式**；经血液运至肝、肾，由**谷氨酰胺酶**分解释放氨（肝合成尿素、肾排NH₄⁺调节酸碱）。同时是**嘌呤、嘧啶、氨基糖合成的氮供体**，是**淋巴细胞、肠上皮细胞的主要燃料**，在创伤、感染时需求增加。",
+"why": "“脑如何解氨毒”“肾如何排酸”都要靠谷氨酰胺。",
+"tip": "三个功能：运氨、供氮、供能，一句话打包。",
+"link": [
+  "氨的来源与去路",
+  "核苷酸的生物合成"
+]
+},
+{
+"id": "s12-01",
+"cat": "动态生物化学",
+"ch": "核苷酸代谢",
+"level": "基础",
+"q": "核苷酸的生物学功能",
+"def": "核酸原料、能量载体、辅酶组分、第二信使、调节分子。",
+"ans": "①**核酸合成原料**（DNA/RNA）；②**能量载体**（ATP、GTP）；③**辅酶组分**（NAD⁺、FAD、CoA）；④**第二信使**（**cAMP、cGMP**）；⑤**活性中间物**（**UDP-葡萄糖、CDP-胆碱、SAM**）；⑥**调节分子**（ATP变构调节、GTP在翻译中的作用）。",
+"why": "核苷酸代谢的“为什么重要”部分，常作为简答开头。",
+"tip": "列举4~5点，最后落到“核酸合成原料是核心”。",
+"link": [
+  "嘌呤核苷酸的从头合成",
+  "嘧啶核苷酸的从头合成"
+]
+},
+{
+"id": "s12-02",
+"cat": "动态生物化学",
+"ch": "核苷酸代谢",
+"level": "重点",
+"q": "嘌呤核苷酸的从头合成",
+"def": "以PRPP为起点，在胞液经11步生成IMP。",
+"ans": "**原料**：**天冬氨酸、甘氨酸、谷氨酰胺、CO₂、一碳单位（THF）**、**PRPP（磷酸核糖焦磷酸）**。**部位**：**胞液**（肝为主）。要点：**先形成PRPP（PRPP合成酶，受AMP/GMP反馈抑制）**，再经**PRPP酰胺转移酶（限速酶）**生成**5-磷酸核糖胺**；先合成**次黄嘌呤核苷酸（IMP）**，再由IMP转变为**AMP（需天冬氨酸、GTP）**与**GMP（需谷氨酰胺、ATP）**。",
+"why": "嘌呤代谢核心，抗肿瘤药（6-MP、甲氨蝶呤）靶点均在此。",
+"tip": "答题必写“原料5种 + PRPP + IMP为共同中间物”。",
+"link": [
+  "嘌呤核苷酸的补救合成",
+  "嘌呤核苷酸的抗代谢物",
+  "痛风"
+]
+},
+{
+"id": "s12-03",
+"cat": "动态生物化学",
+"ch": "核苷酸代谢",
+"level": "重点",
+"q": "嘧啶核苷酸的从头合成",
+"def": "先合成乳清酸环，再与PRPP结合成UMP。",
+"ans": "**原料**：**谷氨酰胺（提供氮）、CO₂、天冬氨酸**、PRPP。**部位**：以**胞液**为主，其中**二氢乳清酸脱氢酶位于线粒体内膜**，生成乳清酸后反应回到胞液。过程：**谷氨酰胺 + CO₂ → 氨基甲酰磷酸（CPS-Ⅱ，胞液，不需AGA）→ 氨甲酰天冬氨酸 → 二氢乳清酸 → 乳清酸**，乳清酸与**PRPP**结合生成**乳清苷酸（OMP）→ UMP**。UMP再转化为**CTP（需谷氨酰胺、ATP）**与**dTMP（需dUMP + 一碳单位/THF）**。",
+"why": "与嘌呤合成对比（部位、是否先成环、PRPP参与时机），是必考比较。",
+"tip": "关键差异：“嘧啶先成环后接PRPP，嘌呤先在PRPP上成环”。",
+"link": [
+  "嘌呤核苷酸的从头合成",
+  "dTMP的合成",
+  "嘧啶核苷酸的抗代谢物"
+]
+},
+{
+"id": "s12-04",
+"cat": "动态生物化学",
+"ch": "核苷酸代谢",
+"level": "重点",
+"q": "嘌呤核苷酸的补救合成",
+"def": "利用游离碱基或核苷，由HGPRT、APRT催化。",
+"ans": "**补救合成**指利用体内**游离的嘌呤碱基或核苷**直接合成核苷酸，节省能量。关键酶：**次黄嘌呤-鸟嘌呤磷酸核糖转移酶（HGPRT）**（催化次黄嘌呤→IMP、鸟嘌呤→GMP）、**腺嘌呤磷酸核糖转移酶（APRT）**（腺嘌呤→AMP），均以**PRPP为磷酸核糖供体**。**HGPRT缺陷→Lesch-Nyhan综合征**（自残、智力障碍、尿酸过高）。脑、骨髓主要依赖补救合成。",
+"why": "“为什么脑不能从头合成”与Lesch-Nyhan综合征是经典考点。",
+"tip": "务必写HGPRT缺陷对应Lesch-Nyhan综合征。",
+"link": [
+  "嘌呤核苷酸的从头合成",
+  "痛风"
+]
+},
+{
+"id": "s12-05",
+"cat": "动态生物化学",
+"ch": "核苷酸代谢",
+"level": "重点",
+"q": "脱氧核苷酸的合成",
+"def": "NDP→dNDP，由核糖核苷酸还原酶催化。",
+"ans": "DNA合成需要**dNTP**，由**核糖核苷酸还原酶（RR）**催化**NDP（ADP、GDP、CDP、UDP）还原为dNDP**，需**还原型硫氧还蛋白（或谷胱甘肽）**与**NADPH**作为供氢体，并需**ATP激活**。**dTMP**由**dUMP经胸苷酸合酶（TS，需N⁵,N¹⁰-亚甲基THF）**生成；**甲氨蝶呤抑制DHFR、5-FU抑制TS**，均阻断dTMP合成。",
+"why": "抗肿瘤药物机制集中区（MTX、5-FU、羟基脲抑制RR）。",
+"tip": "写“核糖核苷酸还原酶 + 硫氧还蛋白 + TS/THF”三个关键词。",
+"link": [
+  "dTMP的合成",
+  "核苷酸的抗代谢物",
+  "叶酸与四氢叶酸"
+]
+},
+{
+"id": "s12-06",
+"cat": "动态生物化学",
+"ch": "核苷酸代谢",
+"level": "重点",
+"q": "嘌呤核苷酸的分解与痛风",
+"def": "终产物为尿酸，尿酸过高致痛风。",
+"ans": "嘌呤核苷酸→**次黄嘌呤→黄嘌呤→尿酸**（**黄嘌呤氧化酶**催化，含钼、Fe-S）。**人类尿酸是终产物**（缺乏尿酸酶，不能进一步分解为尿囊素）。**尿酸生成过多或排泄减少**→**高尿酸血症**→尿酸盐结晶沉积在关节、肾，形成**痛风**（关节炎、痛风石、肾结石）。**别嘌醇**为黄嘌呤氧化酶的**竞争性抑制剂**（次黄嘌呤类似物），用于降尿酸。",
+"why": "苏大生物医药方向的高频应用点，机制与药物联动。",
+"tip": "必写“黄嘌呤氧化酶 + 别嘌醇竞争性抑制 + 人缺尿酸酶”。",
+"link": [
+  "嘌呤核苷酸的从头合成",
+  "核苷酸的抗代谢物",
+  "竞争性抑制"
+]
+},
+{
+"id": "s12-07",
+"cat": "动态生物化学",
+"ch": "核苷酸代谢",
+"level": "重点",
+"q": "嘧啶核苷酸的分解",
+"def": "终产物为CO₂、NH₃、β-丙氨酸/β-氨基异丁酸。",
+"ans": "**胞嘧啶、尿嘧啶**分解生成**β-丙氨酸 + CO₂ + NH₃**；**胸腺嘧啶**分解生成**β-氨基异丁酸 + CO₂ + NH₃**。与嘌呤不同，嘧啶分解产物**易溶于水**，不产生类似尿酸的问题。**β-氨基异丁酸**排出量可反映DNA更新速度（肿瘤、放疗时升高）。",
+"why": "与嘌呤分解（尿酸）对比，是“为什么不产生嘧啶性结石”的答案。",
+"tip": "用一句话总结：“嘌呤→尿酸（难溶），嘧啶→易溶小分子”。",
+"link": [
+  "嘌呤核苷酸的分解与痛风"
+]
+},
+{
+"id": "s12-08",
+"cat": "动态生物化学",
+"ch": "核苷酸代谢",
+"level": "重点",
+"q": "核苷酸的抗代谢物",
+"def": "碱基/核苷/氨基酸类似物，干扰合成。",
+"ans": "**①嘌呤类似物**：**6-巯基嘌呤（6-MP）**（抑制HGPRT与PRPP酰胺转移酶）、**6-巯基鸟嘌呤**；**②嘧啶类似物**：**5-氟尿嘧啶（5-FU）**（转化为FdUMP抑制胸苷酸合酶）；**③叶酸类似物**：**甲氨蝶呤（MTX）**（抑制二氢叶酸还原酶，减少THF）；**④氨基酸类似物**：**氮杂丝氨酸**（谷氨酰胺类似物）、**重氮氧正亮氨酸**。作用机制：**竞争性抑制或「伪底物」掺入，阻断核苷酸合成**，用于抗肿瘤、抗病毒。",
+"why": "“抗代谢物的生化基础”是苏大常见的综合应用题。",
+"tip": "每个药写“靶点酶 + 后果”，不要只罗列药名。",
+"link": [
+  "脱氧核苷酸的合成",
+  "dTMP的合成",
+  "竞争性抑制"
+]
+},
+{
+"id": "s12-09",
+"cat": "动态生物化学",
+"ch": "核苷酸代谢",
+"level": "拓展",
+"q": "dTMP的合成与“甲基化”的重要性",
+"def": "dUMP + 亚甲基THF → dTMP。",
+"ans": "**dTMP**由**dUMP**在**胸苷酸合酶（TS）**催化下接受**N⁵,N¹⁰-亚甲基四氢叶酸**提供的甲基生成，同时THF转为**二氢叶酸（DHF）**，需**二氢叶酸还原酶（DHFR）**再生THF。这是**叶酸缺乏导致DNA合成障碍→巨幼红细胞性贫血**的分子基础；也是**5-FU与MTX协同阻断**的关键点（**“死锁”协同**）。",
+"why": "把叶酸、维生素B₁₂、贫血、抗肿瘤药一次串清，是极好的综合答题点。",
+"tip": "答题写“TS + 亚甲基THF + DHFR再生”即可显示机制理解。",
+"link": [
+  "脱氧核苷酸的合成",
+  "叶酸与四氢叶酸",
+  "核苷酸的抗代谢物"
+]
+},
+{
+"id": "s12-10",
+"cat": "动态生物化学",
+"ch": "核苷酸代谢",
+"level": "拓展",
+"q": "核苷酸合成的调节",
+"def": "PRPP合成酶、PRPP酰胺转移酶、CPS-Ⅱ受反馈抑制。",
+"ans": "**嘌呤**：**PRPP合成酶**与**PRPP酰胺转移酶**受**AMP、GMP、IMP反馈抑制**（二者协同）；**AMP抑制腺苷酸代琥珀酸合成酶**，**GMP抑制IMP脱氢酶**，实现分支平衡。**嘧啶**：**CPS-Ⅱ**受**UMP反馈抑制**（也受PRPP激活）；**UMP→CTP**受CTP抑制。**整体原则**：**终产物反馈抑制关键酶，保持嘌呤与嘧啶平衡**。",
+"why": "代谢调节的统一逻辑在核苷酸部分的落地，也常作“如何调节”类题。",
+"tip": "跨章节通用句式：“末产物反馈抑制途径第一步的限速酶”。",
+"link": [
+  "嘌呤核苷酸的从头合成",
+  "嘧啶核苷酸的从头合成"
+]
+},
+{
+"id": "s13-01",
+"cat": "分子生物学",
+"ch": "DNA复制",
+"level": "基础",
+"q": "半保留复制",
+"def": "每条子链保留一条亲链，新链与之互补。",
+"ans": "**1953年Watson与Crick**提出，**1958年Meselson与Stahl用¹⁵N同位素标记+密度梯度离心**证实：DNA复制时双链解开，**每条母链作为模板**合成互补子链，形成的两个子代DNA分子各含**一条母链和一条新链**，故称**半保留复制**。意义：保证遗传信息**准确、稳定地传递**。",
+"why": "分子生物学第一章最重要的实验，常考“实验设计与结论”。",
+"tip": "写清“¹⁵N标记→CsCl密度梯度离心→一条杂交带、两条带”的实验过程。",
+"link": [
+  "DNA复制的特点",
+  "复制叉",
+  "DNA聚合酶"
+]
+},
+{
+"id": "s13-02",
+"cat": "分子生物学",
+"ch": "DNA复制",
+"level": "重点",
+"q": "DNA复制的特点",
+"def": "半保留、半不连续、双向、需引物、5'→3'。",
+"ans": "①**半保留复制**；②**半不连续复制**：**前导链连续合成，后随链形成冈崎片段**；③**双向复制**（从复制起点向两侧进行）；④**需要引物**（RNA引物，提供3'-OH）；⑤**新链合成方向始终5'→3'**；⑥**高度忠实性（碱基配对 + 校对 + 修复）**；⑦**需要多种酶与蛋白协同**。",
+"why": "复制特点题几乎是每校真题的固定题；答题要按条列出并解释。",
+"tip": "每条后补一句解释，比如“半不连续是因为DNA聚合酶只能5'→3'延伸”。",
+"link": [
+  "半保留复制",
+  "冈崎片段",
+  "DNA聚合酶"
+]
+},
+{
+"id": "s13-03",
+"cat": "分子生物学",
+"ch": "DNA复制",
+"level": "重点",
+"q": "复制起点、复制叉与复制眼",
+"def": "复制起点（ori）→双向形成复制叉。",
+"ans": "**复制起点（ori）**是DNA上**复制起始的特定位点**，富含**A-T**（易解链），原核生物只有一个（**oriC**），真核有多个。复制从起点开始**双向**进行，形成**Y形复制叉**（复制叉=解链点+合成机器），两个复制叉相向移动；在电子显微镜下呈**复制眼（泡）**结构。",
+"why": "解释真核生物“为何有多个起点”（缩短复制时间）。",
+"tip": "答题补一句“真核基因组大，多起点可显著缩短S期”。",
+"link": [
+  "DNA复制的特点",
+  "复制叉",
+  "前导链与后随链"
+]
+},
+{
+"id": "s13-04",
+"cat": "分子生物学",
+"ch": "DNA复制",
+"level": "重点",
+"q": "前导链与后随链",
+"def": "连续合成 vs 分段（冈崎片段）合成。",
+"ans": "由于DNA聚合酶只能沿**5'→3'**方向延伸，而两条模板链**反向平行**：**前导链**的合成方向与复制叉移动方向一致，**连续合成**；**后随链**的合成方向与复制叉相反，只能**分段合成**形成**冈崎片段**，再由**DNA连接酶**连接。故复制是**半不连续**的。",
+"why": "“半不连续”的机制解释，是复制部分最核心的逻辑推理题。",
+"tip": "答题最好画一段示意图（模板3'→5'、前导链连续、后随链成片段）。",
+"link": [
+  "冈崎片段",
+  "DNA连接酶",
+  "DNA复制的特点"
+]
+},
+{
+"id": "s13-05",
+"cat": "分子生物学",
+"ch": "DNA复制",
+"level": "重点",
+"q": "DNA聚合酶（原核）",
+"def": "Pol Ⅲ主合成，Pol Ⅰ切除修复，均有5'→3'聚合活性。",
+"ans": "大肠杆菌主要有：**Pol Ⅰ**（单链，**5'→3'聚合 + 3'→5'外切 + 5'→3'外切（切口平移）**，去除RNA引物并填补缺口，**Klenow片段**缺5'→3'外切）；**Pol Ⅱ**（参与修复，SOS）；**Pol Ⅲ**（**主要复制酶**，全酶含α、ε、θ核心与β滑动夹、γ复合体，**活性高、持续合成能力强**）；**Pol Ⅳ、Ⅴ**（跨损伤合成）。共同点：**都只能5'→3'聚合，都不能从头起始，需引物**。",
+"why": "“比较DNA聚合酶与RNA聚合酶”是苏大2025年真题，基础必须牢。",
+"tip": "记住三特点：**需引物、5'→3'延伸、3'→5'校对**。",
+"link": [
+  "DNA聚合酶与RNA聚合酶的比较",
+  "DNA连接酶",
+  "Klenow片段"
+]
+},
+{
+"id": "s13-06",
+"cat": "分子生物学",
+"ch": "DNA复制",
+"level": "重点",
+"q": "DNA聚合酶与RNA聚合酶的比较",
+"def": "需引物/不需；有校对/无；模板与产物不同。",
+"ans": "**相同**：都以DNA为模板、都沿**5'→3'方向**合成新链、都需要**Mg²⁺**、都形成磷酸二酯键、都不能从头合成游离核苷酸链（RNA聚合酶可以起始，这是差异）。**不同**：①**引物**：DNA Pol**需要引物**，RNA Pol**不需要**；②**校对**：DNA Pol有**3'→5'外切酶**校对功能（错误率10⁻⁹），RNA Pol无校对（错误率高）；③**底物**：dNTP vs NTP；④**产物**：DNA vs RNA；⑤**模板**：两条链（后随链分段）vs 只有一条链的某一段；⑥**连续性**：半不连续 vs 连续。",
+"why": "苏大2025年真题第2题就是这个，必须能写出对比表。",
+"tip": "答题用两栏对照表格式最佳，先同后异。",
+"link": [
+  "DNA聚合酶（原核）",
+  "RNA聚合酶（原核）",
+  "转录"
+]
+},
+{
+"id": "s13-07",
+"cat": "分子生物学",
+"ch": "DNA复制",
+"level": "重点",
+"q": "DNA连接酶",
+"def": "连接缺口处的3'-OH与5'-磷酸，需ATP/NAD⁺。",
+"ans": "**DNA连接酶**催化**相邻核苷酸的3'-OH与5'-磷酸**形成**磷酸二酯键**，封闭单链缺口（如冈崎片段之间、切除修复后），需**ATP**（真核、T4）或**NAD⁺**（大肠杆菌）供能。它**只能连接双链DNA上的缺口**，不能连接游离单链。是**重组DNA技术的核心工具酶**之一。",
+"why": "“为什么必须连接酶”的答案；也是基因工程五工具之一。",
+"tip": "区别：连接酶封缺口（共价），解旋酶断氢键（非共价）。",
+"link": [
+  "冈崎片段",
+  "限制性内切酶",
+  "重组DNA技术"
+]
+},
+{
+"id": "s13-08",
+"cat": "分子生物学",
+"ch": "DNA复制",
+"level": "重点",
+"q": "解旋酶、单链结合蛋白与拓扑异构酶",
+"def": "解旋、稳定单链、消除超螺旋。",
+"ans": "**①解旋酶（DnaB）**：利用ATP水解能**解开双链氢键**，形成复制叉；**②单链结合蛋白（SSB）**：结合单链DNA，**防止重新配对和被核酸酶降解**，使模板伸展；**③拓扑异构酶**：通过切断-重接DNA链，**消除复制叉前进产生的正超螺旋**（拓扑酶Ⅰ切一条链、不需ATP；拓扑酶Ⅱ/旋转酶切两条链、需ATP）。**DNA旋转酶（拓扑酶Ⅱ）**是喹诺酮类药物的靶点。",
+"why": "“复制所需酶和蛋白”是考纲明确考点，需成体系记忆。",
+"tip": "按功能记：解链-稳定-解超螺旋-引物-延伸-连接。",
+"link": [
+  "复制叉",
+  "拓扑异构酶",
+  "喹诺酮类药物"
+]
+},
+{
+"id": "s13-09",
+"cat": "分子生物学",
+"ch": "DNA复制",
+"level": "重点",
+"q": "引物酶与引发体",
+"def": "合成RNA引物，提供3'-OH。",
+"ans": "**引物酶（DnaG，一种特殊的RNA聚合酶）**以DNA为模板合成**短的RNA引物（约10个核苷酸）**，提供**3'-OH**供DNA聚合酶Ⅲ起始延伸。**引发体**由**引物酶 + DnaB解旋酶 + DnaC等**组成，沿后随链反复合成引物。**RNA引物随后由DNA聚合酶Ⅰ的5'→3'外切活性切除并被DNA填补**。",
+"why": "“为什么用RNA引物而非DNA”是常见引申题（RNA易被识别、便于标记与去除）。",
+"tip": "写“引物酶=特殊RNA聚合酶、不需引物、RNA引物后被Pol Ⅰ切除”。",
+"link": [
+  "DNA聚合酶（原核）",
+  "冈崎片段",
+  "前导链与后随链"
+]
+},
+{
+"id": "s13-10",
+"cat": "分子生物学",
+"ch": "DNA复制",
+"level": "重点",
+"q": "冈崎片段",
+"def": "后随链上合成的短DNA片段。",
+"ans": "**冈崎片段**是**后随链半不连续合成**时形成的**短DNA片段**：原核约**1000~2000个核苷酸**，真核约**100~200个核苷酸**（约等于一个核小体长度）。每个片段由**RNA引物起始**，之后引物被**Pol Ⅰ（Rnase H）**切除、缺口由Pol Ⅰ填补，最后由**DNA连接酶**连接成完整链。",
+"why": "“冈崎片段长度差异”与“真核为何短”都是常考细节。",
+"tip": "真核片段短的原因可答：“与核小体组装相协调”。",
+"link": [
+  "前导链与后随链",
+  "DNA连接酶"
+]
+},
+{
+"id": "s13-11",
+"cat": "分子生物学",
+"ch": "DNA复制",
+"level": "重点",
+"q": "复制的保真机制",
+"def": "碱基配对、3'→5'校对、错配修复。",
+"ans": "①**碱基互补配对**的精确性（A-T、G-C）；②**DNA聚合酶的3'→5'外切酶校对活性**，即时切除错配核苷酸；③**复制后错配修复（MMR）**：由**MutS、MutL、MutH**识别新链上的错配并切除修复（错误率降至10⁻⁹~10⁻¹⁰）；④**dNTP浓度与选择**、**滑动夹提高持续性**。",
+"why": "解释“为什么复制错误率极低”，也连接“DNA损伤修复”章节。",
+"tip": "三层防线（配对-校对-修复）是标准答法。",
+"link": [
+  "DNA聚合酶（原核）",
+  "DNA的损伤与修复",
+  "错配修复"
+]
+},
+{
+"id": "s13-12",
+"cat": "分子生物学",
+"ch": "DNA复制",
+"level": "重点",
+"q": "端粒与端粒酶",
+"def": "端粒酶以RNA为模板延长端粒，解决末端复制问题。",
+"ans": "**端粒**是真核染色体末端的**串联重复序列（人：TTAGGG）与蛋白复合体**，保护染色体末端不被降解或融合，其长度随细胞分裂**缩短**，与**细胞衰老**相关。**端粒酶**是**核糖核蛋白**（含**RNA模板 + 逆转录酶活性**），以自身RNA为模板**逆转录合成端粒DNA**，解决**线性DNA末端复制问题**。**干细胞、生殖细胞、多数肿瘤细胞端粒酶活性高**，体细胞低。",
+"why": "苏大偏爱前沿热点：端粒与衰老、肿瘤、抗衰老药物。",
+"tip": "答题写“RNA模板 + 逆转录 + 解决末端复制问题 + 肿瘤高活性”。",
+"link": [
+  "DNA复制的特点",
+  "逆转录",
+  "肿瘤"
+]
+},
+{
+"id": "s13-13",
+"cat": "分子生物学",
+"ch": "DNA复制",
+"level": "拓展",
+"q": "真核生物DNA复制的特点",
+"def": "多起点、细胞周期S期、需核小体装配。",
+"ans": "①**多复制起点**，双向复制，形成多个复制眼，速率较原核慢（约50nt/s）但总时长可控；②**严格受细胞周期调控**，仅在**S期**进行（**G1/S检验点**控制，“**复制许可**”机制：MCM复合体装载与CDK磷酸化调控，确保**每个起点只起始一次**）；③**DNA聚合酶分工**：**Pol α（引物酶活性+起始）、Pol δ（前导链/后随链延伸）、Pol ε（前导链）、Pol γ（线粒体）、Pol β/ζ等（修复/跨损伤）**；④需**核小体装配**（CAF-1、组蛋白）。",
+"why": "“真核与原核复制比较”是论述题，“复制许可”与癌基因联系紧密。",
+"tip": "必写“多起点、S期、Pol分工、只起始一次”。",
+"link": [
+  "端粒与端粒酶",
+  "细胞周期",
+  "核小体"
+]
+},
+{
+"id": "s13-14",
+"cat": "分子生物学",
+"ch": "DNA复制",
+"level": "拓展",
+"q": "线粒体DNA复制",
+"def": "D环复制，由Pol γ负责。",
+"ans": "**线粒体DNA（mtDNA）**为**环状双链、母系遗传**，复制方式为**D环（置换环）复制**：重链先起始形成D环，再启动轻链合成。复制酶为**DNA聚合酶γ**（核基因编码，导入线粒体）。mtDNA**缺乏组蛋白保护和完整修复系统、突变率高**，与**线粒体病（如MELAS、Leigh综合征）**、衰老相关。",
+"why": "拓展点，涉及母系遗传与线粒体病，适合作为论述加分。",
+"tip": "记“D环、Pol γ、母系遗传、突变率高”。",
+"link": [
+  "DNA复制",
+  "线粒体与细胞凋亡"
+]
+},
+{
+"id": "s13-15",
+"cat": "分子生物学",
+"ch": "DNA复制",
+"level": "重点",
+"q": "DNA损伤的类型",
+"def": "碱基错配、缺失插入、链断裂、交联、修饰。",
+"ans": "①**碱基改变**：**脱氨基（胞嘧啶→尿嘧啶）**、**碱基丢失（脱嘌呤/脱嘧啶位点AP位点）**、**氧化损伤（8-氧代鸟嘌呤）**、**烷化**；②**碱基错配（mismatch）**；③**插入/缺失**导致**移码**；④**链断裂**（单链/双链断裂，**双链断裂最严重**）；⑤**交联**（**嘧啶二聚体**，紫外线引起；链间交联）；⑥**复制错误**。",
+"why": "损伤类型与修复方式的对应关系，是简答与选择的常考点。",
+"tip": "UV→嘧啶二聚体、亚硝酸盐→脱氨、电离辐射→双链断裂，三组对应背下来。",
+"link": [
+  "DNA的损伤与修复",
+  "碱基切除修复",
+  "核苷酸切除修复"
+]
+},
+{
+"id": "s13-16",
+"cat": "分子生物学",
+"ch": "DNA复制",
+"level": "重点",
+"q": "DNA的损伤与修复",
+"def": "直接修复、切除修复、错配修复、重组修复、SOS。",
+"ans": "**①直接修复（光复活）**：光裂合酶直接修复嘧啶二聚体（原核、植物）；**②切除修复**：**碱基切除修复（BER）**（**糖苷酶**切除受损碱基→AP核酸内切酶→Pol β填补→连接酶）与**核苷酸切除修复（NER）**（**切除一段约12~30nt的寡核苷酸**，修复嘧啶二聚体等大块损伤）；**③错配修复（MMR）**：MutS/L/H；**④重组修复**：双链断裂时以同源模板修复（HR、NHEJ）；**⑤SOS修复**：损伤严重时诱导的**易错修复**，与**突变和癌变**相关。",
+"why": "苏大2024年真题直接考“DNA损伤修复方式 + BER具体过程”，必须能详述。",
+"tip": "BER与NER的区分点是“切除单个碱基 vs 一段寡核苷酸”。",
+"link": [
+  "碱基切除修复",
+  "核苷酸切除修复",
+  "DNA损伤的类型"
+]
+},
+{
+"id": "s13-17",
+"cat": "分子生物学",
+"ch": "DNA复制",
+"level": "重点",
+"q": "碱基切除修复（BER）",
+"def": "糖苷酶切除受损碱基→AP内切酶→Pol填补→连接。",
+"ans": "①**DNA糖苷酶**识别并**水解切除受损/错误碱基**（如尿嘧啶糖苷酶切除脱氨产生的U），留下**AP位点（无嘌呤/无嘧啶位点）**；②**AP核酸内切酶**切开AP位点（或AP裂合酶），**磷酸二酯酶**去除残基；③**DNA聚合酶β（Pol β）**填补单核苷酸缺口（短补丁）或Pol δ/ε长补丁；④**DNA连接酶**封闭缺口。**BER主要修复小范围碱基损伤（氧化、烷化、脱氨）**。",
+"why": "2024真题要求“简述碱基切除修复具体过程”，步骤与酶名都要写。",
+"tip": "四步：糖苷酶→AP内切酶→聚合酶→连接酶；开头点明“BER修小损伤”。",
+"link": [
+  "DNA的损伤与修复",
+  "DNA连接酶"
+]
+},
+{
+"id": "s13-18",
+"cat": "分子生物学",
+"ch": "DNA复制",
+"level": "重点",
+"q": "核苷酸切除修复（NER）",
+"def": "切除含损伤的一段寡核苷酸。",
+"ans": "识别损伤后，在损伤两侧**切开磷酸二酯键**，**切除含损伤的一段12~30个核苷酸的寡核苷酸**，由**DNA聚合酶**填补缺口，**连接酶**封闭。原核中由**UvrABC核酸外切酶**系统完成；真核中分为**全基因组修复（GG-NER）**与**转录偶联修复（TC-NER）**。**着色性干皮病（XP）**即NER缺陷，患者对紫外线极敏感、易患皮肤癌。",
+"why": "与BER形成清晰对照；XP是经典疾病例证。",
+"tip": "答“两者区别”时写“NER切一段寡核苷酸，BER切单个碱基”。",
+"link": [
+  "碱基切除修复",
+  "DNA的损伤与修复",
+  "着色性干皮病"
+]
+},
+{
+"id": "s13-19",
+"cat": "分子生物学",
+"ch": "DNA复制",
+"level": "重点",
+"q": "重组修复与双链断裂修复（HR/NHEJ）",
+"def": "HR需同源模板，NHEJ直接连接，易出错。",
+"ans": "**双链断裂（DSB）**是致死性损伤，两条修复途径：①**同源重组修复（HR）**：以**姐妹染色单体为模板**，由**RAD51**等介导，**高保真**，发生在**S/G2期**；**BRCA1/2**缺陷→HR障碍→乳腺癌/卵巢癌（**PARP抑制剂通过“合成致死”治疗**）。②**非同源末端连接（NHEJ）**：由**Ku70/80、DNA-PK、Ligase Ⅳ**直接连接断端，**易致插入/缺失**，发生于整个细胞周期。**重组修复**也用于复制遇到损伤时以新生链为模板填补。",
+"why": "CRISPR治疗、PARP抑制剂机制、肿瘤靶向治疗的热点基础。",
+"tip": "一句话对照：“HR准（需模板、S/G2期），NHEJ快（不需模板、易错）”。",
+"link": [
+  "DNA的损伤与修复",
+  "PARP抑制剂",
+  "同源重组"
+]
+},
+{
+"id": "s14-01",
+"cat": "分子生物学",
+"ch": "转录",
+"level": "基础",
+"q": "转录",
+"def": "以DNA一条链为模板合成RNA，需NTP和RNA聚合酶。",
+"ans": "**转录**是以**DNA的一条链（模板链）**为模板，在**RNA聚合酶**催化下，以**NTP（ATP、GTP、CTP、UTP）**为底物，按**碱基互补原则（A-U、T-A、G-C、C-G）**合成**RNA**的过程。方向为**5'→3'**（模板读取方向**3'→5'**），**不需要引物**。合成产物包括mRNA、tRNA、rRNA等。",
+"why": "与复制的对比是常考题，也是基因表达第一步。",
+"tip": "答题强调“只转录一条链、不需要引物、A配U”。",
+"link": [
+  "RNA聚合酶（原核）",
+  "模板链与编码链",
+  "转录与复制的比较"
+]
+},
+{
+"id": "s14-02",
+"cat": "分子生物学",
+"ch": "转录",
+"level": "重点",
+"q": "模板链与编码链",
+"def": "模板链与RNA互补，编码链与RNA序列相同（T取代U）。",
+"ans": "**模板链（反义链、非编码链）**：转录时被RNA聚合酶读取的链，其序列与RNA**互补**；**编码链（有义链、非模板链）**：**不参与转录**，其序列与RNA**相同**（仅T替代U）。不同基因的模板链可以在DNA的不同链上（**基因可来自两条链**）。习惯书写基因序列时给出的是**编码链（5'→3'）**。",
+"why": "读图题、引物设计题、启动子位置判断的基础。",
+"tip": "记“模板链=读的链，编码链=写的链”。",
+"link": [
+  "转录",
+  "RNA聚合酶（原核）",
+  "启动子"
+]
+},
+{
+"id": "s14-03",
+"cat": "分子生物学",
+"ch": "转录",
+"level": "重点",
+"q": "RNA聚合酶（原核）",
+"def": "核心酶α₂ββ'ω + σ因子构成全酶。",
+"ans": "大肠杆菌**RNA聚合酶全酶** = **核心酶（α₂ββ'ω）+ σ因子**。功能：**α亚基**参与组装与启动子识别；**β亚基**结合NTP、催化磷酸二酯键形成；**β'亚基**结合DNA模板；**ω**参与组装与稳定；**σ因子**识别**启动子**并协助起始，**起始后脱落**（核心酶继续延伸）。**利福平**结合β亚基抑制转录起始。",
+"why": "“原核RNA聚合酶结构与功能”是简答高频，σ因子的作用必答。",
+"tip": "一句话记：**全酶起始、核心酶延伸**。",
+"link": [
+  "启动子",
+  "转录的起始",
+  "利福平"
+]
+},
+{
+"id": "s14-04",
+"cat": "分子生物学",
+"ch": "转录",
+"level": "重点",
+"q": "原核启动子的结构",
+"def": "-10区（TATAAT）与-35区（TTGACA）。",
+"ans": "原核启动子位于转录起始点**上游**，含两个保守序列：**-10区（Pribnow盒，共有序列TATAAT）**与**-35区（共有序列TTGACA）**，两者之间**17±1 bp**的间隔对活性至关重要；**-10区**富含AT，利于解链（形成开放复合体）；**-35区**被**σ因子识别**。此外还有**UP元件**（增强结合）。转录起始点记为**+1**。",
+"why": "苏大2024年真题考“原核启动子的基本结构特征”，必须能点名两个box和序列。",
+"tip": "两个序列与间隔数字写准，即得大部分分数。",
+"link": [
+  "RNA聚合酶（原核）",
+  "转录的起始",
+  "σ因子"
+]
+},
+{
+"id": "s14-05",
+"cat": "分子生物学",
+"ch": "转录",
+"level": "重点",
+"q": "转录的三个阶段（原核）",
+"def": "起始、延伸、终止。",
+"ans": "**①起始**：**σ因子+核心酶**结合启动子形成**闭合复合体**→局部解链成**开放复合体**→催化前两个NTP形成**首个磷酸二酯键**→**σ因子释放**。**②延伸**：核心酶沿模板**3'→5'**移动，**5'→3'合成RNA**，形成**转录泡**（约17bp解链），**无校对但有焦磷酸解编辑**。**③终止**：依赖或不依赖**ρ因子**，RNA聚合酶与RNA释放。",
+"why": "转录题的基本框架，配“σ因子释放”“转录泡”等关键词。",
+"tip": "答题用三阶段小标题+每阶段2~3个关键词。",
+"link": [
+  "转录的终止",
+  "RNA聚合酶（原核）"
+]
+},
+{
+"id": "s14-06",
+"cat": "分子生物学",
+"ch": "转录",
+"level": "重点",
+"q": "转录的终止（不依赖ρ与依赖ρ）",
+"def": "发夹结构+寡聚U 或 ρ因子解旋。",
+"ans": "**①不依赖ρ因子（内在终止）**：终止序列转录出的RNA形成**富含GC的发夹结构**，其后紧跟**一串U（寡聚U）**，发夹使RNA聚合酶停顿，**rU-dA弱配对**导致解离。**②依赖ρ因子**：**ρ蛋白**为**六聚体、具ATP依赖的RNA-DNA解旋酶活性**，结合新生RNA的**rut位点**，沿RNA向3'端移动，追上聚合酶并**解开RNA-DNA杂交体**，释放RNA。",
+"why": "“两种终止机制比较”是常考题。",
+"tip": "关键差异记：“发夹+寡聚U” vs “ρ因子追着解旋”。",
+"link": [
+  "转录的三个阶段（原核）",
+  "ρ因子"
+]
+},
+{
+"id": "s14-07",
+"cat": "分子生物学",
+"ch": "转录",
+"level": "重点",
+"q": "真核生物的RNA聚合酶种类",
+"def": "Pol Ⅰ→rRNA，Pol Ⅱ→mRNA，Pol Ⅲ→tRNA/5S。",
+"ans": "**RNA聚合酶Ⅰ**：位于**核仁**，转录**45S rRNA前体（28S、18S、5.8S）**，对**α-鹅膏蕈碱不敏感**；**RNA聚合酶Ⅱ**：位于**核质**，转录**mRNA前体（hnRNA）及多数snRNA、miRNA**，对**α-鹅膏蕈碱高度敏感**；**RNA聚合酶Ⅲ**：转录**tRNA、5S rRNA、部分snRNA**，中等敏感。**线粒体**另有由核基因编码的**线粒体RNA聚合酶**。",
+"why": "选择题高频；“哪个酶转录什么、对鹅膏蕈碱敏感性”常直接考。",
+"tip": "配一句“Pol Ⅱ是转录mRNA的酶，也是调控核心”。",
+"link": [
+  "真核生物的启动子（Ⅱ类基因）",
+  "α-鹅膏蕈碱"
+]
+},
+{
+"id": "s14-08",
+"cat": "分子生物学",
+"ch": "转录",
+"level": "重点",
+"q": "真核生物Ⅱ类基因启动子的结构",
+"def": "核心启动子（TATA盒）+ 上游调控元件。",
+"ans": "**Ⅱ类基因（编码mRNA）启动子**含：①**核心启动子**：**TATA盒（-25~-30，共有序列TATAAAA）**、**起始子（Inr，+1附近）**、**TFⅡB识别元件（BRE）**、**下游核心元件（DPE）**；②**上游调控元件**：**CAAT盒（-70~-80）**、**GC盒（-90附近，Sp1结合）**、**增强子/沉默子**（位置不依赖）。TATA盒被**TBP（TATA结合蛋白，TFⅡD的亚基）**识别，是**组装转录起始复合物**的起点。",
+"why": "苏大2024年真题“简述Ⅱ类基因启动子的结构特征”，这是原题命中点。",
+"tip": "“TATA盒为主，配CAAT/GC盒与增强子”即可构成标准答案。",
+"link": [
+  "真核生物的RNA聚合酶种类",
+  "转录因子与转录起始复合物"
+]
+},
+{
+"id": "s14-09",
+"cat": "分子生物学",
+"ch": "转录",
+"level": "重点",
+"q": "转录因子与转录起始复合物（真核）",
+"def": "TFⅡD（TBP）识别TATA盒，TFⅡH具解旋与激酶活性。",
+"ans": "真核Pol Ⅱ起始需要**基础转录因子（TFⅡA、B、D、E、F、H）**：**TFⅡD（含TBP）**结合**TATA盒**→**TFⅡA、TFⅡB**加入→**TFⅡF + Pol Ⅱ**结合→**TFⅡE、TFⅡH**加入形成**闭合复合体**；**TFⅡH**具**ATP依赖的解旋酶活性（解链）**与**CTD激酶活性（磷酸化Pol Ⅱ CTD的Ser5）**，启动转录。**Mediator复合体**连接**上游激活因子与Pol Ⅱ**。",
+"why": "真核转录调控的核心，与“转录因子、增强子”题直接相关。",
+"tip": "写“TFⅡD识别TATA → TFⅡH解旋+磷酸化CTD”就能体现机制。",
+"link": [
+  "真核生物的启动子（Ⅱ类基因）",
+  "CTD磷酸化与转录延伸"
+]
+},
+{
+"id": "s14-10",
+"cat": "分子生物学",
+"ch": "转录",
+"level": "重点",
+"q": "CTD磷酸化与转录延伸",
+"def": "Ser5磷酸化起始、Ser2磷酸化延伸与加工。",
+"ans": "Pol Ⅱ最大亚基的**C端结构域（CTD）**含**YSPTSPS重复序列**。**TFⅡH磷酸化Ser5**→招募**加帽酶**，启动并脱离启动子；**CDK9（P-TEFb）磷酸化Ser2**→招募**剪接因子与poly(A)加尾因子**，促进**延伸**。故**转录与RNA加工偶联**，CTD是“加工平台”。",
+"why": "可把转录、加帽、加尾、剪接串为一体，是高分表述。",
+"tip": "记“Ser5=起始/加帽，Ser2=延伸/剪接加尾”。",
+"link": [
+  "转录因子与转录起始复合物（真核）",
+  "真核mRNA前体的加工"
+]
+},
+{
+"id": "s14-11",
+"cat": "分子生物学",
+"ch": "转录",
+"level": "重点",
+"q": "真核mRNA前体（hnRNA）的加工",
+"def": "5'加帽、3'加尾、剪接、编辑。",
+"ans": "①**5'端加帽**：加**7-甲基鸟苷（m⁷G）**通过**5'-5'三磷酸键**连接（在转录早期进行）；②**3'端加poly(A)尾**：在**AAUAAA**信号下游约10~30nt处切断，由**poly(A)聚合酶**加**50~250个A**；③**剪接**：由**剪接体（snRNP U1、U2、U4、U5、U6）**识别**GU-AG规则**，切除**内含子**、连接**外显子**（**套索结构**中间体）；④**RNA编辑**（如载脂蛋白B的C→U编辑、A→I）；⑤**可变剪接**（产生多种蛋白）。",
+"why": "苏大常考“mRNA加工过程”，四项必须齐全。",
+"tip": "加帽+加尾+剪接+编辑，按5'→3'顺序叙述最清楚。",
+"link": [
+  "可变剪接",
+  "snRNA与剪接体",
+  "mRNA的稳定性"
+]
+},
+{
+"id": "s14-12",
+"cat": "分子生物学",
+"ch": "转录",
+"level": "重点",
+"q": "可变剪接",
+"def": "同一前体mRNA通过不同剪接产生多种mRNA。",
+"ans": "**可变剪接**指同一前体mRNA通过**选择不同的剪接位点或保留/跳过某些外显子**，产生**多种成熟mRNA**，从而由**一个基因产生多种蛋白质**。由**剪接因子（SR蛋白、hnRNP）**的相对浓度与结合位点调控，具有**组织特异性与发育阶段特异性**（如降钙素基因在甲状腺与神经组织的不同产物）。意义：**解释人类基因数（约2万）远少于蛋白种类（>10万）**。",
+"why": "近年高频前沿点，可联系“人类基因组计划后的困惑”。",
+"tip": "必写“一个基因多个蛋白”“组织特异性”这两句。",
+"link": [
+  "真核mRNA前体的加工",
+  "snRNA与剪接体"
+]
+},
+{
+"id": "s14-13",
+"cat": "分子生物学",
+"ch": "转录",
+"level": "重点",
+"q": "tRNA与rRNA的加工",
+"def": "切除多余序列、加CCA、碱基修饰。",
+"ans": "**tRNA前体加工**：①**RNase P**切除**5'端前导序列**；②**RNase D/外切酶**切除**3'端多余序列**；③**tRNA核苷酸转移酶**加**3'-CCA**；④**碱基修饰**（甲基化、脱氨、还原等生成**稀有碱基**）；⑤**内含子剪接**（部分tRNA，由蛋白酶而非剪接体催化）。**rRNA前体加工**：真核45S rRNA经**snoRNA指导的甲基化与假尿苷化**及**核酸酶切割**，生成18S、5.8S、28S rRNA。",
+"why": "“三类RNA加工比较”是常考简答，也是“核酶”例证来源。",
+"tip": "RNase P是核酶（RNA催化）——这一点常被单独考。",
+"link": [
+  "核酶（ribozyme）",
+  "真核mRNA前体的加工"
+]
+},
+{
+"id": "s14-14",
+"cat": "分子生物学",
+"ch": "转录",
+"level": "重点",
+"q": "转录与复制的比较",
+"def": "模板、酶、引物、产物、方向、范围不同。",
+"ans": "**相同**：都以DNA为模板、遵循碱基互补、都沿**5'→3'**方向合成新链、需Mg²⁺。**不同**：①**模板**：复制用**两条链**，转录只用**一条链（局部）**；②**酶**：DNA聚合酶 vs RNA聚合酶；③**引物**：需要 vs **不需要**；④**底物**：dNTP vs NTP；⑤**产物**：DNA vs RNA；⑥**连续性**：半不连续 vs 连续；⑦**范围**：整个基因组 vs 特定基因片段；⑧**校对**：有3'→5'外切校对 vs 无（错误率高）；⑨**次数**：每次细胞周期一次 vs 可多次。",
+"why": "经典比较题，苏大风格偏爱对比类简答。",
+"tip": "列表对照，先同后异，条目越多越稳。",
+"link": [
+  "转录",
+  "DNA聚合酶与RNA聚合酶的比较"
+]
+},
+{
+"id": "s14-15",
+"cat": "分子生物学",
+"ch": "转录",
+"level": "拓展",
+"q": "α-鹅膏蕈碱与利福平",
+"def": "分别抑制真核Pol Ⅱ与原核RNA聚合酶。",
+"ans": "**α-鹅膏蕈碱**（毒鹅膏菌毒素）：**抑制真核RNA聚合酶Ⅱ**（高敏），对Pol Ⅲ中等敏感、Pol Ⅰ不敏感，是**研究转录的经典工具**。**利福平**：特异结合**细菌RNA聚合酶的β亚基**，抑制**转录起始**，用于抗结核治疗；对真核RNA聚合酶无效（**选择性毒性**）。",
+"why": "药物机制与“选择性毒性”原理是苏大生物医药方向爱考的。",
+"tip": "两者都作用于“转录起始”，但要分清对象（真核/原核）。",
+"link": [
+  "真核生物的RNA聚合酶种类",
+  "RNA聚合酶（原核）",
+  "利福平"
+]
+},
+{
+"id": "s14-16",
+"cat": "分子生物学",
+"ch": "转录",
+"level": "拓展",
+"q": "σ因子与转录起始的调控",
+"def": "不同σ因子识别不同启动子，实现全局调控。",
+"ans": "**σ因子**决定启动子识别特异性。大肠杆菌有多个σ因子：**σ⁷⁰（rpoD，管家基因）**、**σ³²（rpoH，热激应答）**、**σ²⁸（鞭毛基因）**、**σ⁵⁴（氮代谢）**。环境变化时**更换σ因子**可**全局性切换基因表达程序**，是原核生物重要的**转录水平调控**机制。",
+"why": "原核基因表达调控的入口，也常用于“细菌如何应对环境胁迫”题。",
+"tip": "举“热激时σ³²增加→热激蛋白基因大量表达”这个例子。",
+"link": [
+  "原核基因表达调控的层次",
+  "转录的起始"
+]
+},
+{
+"id": "s15-01",
+"cat": "分子生物学",
+"ch": "翻译",
+"level": "基础",
+"q": "遗传密码",
+"def": "mRNA上三个相邻核苷酸决定一个氨基酸。",
+"ans": "**遗传密码**是mRNA上**每三个相邻核苷酸（密码子）**决定一个氨基酸的规则，共**64个密码子**：**61个编码氨基酸**（AUG为起始并编码甲硫氨酸），**3个终止密码子（UAA、UAG、UGA）**。特点：**①连续性②简并性③通用性（线粒体等有例外）④摆动性⑤无重叠性**。",
+"why": "密码子表与五大特性是翻译部分的敲门砖。",
+"tip": "背诵：“连续性、简并性、通用性、摆动性、无重叠”五条。",
+"link": [
+  "遗传密码的特点",
+  "起始密码子与终止密码子",
+  "tRNA的结构特点"
+]
+},
+{
+"id": "s15-02",
+"cat": "分子生物学",
+"ch": "翻译",
+"level": "重点",
+"q": "遗传密码的特点",
+"def": "连续性、简并性、通用性、摆动性、无重叠。",
+"ans": "①**连续性**：密码子连续阅读，**无间隔**，插入/缺失一个碱基会引起**移码突变**；②**简并性**：一种氨基酸可由**多个密码子**编码（最多6个，Leu、Ser、Arg），**第三位碱基**常可变；③**通用性**：从病毒到人类基本共用一套密码（**线粒体、某些原虫有例外**）；④**摆动性（wobble）**：反密码子第一位与密码子第三位配对不严格，可形成**非标准配对（如I-A/U/C、G-U）**，使一种tRNA识别多个密码子；⑤**无重叠、无标点**。",
+"why": "五个特性各有一句解释是标准答法；“摆动性”最容易考。",
+"tip": "简并性→减少突变危害；摆动性→减少tRNA种类。",
+"link": [
+  "遗传密码",
+  "移码突变",
+  "tRNA的结构特点"
+]
+},
+{
+"id": "s15-03",
+"cat": "分子生物学",
+"ch": "翻译",
+"level": "重点",
+"q": "起始密码子与终止密码子",
+"def": "AUG起始，UAA/UAG/UGA终止。",
+"ans": "**起始密码子**：**AUG**（编码**甲硫氨酸**），原核也用**GUG、UUG**（仍编码Met/甲酰Met）。**终止密码子**：**UAA（赭石）、UAG（琥珀）、UGA（蛋白石/乳白）**，**不编码任何氨基酸**，由**释放因子（RF）**识别，促使肽链释放。",
+"why": "“终止密码子不编码氨基酸”是高频判断点。",
+"tip": "三终止：UAA、UAG、UGA（口诀“UAA UAG UGA，三个都不要”）。",
+"link": [
+  "遗传密码的特点",
+  "原核翻译的起始",
+  "释放因子"
+]
+},
+{
+"id": "s15-04",
+"cat": "分子生物学",
+"ch": "翻译",
+"level": "重点",
+"q": "核糖体的结构与功能位点",
+"def": "A位、P位、E位，大亚基催化肽键。",
+"ans": "**核糖体**由**大亚基**（原核50S、真核60S）与**小亚基**（30S、40S）组成。功能位点：**A位（氨酰-tRNA进入位点）**、**P位（肽酰-tRNA位点）**、**E位（空载tRNA退出位点）**；大亚基含**肽酰转移酶中心（PTC）**，由**23S rRNA催化肽键形成**（**核酶**）。小亚基负责**mRNA结合与密码子-反密码子配对**。**多聚核糖体**提高翻译效率。",
+"why": "翻译机制的基础结构；PTC是RNA催化的经典证据。",
+"tip": "答题写“PTC由rRNA构成，是核酶”，这是重要加分。",
+"link": [
+  "核酶（ribozyme）",
+  "原核翻译的起始",
+  "翻译的过程"
+]
+},
+{
+"id": "s15-05",
+"cat": "分子生物学",
+"ch": "翻译",
+"level": "重点",
+"q": "氨基酰-tRNA合成酶",
+"def": "活化氨基酸并连接到tRNA，具校对功能。",
+"ans": "**氨基酰-tRNA合成酶**催化**氨基酸 + ATP + tRNA → 氨基酰-tRNA + AMP + PPi**（两步：先形成**氨基酰-AMP**，再转到tRNA的**3'-CCA**上），是**氨基酸与tRNA的“接头”**，决定遗传密码的解读准确性。特点：**高度专一**（每种氨基酸一种酶），具**校对（编辑）活性**，可水解误配的产物，保证翻译精确性。",
+"why": "“第二遗传密码”与翻译保真机制的核心考点。",
+"tip": "强调“两次识别 + 校对”，能显示理解深度。",
+"link": [
+  "tRNA的结构特点",
+  "翻译的保真性"
+]
+},
+{
+"id": "s15-06",
+"cat": "分子生物学",
+"ch": "翻译",
+"level": "重点",
+"q": "原核翻译的起始",
+"def": "Shine-Dalgarno序列与16S rRNA配对，30S起始复合体。",
+"ans": "①**30S小亚基 + IF1、IF3**结合mRNA，**16S rRNA的3'端与mRNA的SD序列（AGGAGG，位于AUG上游8~13nt）互补配对**，定位起始密码子AUG；②**IF2-GTP + fMet-tRNA^fMet**进入P位；③**50S大亚基加入**形成**70S起始复合体**，GTP水解，**IF1、IF2、IF3释放**。起始氨基酸为**甲酰甲硫氨酸（fMet）**。",
+"why": "SD序列是原核特有的定位机制，与真核帽子依赖起始形成对比。",
+"tip": "必写“SD序列-16S rRNA配对 + fMet”，这是原核翻译的两大标志。",
+"link": [
+  "SD序列",
+  "真核翻译的起始",
+  "翻译的过程"
+]
+},
+{
+"id": "s15-07",
+"cat": "分子生物学",
+"ch": "翻译",
+"level": "重点",
+"q": "翻译的过程（延伸）",
+"def": "进位、成肽、移位，需EF-Tu/EF-G与GTP。",
+"ans": "**延伸循环**三步：①**进位（注册）**：**EF-Tu-GTP**携带氨基酰-tRNA进入**A位**，与密码子配对，GTP水解；②**成肽**：**肽酰转移酶（23S rRNA）**催化P位肽酰基转移到A位氨基酰-tRNA的氨基上，形成肽键；③**移位**：**EF-G-GTP**推动核糖体沿mRNA移动一个密码子，A位肽酰-tRNA移至P位，空载tRNA移至E位并释放。循环往复，**每加一个氨基酸消耗2个GTP + 1个ATP（活化时）**。",
+"why": "“翻译过程”是必考论述题，三步骤与因子名称要准。",
+"tip": "延伸三因子：EF-Tu（进位）、EF-G（移位），再加肽酰转移酶。",
+"link": [
+  "翻译的终止",
+  "核糖体的结构与功能位点",
+  "翻译的能量消耗"
+]
+},
+{
+"id": "s15-08",
+"cat": "分子生物学",
+"ch": "翻译",
+"level": "重点",
+"q": "翻译的终止",
+"def": "终止密码子被RF识别，肽链释放。",
+"ans": "当**A位出现终止密码子（UAA/UAG/UGA）**时，无对应tRNA，**释放因子**识别：原核**RF1**（识别UAA、UAG）、**RF2**（识别UAA、UGA）、**RF3（GTP酶，促释放）**；真核**eRF1**识别三个终止密码、**eRF3**（GTP酶）。RF促使**肽酰转移酶转为水解活性**，**肽链从P位tRNA上水解释放**，随后**核糖体解离**（RRF、EF-G、IF3参与）。",
+"why": "“终止”的机制（RF诱导水解）与起始的对比常考。",
+"tip": "写“RF改变PTC活性，使肽链水解而非成肽”，这句最加分。",
+"link": [
+  "起始密码子与终止密码子",
+  "翻译的过程（延伸）"
+]
+},
+{
+"id": "s15-09",
+"cat": "分子生物学",
+"ch": "翻译",
+"level": "重点",
+"q": "翻译的能量消耗",
+"def": "每加一个氨基酸约4个高能磷酸键。",
+"ans": "**氨基酸活化**：ATP→AMP+PPi，消耗**2个高能磷酸键**；**进位**：EF-Tu-GTP水解，**1个**；**移位**：EF-G-GTP水解，**1个**。合计**每延长一个氨基酸消耗4个高能磷酸键**；**起始**另需1个GTP，**终止**1个GTP。故含n个氨基酸的蛋白质翻译约消耗**4n个高能键**。",
+"why": "能量计算题可能延伸到翻译，答题时数字要准确。",
+"tip": "记“活化2 + 进位1 + 移位1 = 4”。",
+"link": [
+  "翻译的过程（延伸）",
+  "能量的计算"
+]
+},
+{
+"id": "s15-10",
+"cat": "分子生物学",
+"ch": "翻译",
+"level": "重点",
+"q": "翻译后的加工",
+"def": "切除、修饰、折叠、亚基组装、靶向运输。",
+"ans": "①**肽链切除**：去除**N端甲硫氨酸/信号肽**（信号肽酶）；②**共价修饰**：**磷酸化、糖基化、羟基化、甲基化、乙酰化、泛素化、二硫键形成**；③**剪切加工**：如**胰岛素原→胰岛素（切除C肽）**；④**折叠与组装**：需**分子伴侣**，多亚基组装；⑤**靶向运输**：信号肽引导至内质网、线粒体、细胞核等。",
+"why": "“蛋白质合成后加工”是考纲明确条目，胰岛素加工是经典例子。",
+"tip": "举例“胰岛素原切除C肽”和“信号肽引导分泌”，最有说服力。",
+"link": [
+  "信号肽",
+  "胰岛素",
+  "分子伴侣"
+]
+},
+{
+"id": "s15-11",
+"cat": "分子生物学",
+"ch": "翻译",
+"level": "重点",
+"q": "信号肽与蛋白质分选",
+"def": "信号肽引导蛋白到内质网/其他细胞器。",
+"ans": "**信号肽**是新生肽链**N端的13~36个氨基酸**（含疏水中段），被**信号识别颗粒（SRP）**识别，引导核糖体到**内质网**的**SRP受体（停泊蛋白）**，肽链经**易位子（translocon）**进入内质网腔，**信号肽被信号肽酶切除**。这是**分泌蛋白、膜蛋白、溶酶体蛋白**的分选途径（**信号假说，Blobel，1999诺奖**）。线粒体、叶绿体、过氧化物酶体蛋白由**不同的转运信号**引导。",
+"why": "“蛋白质如何到达正确位置”的经典机制，苏大偏爱此类机制题。",
+"tip": "写“SRP-信号肽识别 → 内质网 → 易位子 → 信号肽切除”。",
+"link": [
+  "翻译后的加工",
+  "内质网和高尔基体的加工"
+]
+},
+{
+"id": "s15-12",
+"cat": "分子生物学",
+"ch": "翻译",
+"level": "重点",
+"q": "真核翻译的起始",
+"def": "帽子依赖（eIF4E）与IRES两种方式。",
+"ans": "**帽子依赖起始**：**eIF4F复合体**（**eIF4E结合m⁷G帽**、eIF4G支架、eIF4A解旋酶）结合5'帽→招募**40S小亚基 + eIF3 + eIF2-GTP-Met-tRNAi**→**扫描**mRNA寻找第一个AUG（Kozak序列）→**60S加入**形成80S。**IRES依赖起始**：某些病毒mRNA通过**内部核糖体进入位点（IRES）**直接招募核糖体，不需帽子。调控点：**eIF2α磷酸化**（应激时）抑制整体翻译。",
+"why": "真核与原核起始差异的对比题必答；“eIF4E与肿瘤”是热点。",
+"tip": "写“帽子依赖 + 扫描 + Kozak”和“IRES”两条路，答案就完整。",
+"link": [
+  "原核翻译的起始",
+  "Kozak序列",
+  "mTOR与翻译调控"
+]
+},
+{
+"id": "s15-13",
+"cat": "分子生物学",
+"ch": "翻译",
+"level": "拓展",
+"q": "翻译的保真性与抗生素作用靶点",
+"def": "密码子-反密码子配对+合成酶校对；抗生素靶向核糖体。",
+"ans": "**保真机制**：①**氨基酰-tRNA合成酶的校对**；②**密码子-反密码子配对**（摆动位允许有限错配）；③**核糖体的动力学校对**（错误配对导致EF-Tu解离）。**抗生素靶点**：**链霉素/四环素**（30S，干扰起始/进位）、**氯霉素**（50S，抑制肽酰转移酶）、**红霉素**（50S，阻断出口通道）、**嘌呤霉素**（模拟氨基酰-tRNA，使肽链提前释放）。",
+"why": "翻译机制与药理的结合点，苏大生物医药方向非常爱考。",
+"tip": "每个抗生素写“靶点亚基 + 作用环节”，不要只写药名。",
+"link": [
+  "氨基酰-tRNA合成酶",
+  "核糖体的结构与功能位点",
+  "抗生素"
+]
+},
+{
+"id": "s16-01",
+"cat": "分子生物学",
+"ch": "基因表达调控",
+"level": "基础",
+"q": "基因表达调控的层次",
+"def": "转录水平为主，另有转录后、翻译、翻译后。",
+"ans": "①**DNA水平（基因重排、扩增、修饰）**；②**转录水平（最主要，启动子、增强子、转录因子、操纵子）**；③**转录后加工（剪接、加帽加尾、RNA编辑、RNA稳定性、miRNA干扰）**；④**翻译水平（起始因子磷酸化、mRNA可读性、稀有密码子）**；⑤**翻译后（加工修饰、降解）**。**转录起始的调控是最经济、最主要的控制点**。",
+"why": "“基因表达调控有哪几个层次”是论述题开门句。",
+"tip": "写“以转录水平为主”，并给每层1个例子。",
+"link": [
+  "操纵子",
+  "转录因子与转录起始复合物（真核）",
+  "miRNA"
+]
+},
+{
+"id": "s16-02",
+"cat": "分子生物学",
+"ch": "基因表达调控",
+"level": "重点",
+"q": "操纵子与操纵基因",
+"def": "操纵子是原核基因表达调控单位。",
+"ans": "**操纵子（operon）**是原核生物**功能相关的一组结构基因**及其**上游调控序列（启动子P、操纵基因O）**组成的**转录单位**，转录为一条**多顺反子mRNA**。**调节基因**（可位于别处）编码**阻遏蛋白**或**激活蛋白**，与操纵基因/启动子结合调控转录。经典：**乳糖操纵子、色氨酸操纵子**。",
+"why": "原核调控的框架概念，必须先讲清“操纵子=结构基因+调控序列”。",
+"tip": "注意：操纵子**不包括调节基因**（很多同学写错）。",
+"link": [
+  "乳糖操纵子",
+  "色氨酸操纵子",
+  "多顺反子mRNA"
+]
+},
+{
+"id": "s16-03",
+"cat": "分子生物学",
+"ch": "基因表达调控",
+"level": "重点",
+"q": "乳糖操纵子",
+"def": "负调控+正调控；CAP-cAMP正调控，阻遏蛋白负调控。",
+"ans": "结构基因**lacZ（β-半乳糖苷酶）、lacY（透性酶）、lacA（转乙酰酶）**，调控序列**P、O**，调节基因**lacI**编码**阻遏蛋白**。**无乳糖**：阻遏蛋白结合O，**转录关闭**（负调控）；**有乳糖、无葡萄糖**：**异乳糖**结合阻遏蛋白使其脱离O；同时**cAMP高→CAP-cAMP复合体结合启动子上游→RNA聚合酶结合增强→高转录**（**正调控**）；**有葡萄糖**：cAMP低→CAP不结合→即使有乳糖也低转录（**葡萄糖效应/降解物阻遏**）。",
+"why": "原核调控最经典的模型，几乎必考；正负调控双机制是得分核心。",
+"tip": "答题用“两种条件（有/无葡萄糖）× 两种状态（有/无乳糖）”的表格最清楚。",
+"link": [
+  "操纵子",
+  "CAP-cAMP",
+  "葡萄糖效应"
+]
+},
+{
+"id": "s16-04",
+"cat": "分子生物学",
+"ch": "基因表达调控",
+"level": "重点",
+"q": "CAP-cAMP与葡萄糖效应",
+"def": "cAMP低时CAP不激活，乳糖操纵子低表达。",
+"ans": "**CAP（分解代谢物基因激活蛋白，CRP）**与**cAMP**结合成复合体，结合启动子上游**CAP位点**，**增强RNA聚合酶与启动子的结合**。**葡萄糖缺乏**→腺苷酸环化酶活性高→cAMP高→CAP-cAMP形成→激活转录；**葡萄糖充足**→cAMP低→CAP不能激活→转录水平低。这解释了**细菌优先利用葡萄糖**（**葡萄糖效应/降解物阻遏**）。",
+"why": "“为什么有葡萄糖时不利用乳糖”的标准答案，也是正调控典型。",
+"tip": "一句话：“cAMP是葡萄糖缺乏的信号，CAP-cAMP是正调控因子”。",
+"link": [
+  "乳糖操纵子",
+  "cAMP"
+]
+},
+{
+"id": "s16-05",
+"cat": "分子生物学",
+"ch": "基因表达调控",
+"level": "重点",
+"q": "色氨酸操纵子与衰减子",
+"def": "阻遏+衰减双重调控，前导肽区的翻译决定衰减。",
+"ans": "**trp操纵子**含**trpE~trpA**结构基因。**①阻遏**：色氨酸充足时，**色氨酸（辅阻遏物）与阻遏蛋白结合**→结合O→关闭转录。**②衰减（attenuation）**：前导区含**前导肽编码序列（含两个连续Trp密码子）**与**衰减子（前导区3'端）**；**Trp充足**→核糖体快速通过前导肽→RNA形成**3-4终止发夹**→**转录提前终止**；**Trp不足**→核糖体停滞在Trp密码子→形成**2-3抗终止发夹**→转录继续。",
+"why": "“衰减作用”是原核独有的精细调控，常作论述或名解。",
+"tip": "核心逻辑：“翻译速度决定RNA二级结构，二级结构决定是否终止”。",
+"link": [
+  "操纵子",
+  "乳糖操纵子"
+]
+},
+{
+"id": "s16-06",
+"cat": "分子生物学",
+"ch": "基因表达调控",
+"level": "重点",
+"q": "正调控与负调控、诱导与阻遏",
+"def": "按调节蛋白作用方向与效应物性质分类。",
+"ans": "**负调控**：调节蛋白（**阻遏蛋白**）结合DNA**抑制转录**；**正调控**：调节蛋白（**激活蛋白**）结合DNA**促进转录**。**诱导**：效应物使阻遏蛋白失活（**诱导物**，如异乳糖）或激活激活蛋白，使基因**由关到开**；**阻遏**：效应物（**辅阻遏物**，如色氨酸）激活阻遏蛋白，使基因**由开到关**。组合成四类：**负控诱导（lac）、负控阻遏（trp）、正控诱导（mal）、正控阻遏**。",
+"why": "概念矩阵题，考试常以“判断属于哪一类”出现。",
+"tip": "记住lac=负控诱导，trp=负控阻遏，两个标杆即可类推。",
+"link": [
+  "乳糖操纵子",
+  "色氨酸操纵子与衰减子"
+]
+},
+{
+"id": "s16-07",
+"cat": "分子生物学",
+"ch": "基因表达调控",
+"level": "重点",
+"q": "真核基因表达调控的特点",
+"def": "多级、多基因、染色质水平、顺式与反式。",
+"ans": "①**个体发育与组织特异性**（同一基因组，不同表达谱）；②**多级调控**：**染色质水平（最重要特征）**、转录水平、转录后、翻译、翻译后；③**转录与翻译在时空上分离**（核内转录、胞质翻译）；④**多为正调控**（激活蛋白、增强子）；⑤**基因数量大、调控元件分散**，常**多基因协同**；⑥**RNA加工与可变剪接**提供多样性。",
+"why": "真核调控总述题；与“原核调控比较”常一起考。",
+"tip": "核心差异句：“真核多了染色质水平调控，且以正调控为主”。",
+"link": [
+  "染色质重塑",
+  "组蛋白修饰",
+  "增强子与沉默子"
+]
+},
+{
+"id": "s16-08",
+"cat": "分子生物学",
+"ch": "基因表达调控",
+"level": "重点",
+"q": "染色质重塑",
+"def": "改变核小体位置/组成，调节DNA可及性。",
+"ans": "**染色质重塑复合体（如SWI/SNF、ISWI、CHD）**利用**ATP水解能**，通过**滑动、驱逐、重组核小体**或**置换组蛋白变体（如H2A.Z、H3.3）**，改变DNA对转录因子的**可及性**。**紧密的异染色质**（高度压缩）转录不活跃，**疏松的常染色质**活跃。这是真核调控的**第一层次（也是最上游）**。",
+"why": "“为什么真核调控多一层染色质”的答案，也是表观遗传学核心。",
+"tip": "答“染色质重塑如何影响表达”时写“改变可及性”这个关键词。",
+"link": [
+  "组蛋白修饰",
+  "DNA甲基化",
+  "表观遗传"
+]
+},
+{
+"id": "s16-09",
+"cat": "分子生物学",
+"ch": "基因表达调控",
+"level": "重点",
+"q": "组蛋白修饰",
+"def": "乙酰化激活、甲基化可变、磷酸化等。",
+"ans": "**①乙酰化（HAT）**：中和赖氨酸正电荷、松弛染色质→**激活转录**；去乙酰化（**HDAC**）→抑制。**②甲基化**：**H3K4me3**→激活；**H3K9me3、H3K27me3**→抑制（异染色质）。**③磷酸化**（H3S10，染色体凝集）、**泛素化**、**SUMO化**。修饰可**招募特定阅读蛋白**，形成“**组蛋白密码**”。**HDAC抑制剂**（如伏立诺他）用于抗肿瘤。",
+"why": "表观遗传与抗肿瘤药物结合，是苏大热点题。",
+"tip": "至少记住三个位点：H3K4me3（开）、H3K9me3（关）、H3K27me3（关）。",
+"link": [
+  "染色质重塑",
+  "DNA甲基化",
+  "表观遗传"
+]
+},
+{
+"id": "s16-10",
+"cat": "分子生物学",
+"ch": "基因表达调控",
+"level": "重点",
+"q": "DNA甲基化",
+"def": "CpG岛甲基化通常抑制转录。",
+"ans": "**DNA甲基转移酶（DNMT）**将**S-腺苷甲硫氨酸（SAM）**的甲基转移到**CpG二核苷酸的胞嘧啶C5**上，生成**5-甲基胞嘧啶**。**启动子区CpG岛高甲基化→转录抑制**（甲基化结合蛋白招募HDAC等）；**整体低甲基化 + 局部高甲基化**是肿瘤的常见特征（**抑癌基因启动子甲基化沉默**）。**去甲基化药物（5-氮杂胞苷）**用于白血病治疗。",
+"why": "表观遗传与肿瘤、药物三者结合的高价值考点。",
+"tip": "一句话：“启动子CpG岛甲基化→基因沉默；DNMT催化，SAM供甲基”。",
+"link": [
+  "组蛋白修饰",
+  "表观遗传",
+  "抑癌基因"
+]
+},
+{
+"id": "s16-11",
+"cat": "分子生物学",
+"ch": "基因表达调控",
+"level": "重点",
+"q": "增强子与沉默子",
+"def": "顺式作用元件，位置方向不依赖，远距离作用。",
+"ans": "**增强子**是能**显著提高转录活性**的**顺式作用元件**，特点：**位置、方向、距离不依赖**（可在上游、下游、内含子中，甚至数kb外），通过**DNA环化（looping）**与**启动子/Mediator**接触而发挥作用。**沉默子**则抑制转录。**绝缘子**界定调控边界，防止增强子串扰。",
+"why": "“增强子为什么能在远处起作用”是机制题，DNA环化是标准答案。",
+"tip": "答题写“顺式元件 + 位置不依赖 + DNA环化 + Mediator”。",
+"link": [
+  "转录因子与转录起始复合物（真核）",
+  "绝缘子",
+  "Mediator"
+]
+},
+{
+"id": "s16-12",
+"cat": "分子生物学",
+"ch": "基因表达调控",
+"level": "重点",
+"q": "转录因子（反式作用因子）的结构域",
+"def": "DNA结合域、转录激活域、二聚化域。",
+"ans": "**反式作用因子（转录因子）**通常含：①**DNA结合域**：**锌指（C₂H₂、C₄）、亮氨酸拉链（bZIP）、螺旋-转角-螺旋（HTH）、螺旋-环-螺旋（bHLH）、同源域（homeodomain）**；②**转录激活域**（酸性、富含Gln/Pro）；③**二聚化域**（拉链、HLH）；④**配体结合域**（核受体）。通过**识别特定DNA序列 + 招募共激活因子/Mediator/染色质修饰酶**发挥作用。",
+"why": "“转录因子的结构特点”是名解/简答常规题。",
+"tip": "至少写三种DNA结合基序及其代表蛋白（如锌指-Sp1、bZIP-Jun/Fos）。",
+"link": [
+  "增强子与沉默子",
+  "核受体",
+  "转录因子与转录起始复合物（真核）"
+]
+},
+{
+"id": "s16-13",
+"cat": "分子生物学",
+"ch": "基因表达调控",
+"level": "重点",
+"q": "表观遗传",
+"def": "不改变DNA序列的可遗传的表达改变。",
+"ans": "**表观遗传**指在**DNA序列不变**的前提下，基因表达发生**可遗传的改变**。主要机制：**DNA甲基化、组蛋白修饰、染色质重塑、非编码RNA（miRNA、lncRNA）调控**、基因组印记、X染色体失活。特点：**可逆、受环境影响**（营养、应激、药物），与**肿瘤、发育、衰老、代谢疾病**相关。",
+"why": "前沿热点，苏大近年在简答题中偏爱“表观遗传/前沿”类问题。",
+"tip": "必写“DNA序列不变 + 可遗传 + 可逆”三个关键词。",
+"link": [
+  "DNA甲基化",
+  "组蛋白修饰",
+  "X染色体失活"
+]
+},
+{
+"id": "s16-14",
+"cat": "分子生物学",
+"ch": "基因表达调控",
+"level": "重点",
+"q": "miRNA与siRNA",
+"def": "miRNA抑制翻译/降解mRNA；siRNA介导RNAi。",
+"ans": "**miRNA**：由基因组编码，经**Drosha、Dicer**加工成约**22nt**，与**RISC（含Ago蛋白）**结合，通过**不完全互补**识别靶mRNA的**3'UTR**，主要**抑制翻译或促进mRNA降解**；**siRNA**：来源于**外源dsRNA或转基因**，完全互补配对，经RISC引导**特异性切割降解靶mRNA（RNAi）**。功能：**基因沉默、抗病毒、发育调控、肿瘤发生**。",
+"why": "“转录后调控”与“RNAi技术”双重考点，与基因功能研究强相关。",
+"tip": "核心区别：miRNA**不完全互补→抑翻译**；siRNA**完全互补→切降解**。",
+"link": [
+  "RNA干扰",
+  "转录后水平的调控",
+  "表观遗传"
+]
+},
+{
+"id": "s16-15",
+"cat": "分子生物学",
+"ch": "基因表达调控",
+"level": "拓展",
+"q": "X染色体失活与基因组印记",
+"def": "Xist RNA介导X失活；印记来自单亲等位基因表达。",
+"ans": "**X染色体失活**：雌性哺乳动物两条X中的一条被随机失活（**莱昂化**），由**Xist lncRNA**顺式包裹该X并招募**PRC2（H3K27me3）**实现沉默，使雌雄X基因剂量平衡。**基因组印记**：某些基因的表达取决于亲本来源（**父源或母源等位基因被甲基化沉默**），如**IGF2/H19**；印记异常导致**Prader-Willi/Angelman综合征**。",
+"why": "表观遗传的经典实例，常作简答或作为“表观遗传意义”的例子。",
+"tip": "两句核心：Xist介导X失活；印记=亲本特异性甲基化。",
+"link": [
+  "表观遗传",
+  "DNA甲基化"
+]
+},
+{
+"id": "s16-16",
+"cat": "分子生物学",
+"ch": "基因表达调控",
+"level": "拓展",
+"q": "RNA干扰（RNAi）",
+"def": "dsRNA诱导同源mRNA特异性降解。",
+"ans": "**RNAi**是由**双链RNA（dsRNA）**引发的**序列特异性基因沉默**：dsRNA被**Dicer**切割为**21~23nt的siRNA**→装入**RISC**→**Ago2**保留引导链→与靶mRNA**完全互补**→**切割降解mRNA**。功能：**抗病毒、抑制转座子、基因功能研究（敲低）**，也用于**药物开发（如patisiran）**。**Fire与Mello**因发现RNAi获2006年诺贝尔奖。",
+"why": "“基因沉默技术”与“反向遗传学”的基石，属于现代分子生物学技术应用考点。",
+"tip": "写清“Dicer→RISC/Argonaute→切割”三步即可。",
+"link": [
+  "miRNA与siRNA",
+  "基因敲低",
+  "转录后水平的调控"
+]
+},
+{
+"id": "s17-01",
+"cat": "分子生物学",
+"ch": "DNA技术应用",
+"level": "基础",
+"q": "限制性内切酶",
+"def": "识别特定序列并切割双链DNA的核酸内切酶。",
+"ans": "**限制性内切酶**（**Ⅱ型**最常用）识别**4~8个碱基的特定回文序列**并在其内部或附近**切割双链DNA**，产生**黏性末端（如EcoRI：G↓AATTC）或平末端（如SmaI）**。来源于细菌的**限制-修饰系统**（保护自身DNA、切割外源DNA）。是**基因克隆的核心工具酶**。",
+"why": "基因工程的“手术刀”，必考名解与用途。",
+"tip": "举例EcoRI（黏性末端）和SmaI（平末端），并说明黏性末端便于连接。",
+"link": [
+  "DNA连接酶",
+  "重组DNA技术",
+  "限制性片段长度多态性"
+]
+},
+{
+"id": "s17-02",
+"cat": "分子生物学",
+"ch": "DNA技术应用",
+"level": "重点",
+"q": "重组DNA技术（基因工程）的基本流程",
+"def": "切、接、转、选、表达。",
+"ans": "**①获取目的基因**（PCR扩增、化学合成、文库筛选、酶切）；②**载体构建**（同种限制酶切 + DNA连接酶连接形成**重组载体**）；③**导入宿主细胞**（转化、转染、电穿孔、显微注射、噬菌体/病毒载体）；④**筛选与鉴定**（**抗性筛选、蓝白斑、PCR、酶切鉴定、测序、Western**）；⑤**表达与产物纯化**。常用的“四要素”：**目的基因、载体、工具酶、宿主**。",
+"why": "苏大“DNA技术应用”类论述题的框架答案，答题要成体系。",
+"tip": "用“切-接-转-筛-表”五字口诀，条理清楚。",
+"link": [
+  "限制性内切酶",
+  "克隆载体",
+  "蓝白斑筛选"
+]
+},
+{
+"id": "s17-03",
+"cat": "分子生物学",
+"ch": "DNA技术应用",
+"level": "重点",
+"q": "克隆载体",
+"def": "能携带外源DNA并在宿主中自主复制的DNA分子。",
+"ans": "**克隆载体**必须具备：①**自主复制起点（ori）**；②**多克隆位点（MCS）**（含多种限制酶位点）；③**选择标记**（抗性基因）；④体积小、拷贝数高；⑤（表达载体）**启动子、核糖体结合位点、终止子**。常用：**pBR322、pUC系列（含lacZ，用于蓝白斑筛选）、λ噬菌体、BAC、YAC**，真核表达用**pCMV系列、杆状病毒、慢病毒**。",
+"why": "“载体的基本条件”是经典简答，要点固定易得分。",
+"tip": "四要素背诵：ori、MCS、标记基因、非必需区。",
+"link": [
+  "重组DNA技术（基因工程）的基本流程",
+  "蓝白斑筛选"
+]
+},
+{
+"id": "s17-04",
+"cat": "分子生物学",
+"ch": "DNA技术应用",
+"level": "重点",
+"q": "蓝白斑筛选",
+"def": "lacZα互补破坏产生白色菌落。",
+"ans": "**pUC系列载体**含**lacZ'（编码β-半乳糖苷酶的α片段）**，宿主菌（如DH5α）含**lacZΔM15（ω片段）**，二者通过**α互补**产生有活性的β-半乳糖苷酶，在**X-gal（5-溴-4-氯-3-吲哚-β-D-半乳糖苷）+ IPTG**平板上形成**蓝色菌落**（重组失败）。若外源DNA插入MCS，**lacZ'阅读框被破坏→无α互补→白色菌落**（**重组成功**）。",
+"why": "经典的“表型筛选”考题，需说清“蓝=无插入、白=有插入”。",
+"tip": "记住“白斑才是重组子”，考试常设反向陷阱。",
+"link": [
+  "克隆载体",
+  "重组DNA技术（基因工程）的基本流程"
+]
+},
+{
+"id": "s17-05",
+"cat": "分子生物学",
+"ch": "DNA技术应用",
+"level": "重点",
+"q": "PCR（聚合酶链反应）",
+"def": "变性-退火-延伸循环扩增DNA。",
+"ans": "**PCR**由**Kary Mullis**发明（1993诺奖），在**体外**扩增特定DNA片段，每个循环：①**变性（94~95℃）**双链解开；②**退火（50~65℃）**引物与模板特异结合；③**延伸（72℃）**由**Taq DNA聚合酶**沿5'→3'合成新链。n个循环可扩增约**2ⁿ倍**。关键要素：**模板、引物对、dNTP、Mg²⁺、耐热Taq酶、缓冲液、热循环仪**。",
+"why": "现代分子生物学第一技术，几乎每年都会被问到或作为背景。",
+"tip": "答“三步骤+温度+酶+Taq耐热源于水生栖热菌”最完整。",
+"link": [
+  "Taq DNA聚合酶",
+  "引物设计",
+  "实时定量PCR"
+]
+},
+{
+"id": "s17-06",
+"cat": "分子生物学",
+"ch": "DNA技术应用",
+"level": "重点",
+"q": "Taq DNA聚合酶",
+"def": "来源于水生栖热菌，耐高温，无3'→5'校对。",
+"ans": "**Taq DNA聚合酶**来自**水生栖热菌（Thermus aquaticus）**，最适温度**72℃**、能耐**95℃**高温而不失活，使PCR循环自动化成为可能。缺点：**缺乏3'→5'外切酶校对活性**，错误率较高（约10⁻⁴~10⁻⁵），扩增长片段能力有限；高保真需求时改用**Pfu、Phusion（具校对活性）**。",
+"why": "“为什么PCR能用Taq”是理解PCR实用化的关键。",
+"tip": "写“耐热 + 无校对 → 错误率较高”这两面，答案才完整。",
+"link": [
+  "PCR（聚合酶链反应）",
+  "DNA聚合酶（原核）"
+]
+},
+{
+"id": "s17-07",
+"cat": "分子生物学",
+"ch": "DNA技术应用",
+"level": "重点",
+"q": "引物设计原则",
+"def": "18~25nt、GC 40~60%、Tm相近、避免二聚体。",
+"ans": "①长度**18~25个核苷酸**；②**GC含量40%~60%**；③**Tm值相近**（差异<5℃），退火温度通常取Tm−5℃；④**3'端避免连续互补或形成发夹/二聚体**（尤其3'端）；⑤**5'端可加限制酶位点或标签**；⑥**特异性高**（BLAST比对，避免非特异扩增）；⑦跨越外显子-外显子连接（用于RT-PCR区分基因组DNA污染）。",
+"why": "“PCR失败如何优化”类实验设计题的核心答案。",
+"tip": "答题按“长度-GC-Tm-特异性-3'端”五点列出即可。",
+"link": [
+  "PCR（聚合酶链反应）",
+  "Tm值"
+]
+},
+{
+"id": "s17-08",
+"cat": "分子生物学",
+"ch": "DNA技术应用",
+"level": "重点",
+"q": "实时定量PCR（qPCR）",
+"def": "实时监测荧光信号，定量起始模板。",
+"ans": "**qPCR**在PCR反应中加入**荧光染料（SYBR Green，非特异结合dsDNA）**或**探针（TaqMan，特异）**，每循环实时检测荧光强度。**Ct值**（荧光达到阈值所需循环数）与**起始模板量的对数成反比**。应用：**基因表达定量（配合逆转录为RT-qPCR）、病原体检测、拷贝数分析**。注意**需内参基因归一化**。",
+"why": "疫情后极热门技术，苏大生物医药方向很可能出现。",
+"tip": "必写“Ct值越小，模板越多”和“内参基因归一化”。",
+"link": [
+  "PCR（聚合酶链反应）",
+  "逆转录"
+]
+},
+{
+"id": "s17-09",
+"cat": "分子生物学",
+"ch": "DNA技术应用",
+"level": "重点",
+"q": "逆转录与cDNA",
+"def": "以RNA为模板合成DNA，由逆转录酶催化。",
+"ans": "**逆转录**是以**RNA为模板**、由**逆转录酶（依赖RNA的DNA聚合酶）**催化合成**互补DNA（cDNA）**的过程，需**引物**（oligo-dT或随机引物）。逆转录酶来自**逆转录病毒**，兼具**RNase H活性**（降解RNA链）。应用：**RT-PCR、cDNA文库构建、病毒检测（HIV、HCV RNA）**；也是**逆转录病毒载体**与**端粒酶**的基础。",
+"why": "中心法则的补充；与qPCR组合成为基因表达检测的标准流程。",
+"tip": "强调“需引物”“RNase H”“用于cDNA文库”。",
+"link": [
+  "中心法则",
+  "实时定量PCR（qPCR）",
+  "cDNA文库"
+]
+},
+{
+"id": "s17-10",
+"cat": "分子生物学",
+"ch": "DNA技术应用",
+"level": "重点",
+"q": "Southern、Northern、Western印迹",
+"def": "分别检测DNA、RNA、蛋白质。",
+"ans": "**Southern blot**：DNA经酶切、电泳、变性、转膜，用**标记的DNA探针杂交**，检测**特定DNA序列**（基因拷贝数、缺失、RFLP）。**Northern blot**：RNA电泳转膜后用探针杂交，检测**特定mRNA的表达量与大小**。**Western blot**：蛋白质经**SDS-PAGE**分离、转膜，用**特异抗体**检测**目标蛋白**（表达量与修饰）。三者核心逻辑相同：**分离→转膜→特异探针/抗体探测**。",
+"why": "三大印迹的区分是选择题与简答题的常客，需清晰对号。",
+"tip": "记“South-DNA、North-RNA、West-蛋白”，再加“探针 vs 抗体”。",
+"link": [
+  "核酸分子杂交",
+  "SDS-PAGE",
+  "抗体"
+]
+},
+{
+"id": "s17-11",
+"cat": "分子生物学",
+"ch": "DNA技术应用",
+"level": "重点",
+"q": "Sanger双脱氧链终止法测序",
+"def": "ddNTP终止延伸，按长度分离读取序列。",
+"ans": "**Sanger法**在四个反应体系中分别加入少量**双脱氧核苷酸（ddNTP，2'、3'均无羟基，不能继续延伸）**，DNA聚合酶延伸时随机掺入ddNTP而**终止**，产生**长度递增的一系列片段**；经**聚丙烯酰胺凝胶电泳**按大小分离，读取条带即得序列。现代**毛细管电泳 + 荧光标记ddNTP**实现自动化，是**人类基因组计划**的主力方法。",
+"why": "测序原理是“DNA技术应用”的核心，常考“为什么ddNTP能终止”。",
+"tip": "核心句：“ddNTP缺3'-OH，掺入后无法形成下一个磷酸二酯键”。",
+"link": [
+  "第二代测序（NGS）",
+  "DNA聚合酶（原核）"
+]
+},
+{
+"id": "s17-12",
+"cat": "分子生物学",
+"ch": "DNA技术应用",
+"level": "重点",
+"q": "第二代测序（NGS）",
+"def": "边合成边测序，大规模并行。",
+"ans": "**NGS（高通量测序）**代表平台：**Illumina（边合成边测序，桥式扩增+可逆末端终止荧光dNTP）**、**Ion Torrent（检测H⁺释放）**、**454（焦磷酸测序）**。流程：**文库构建（片段化+接头）→ 扩增成簇 → 大规模并行测序 → 生物信息学拼接/比对**。优势：**通量极高、单碱基成本低**；应用：**全基因组、外显子组、转录组（RNA-seq）、宏基因组、肿瘤突变检测、无创产前检测（NIPT）**。",
+"why": "现代分子生物学“技术应用”必答项，苏大近年偏好前沿技术题。",
+"tip": "写“边合成边测序 + 大规模并行 + 短读长”三点即可。",
+"link": [
+  "Sanger双脱氧链终止法测序",
+  "RNA-seq",
+  "第三代测序"
+]
+},
+{
+"id": "s17-13",
+"cat": "分子生物学",
+"ch": "DNA技术应用",
+"level": "拓展",
+"q": "基因编辑（CRISPR-Cas9）",
+"def": "gRNA引导Cas9切割靶DNA，产生双链断裂。",
+"ans": "**CRISPR-Cas9**源自细菌适应性免疫。**Cas9核酸酶**在**单链引导RNA（sgRNA）**引导下，识别靶DNA的**PAM序列（NGG）**并**切割产生双链断裂（DSB）**；随后由**NHEJ（产生插入/缺失，敲除基因）**或**HR（提供供体模板，精确替换）**修复。2020年**Doudna与Charpentier**获诺贝尔化学奖。变体：**碱基编辑器（Base editor）、先导编辑器（Prime editor）**、**dCas9（无切割，用于转录调控/成像）**。",
+"why": "苏大“前沿热点”类简答题的高频答案，2012年后所有生化卷都可能涉及。",
+"tip": "答题必须写“sgRNA + PAM + Cas9切割 + NHEJ/HR修复”，缺一不可。",
+"link": [
+  "重组修复与双链断裂修复（HR/NHEJ）",
+  "RNA干扰（RNAi）"
+]
+},
+{
+"id": "s17-14",
+"cat": "分子生物学",
+"ch": "DNA技术应用",
+"level": "拓展",
+"q": "凝胶电泳与琼脂糖电泳",
+"def": "按电荷与大小分离DNA片段。",
+"ans": "DNA带**净负电荷**，在电场中向阳极移动；**琼脂糖凝胶**起分子筛作用，**小片段迁移快**。用于**PCR产物检测、酶切图谱分析、片段回收**。**聚丙烯酰胺凝胶（PAGE）**分辨率更高，用于**小片段（<500bp）分离和测序**。**脉冲场凝胶电泳（PFGE）**用于**大片段（>50kb）**分离。常用**溴化乙锭（EB）或GelRed**染色、紫外灯观察。",
+"why": "分子实验的“眼睛”，实验设计题常需描述检测手段。",
+"tip": "注意“DNA向正极跑、蛋白在SDS-PAGE中也向正极跑”。",
+"link": [
+  "SDS-PAGE",
+  "Sanger双脱氧链终止法测序"
+]
+},
+{
+"id": "s17-15",
+"cat": "分子生物学",
+"ch": "DNA技术应用",
+"level": "拓展",
+"q": "基因敲除与转基因动物",
+"def": "同源重组/CRISPR灭活基因；外源基因导入。",
+"ans": "**基因敲除（knockout）**：通过**同源重组（ES细胞打靶）**或**CRISPR-Cas9**使目标基因失活，经**胚胎干细胞注射→嵌合体→生殖系传递**获得敲除小鼠，用于研究基因功能。**转基因动物**：将外源基因（含启动子）显微注射入受精卵原核，随机整合表达（如**转基因小鼠、乳腺生物反应器**）。**条件性敲除（Cre-loxP）**实现组织特异性/时间特异性敲除。",
+"why": "“如何研究基因功能”是实验设计题标准答案之一。",
+"tip": "提Cre-loxP可显著加分（组织特异性敲除）。",
+"link": [
+  "基因编辑（CRISPR-Cas9）",
+  "重组DNA技术（基因工程）的基本流程"
+]
+},
+{
+"id": "s17-16",
+"cat": "分子生物学",
+"ch": "DNA技术应用",
+"level": "拓展",
+"q": "cDNA文库与基因组文库",
+"def": "cDNA文库只含表达基因；基因组文库含全部DNA。",
+"ans": "**cDNA文库**：以**mRNA为模板逆转录**构建，**只含特定组织/时期表达的基因**（无内含子、有组织特异性），适合**真核基因克隆与表达**。**基因组文库**：将基因组DNA酶切后插入载体，**含全部基因（含内含子、调控序列）**，覆盖度用**文库大小与概率公式**评估，适合**基因结构研究与定位克隆**。",
+"why": "“两种文库的区别与用途”是经典比较题。",
+"tip": "关键差异：**来源（mRNA vs 基因组DNA）+ 是否含内含子 + 是否组织特异**。",
+"link": [
+  "逆转录与cDNA",
+  "重组DNA技术（基因工程）的基本流程"
+]
+},
+{
+"id": "s17-17",
+"cat": "分子生物学",
+"ch": "DNA技术应用",
+"level": "拓展",
+"q": "DNA指纹与RFLP、STR",
+"def": "重复序列多态性用于个体识别。",
+"ans": "**RFLP（限制性片段长度多态性）**：基因组DNA经限制酶切后，因**酶切位点变异**产生不同长度片段，Southern杂交检测，用于**遗传病连锁分析与亲子鉴定**。**STR（短串联重复）**：2~6bp重复次数在个体间高度可变，PCR扩增+毛细管电泳分型，是**法医DNA指纹与亲子鉴定的主流方法**（**DNA指纹**由Alec Jeffreys 1984年建立）。",
+"why": "“DNA技术应用”中法医学方向的标准答案。",
+"tip": "回答“DNA指纹原理”先讲“高度多态性的重复序列”，再讲检测方法。",
+"link": [
+  "限制性内切酶",
+  "Southern、Northern、Western印迹"
+]
+},
+{
+"id": "s17-18",
+"cat": "分子生物学",
+"ch": "DNA技术应用",
+"level": "拓展",
+"q": "基因治疗",
+"def": "导入正常基因或编辑致病基因治疗疾病。",
+"ans": "**基因治疗**指将**正常基因导入患者细胞以补偿缺陷基因**，或通过**基因编辑（CRISPR）**修正致病突变。策略：**体内直接给药（AAV、LNP-mRNA）**与**体外改造细胞后回输（CAR-T、造血干细胞）**。已上市案例：**Zolgensma（SMA，AAV9）、Luxturna（遗传性视网膜病）、Casgevy（镰状细胞病，CRISPR）**。挑战：**递送效率、免疫原性、脱靶效应、长期安全性**。",
+"why": "苏大生物医药方向最爱考的“前沿应用”，可与HbS分子病联动。",
+"tip": "答题写“载体递送 + 靶细胞 + 编辑/补偿 + 安全性挑战”。",
+"link": [
+  "基因编辑（CRISPR-Cas9）",
+  "分子病"
+]
+},
+{
+"id": "s3-17",
+"cat": "静态生物化学",
+"ch": "糖类",
+"level": "基础",
+"q": "单糖的D/L构型与立体异构",
+"def": "以甘油醛为参照，由手性碳构型决定；D/L与差向异构体是单糖结构的主干。",
+"ans": "单糖含多个**手性碳**，开链结构用**Fischer投影式**表示。构型以**D-甘油醛**为参照：**编号最大的手性碳（戊糖C4、己糖C5）上—OH在右侧为D型，在左侧为L型**。天然糖多为**D型**。同分异构体包括：**对映体**（所有手性碳构型相反，如D-葡萄糖/L-葡萄糖）、**差向异构体（epimer）**（仅一个手性碳不同，如D-葡萄糖与D-甘露糖在C2、与D-半乳糖在C4）、**非对映体**（部分手性碳不同）。**D/L是构型命名，α/β是异头碳上—OH的相对位置，二者不是一回事**。",
+"why": "大纲明确要求“单糖的结构及构型”，D/L判定与差向异构是选择题、名词解释的高频落点。",
+"tip": "易错：D/L看**编号最大的手性碳**，不是看异头碳；α/β只看**异头碳**。",
+"link": [
+  "单糖的开链结构与环状结构",
+  "异头碳与α/β异头物",
+  "变旋作用"
+]
+},
+{
+"id": "s6-16",
+"cat": "静态生物化学",
+"ch": "维生素与辅酶",
+"level": "重点",
+"q": "各类维生素的主要食物来源",
+"def": "脂溶性维生素来自动植物油脂与肝脏；水溶性B族多在谷物、豆类、肉类与蔬菜。",
+"ans": "①**维生素A**：动物肝脏、鱼肝油、蛋黄、奶；植物中的**β-胡萝卜素**可转化。②**维生素D**：鱼肝油、蛋黄、肝脏；主要靠**皮肤经紫外线合成**。③**维生素E**：植物油、坚果、麦胚。④**维生素K**：绿叶蔬菜、肠道菌群合成。⑤**B₁**：全谷物、豆类、瘦肉（精加工谷物易缺乏）。⑥**B₂**：奶、蛋、肝、绿叶菜。⑦**PP（烟酸）**：肉、肝、谷物（玉米中为结合型，需碱处理释放）。⑧**B₆**：肉、鱼、蛋、豆类。⑨**叶酸**：绿叶蔬菜、肝。⑩**B₁₂**：动物性食品（肝、肉、蛋、奶），**植物性食物几乎不含**。⑪**维生素C**：新鲜蔬菜水果（尤其柑橘、猕猴桃、青椒）。",
+"why": "338大纲把“来源、功能、缺乏症”并列，功能与缺乏症已有卡片，来源是明确缺口。",
+"tip": "记忆两条线：**脂溶性看油脂与肝脏**、**水溶性看谷物豆类与新鲜果蔬**；B₁₂是唯一几乎只来自动物性食物的B族。",
+"link": [
+  "维生素的定义与分类",
+  "脂溶性与水溶性维生素的比较",
+  "维生素B₁₂与甲基钴胺素"
+]
+},
+{
+"id": "s11-20",
+"cat": "动态生物化学",
+"ch": "氨基酸代谢",
+"level": "重点",
+"q": "氨基酸碳骨架的七个代谢出口",
+"def": "脱氨后的碳骨架汇入丙酮酸、乙酰CoA等七个中间物，再进入TCA或生糖、生酮。",
+"ans": "氨基酸碳骨架经脱氨基后，主要汇入**七个出口**：①**丙酮酸**（→乙酰CoA或糖异生）：Ala、Ser、Cys、Gly、Thr、Trp；②**乙酰CoA**（生酮）：Leu、Lys、Phe、Tyr、Trp、Ile；③**乙酰乙酰CoA**（生酮）：Leu、Lys、Phe、Tyr；④**α-酮戊二酸**：Glu、Gln、Pro、Arg、His；⑤**琥珀酰CoA**：Met、Val、Ile、Thr；⑥**延胡索酸**：Phe、Tyr；⑦**草酰乙酸**：Asp、Asn。前三个偏向**生酮**，后四个经TCA中间物可**生糖**；**亮氨酸、赖氨酸只生酮**。",
+"why": "大纲第11章明确“氨基酸碳骨架的分解代谢”，七个出口是简答题的标准框架。",
+"tip": "答题先写“七个出口”，再各举1~2个氨基酸，比零散罗列更有结构分。",
+"link": [
+  "α-酮酸的代谢去路",
+  "三羧酸循环（TCA/Krebs循环）",
+  "氨基酸的生物合成（碳骨架来源）"
+]
+},
+{
+"id": "s8-30",
+"cat": "动态生物化学",
+"ch": "糖代谢",
+"level": "重点",
+"q": "糖酵解的十个反应步骤",
+"def": "葡萄糖经两次磷酸化、一次裂解、一次氧化产能，最终生成2分子丙酮酸。",
+"ans": "①**己糖激酶**：葡萄糖+ATP→G-6-P；②**磷酸己糖异构酶**：→F-6-P；③**PFK-1**：+ATP→F-1,6-BP（**限速**）；④**醛缩酶**：裂解为磷酸二羟丙酮与3-磷酸甘油醛；⑤**磷酸丙糖异构酶**：二羟丙酮→3-磷酸甘油醛；⑥**3-磷酸甘油醛脱氢酶**：+NAD⁺+Pi→**1,3-二磷酸甘油酸**（生成NADH）；⑦**磷酸甘油酸激酶**：→3-磷酸甘油酸（**底物水平磷酸化，+ATP**）；⑧**磷酸甘油酸变位酶**：→2-磷酸甘油酸；⑨**烯醇化酶**：→**PEP**（脱水，形成高能磷酸键）；⑩**丙酮酸激酶**：→丙酮酸（**底物水平磷酸化，+ATP**，限速）。净反应：**葡萄糖+2NAD⁺+2ADP+2Pi→2丙酮酸+2NADH+2H⁺+2ATP+2H₂O**。",
+"why": "大纲要求“糖的分解途径”，能复述完整步骤才能应答简答题与途径比较题。",
+"tip": "抓三处：**两次耗ATP（①③）、一次氧化产NADH（⑥）、两次底物水平磷酸化（⑦⑩）**。",
+"link": [
+  "糖酵解（EMP）途径",
+  "糖酵解的三个关键酶",
+  "底物水平磷酸化"
+]
+}
+];;
+
+</script>
+<script>
+/* ====================== 状态 ====================== */
+const LS_KEY = "biochem_suda338_v2";        // v2：改为三档 level 调度
+const LS_OLD = "biochem_suda338_v1";
+const MAX_LEVEL = 5;                        // 0=不会 … 5=熟练（两次“知道”即认为熟练）
+const DEFAULT_STATE = {seen:{}, lv:{}, mode:"flash", order:"seq", filter:"all", shuffleQueue:null};
+let S = loadState();
+let Q = [];          // 当前队列
+let qi = 0;          // 当前索引
+let revealed = false;
+let sessionStart = 0, sessionCount = {k:0,u:0};
+let sessionAnswers = {}; // 每张卡只计一次；回改答案时同步修正本轮统计
+let answeringLock = false;
+
+function cloneObj(o){ return JSON.parse(JSON.stringify(o)); }
+function loadState(){
+  try{
+    let raw = localStorage.getItem(LS_KEY);
+    if(!raw){
+      // 兼容旧版记录：老数据只有 known/weak 两档，这里折算成 level
+      const old = localStorage.getItem(LS_OLD);
+      const s = cloneObj(DEFAULT_STATE);
+      if(old){
+        const o = JSON.parse(old);
+        Object.keys(o.seen||{}).forEach(id=>{
+          if(o.seen[id]==="known"){ s.lv[id]=3; s.seen[id]=3; }
+          else if(o.seen[id]==="weak"){ s.lv[id]=0; s.seen[id]=0; }
+        });
+        if(o.mode) s.mode = o.mode;
+        if(o.order) s.order = o.order;
+      }
+      return s;
+    }
+    const s = JSON.parse(raw);
+    const st = Object.assign(cloneObj(DEFAULT_STATE), s);
+    st.lv = st.lv || {};
+    Object.keys(st.seen||{}).forEach(id=>{
+      if(typeof st.lv[id]!=="number") st.lv[id] = st.seen[id]===0?0:Math.min(MAX_LEVEL, Number(st.seen[id])||3);
+    });
+    return st;
+  }catch(e){ return cloneObj(DEFAULT_STATE); }
+}
+function saveState(){
+  S.shuffleQueue = Q.length? {ids:Q.map(c=>c.id), i:qi} : null;
+  try{ localStorage.setItem(LS_KEY, JSON.stringify(S)); }catch(e){}
+}
+
+/* ---------- 三档标记与 level ---------- */
+/* level: 0=不会（完全不知道）1~2=模糊（记得迷迷糊糊）3+=知道（一下就想起来）5=上限 */
+function levelOf(c){ const v = S.lv[c.id]; return typeof v==="number"? v : null; }
+function isSeen(c){ return levelOf(c)!==null; }
+function tierOf(c){
+  const lv = levelOf(c);
+  if(lv===null) return "new";
+  if(lv<=0) return "no";
+  if(lv<3) return "fuzzy";
+  return "know";
+}
+/* 用户建议的步进：不会→0；模糊→+1；知道→+2（封顶5；首次“知道”不小于3） */
+function nextLevel(cur, mark){
+  if(mark==="no") return 0;
+  if(mark==="fuzzy") return cur===null? 1 : Math.min(MAX_LEVEL, cur+1);
+  if(mark==="know") return cur===null? 3 : Math.min(MAX_LEVEL, Math.max(3, cur+2));
+  return cur;
+}
+function applyMark(c, mark){
+  const before = levelOf(c);
+  const after = nextLevel(before, mark);
+  S.lv[c.id] = after; S.seen[c.id] = after;
+  return {before, after};
+}
+/* 掌握度按 level/5 计算，做加权掌握率，比“非黑即白”更贴近实际状态 */
+function statusOf(c){
+  const t = tierOf(c);
+  return t==="know"? "known" : t==="fuzzy"? "fuzzy" : t==="no"? "weak" : "new";
+}
+function chapterStats(ch){
+  const list = CARDS.filter(c=>c.ch===ch);
+  let k=0,w=0,f=0,sum=0;
+  list.forEach(c=>{ const t=tierOf(c); sum+= levelOf(c)||0; if(t==="know")k++; else if(t==="no")w++; else if(t==="fuzzy")f++; });
+  return {total:list.length, known:k, weak:w, fuzzy:f, fresh:list.length-k-w-f, levelSum:sum};
+}
+function allStats(){
+  let k=0,w=0,f=0,sum=0;
+  CARDS.forEach(c=>{ const t=tierOf(c); sum+= levelOf(c)||0; if(t==="know")k++; else if(t==="no")w++; else if(t==="fuzzy")f++; });
+  const rate = Math.round(sum/(CARDS.length*MAX_LEVEL)*100);
+  return {total:CARDS.length, known:k, weak:w, fuzzy:f, fresh:CARDS.length-k-w-f, levelSum:sum, rate};
+}
+function catStats(cat){
+  const chs = CH_ORDER.find(x=>x[0]===cat)[1];
+  let k=0,t=0,w=0,f=0;
+  chs.forEach(ch=>{const s=chapterStats(ch); k+=s.known; t+=s.total; w+=s.weak; f+=s.fuzzy;});
+  return {known:k,total:t,weak:w,fuzzy:f,fresh:t-k-w-f};
+}
+/* 需要优先复习的“未熟练”：不会 + 模糊（level<3） */
+function reviewPool(list){
+  return list.filter(c=>{ const lv=levelOf(c); return lv===null || lv<3; });
+}
+
+/* ====================== Markdown 轻量渲染 ====================== */
+function mdInline(s){
+  let t = s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  t = t.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
+  t = t.replace(/`([^`]+)`/g, "<code>$1</code>");
+  t = t.replace(/→/g, '<span class="arrow">→</span>');
+  return t;
+}
+
+/* ====================== 渲染：侧边栏 ====================== */
+function renderTree(){
+  const el = document.getElementById("tree");
+  let html = "";
+  const activeCh = window.__activeCh || null;
+  CH_ORDER.forEach(([cat, chs])=>{
+    const cs = catStats(cat);
+    const open = cs.known < cs.total;
+    html += `<div class="catgrp">
+      <button class="cathead ${open?'open':''}" data-cat="${cat}">
+        <span class="caret">▶</span>${cat}
+        <span class="cnt">${cs.known}/${cs.total}</span>
+      </button>
+      <div class="chlist ${open?'open':''}">`;
+    chs.forEach(ch=>{
+      const st = chapterStats(ch);
+      const pct = st.total? Math.round(st.known/st.total*100):0;
+      const cls = pct>=80?"":(pct>=40?"midb":"low");
+      html += `<button class="chitem ${ch===activeCh?'active':''}" data-ch="${ch}">
+        <span>${ch}</span>
+        <span class="mini"><span class="mbar"><i class="${cls}" style="width:${pct}%"></i></span></span>
+      </button>`;
+    });
+    html += `</div></div>`;
+  });
+  el.innerHTML = html;
+  el.querySelectorAll(".cathead").forEach(b=>{
+    b.onclick = ()=>{ b.classList.toggle("open"); b.nextElementSibling.classList.toggle("open"); };
+  });
+  el.querySelectorAll(".chitem").forEach(b=>{
+    b.onclick = ()=>{ const ch=b.dataset.ch; closeSidebar(); startSession({type:"chapter", chapter:ch}); };
+  });
+}
+
+/* ====================== 渲染：首页 ====================== */
+function renderHome(){
+  window.__activeCh = null;
+  renderTree(); updateHeader();
+  const a = allStats();
+  const pct = a.rate;
+  const weakList = CARDS.filter(c=>statusOf(c)==="weak");
+  const fuzzyList = CARDS.filter(c=>statusOf(c)==="fuzzy");
+  const chRows = CH_ORDER.map(([cat,chs])=>chs.map(ch=>{
+    const s = chapterStats(ch);
+    const p = s.total? Math.round(s.known/s.total*100):0;
+    const cls = p>=80?"":(p>=40?"midb":"low");
+    return `<tr>
+      <td><b>${ch}</b></td>
+      <td><span class="tag ${cat==='静态生物化学'?'s':cat==='动态生物化学'?'d':'m'}">${cat}</span></td>
+      <td style="font-variant-numeric:tabular-nums">${s.total}</td>
+      <td style="font-variant-numeric:tabular-nums;color:var(--good)">${s.known}</td>
+      <td style="font-variant-numeric:tabular-nums;color:var(--warn)">${s.fuzzy}</td>
+      <td style="font-variant-numeric:tabular-nums;color:var(--bad)">${s.weak}</td>
+      <td><div class="mini-bar"><i class="${cls}" style="width:${p}%"></i></div></td>
+      <td style="font-variant-numeric:tabular-nums;color:var(--txt3)">${p}%</td>
+      <td><button class="btn small ghost" data-go="${ch}">练</button></td>
+    </tr>`;
+  }).join("")).join("");
+
+  document.getElementById("content").innerHTML = `
+  <div class="hero">
+    <h1>生物化学知识点<span>闪卡</span></h1>
+    <div class="sub">参考 朱圣庚《生物化学》第3/4版 章节体系，按苏州大学 338 考试大纲整理 · 共 ${a.total} 个知识点</div>
+    <div style="font-size:11.5px;color:var(--txt3);margin:-14px 0 18px;line-height:1.8">
+      338 大纲明列 16 章（绪论～基因表达调节），题型为 <b>单选 / 名词解释 / 简答</b>，共 150 分；
+      “DNA技术应用”属大纲外拓展，标为「拓展」的卡片请按院校真题自行取舍。
+    </div>
+
+    <div class="panel">
+      <h3>三档掌握情况 <em>不会 level=0 · 模糊 level 1~2 · 知道 level≥3</em></h3>
+      <div class="grid4" style="margin-bottom:14px">
+        <div class="kpi ok"><b>${a.known}</b><span>知道（level≥3）</span></div>
+        <div class="kpi mid"><b>${a.fuzzy}</b><span>模糊（level 1~2）</span></div>
+        <div class="kpi no"><b>${a.weak}</b><span>不会（level=0）</span></div>
+        <div class="kpi na"><b>${a.fresh}</b><span>尚未过</span></div>
+      </div>
+      <div class="row" style="margin-bottom:14px">
+        <div style="flex:1;min-width:220px">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--txt3);margin-bottom:5px">
+            <span>加权掌握度（level 总和 / 满分）</span><b style="color:var(--acc)">${pct}%</b>
+          </div>
+          <div class="prog" style="height:8px"><i style="width:${pct}%"></i></div>
+        </div>
+      </div>
+      <div class="row">
+        <button class="btn" id="startWeak">${(a.weak+a.fuzzy)? "优先复习不会+模糊（"+(a.weak+a.fuzzy)+"）" : "开始第一轮全量过"}</button>
+        <button class="btn ghost" id="startAll">全部知识点（${a.total}）</button>
+        <button class="btn ghost" id="startNew">只过没见过的（${a.fresh}）</button>
+      </div>
+      <div style="font-size:12px;color:var(--txt3);margin-top:10px;line-height:1.8">
+        复习队列按 level 升序排队：<b style="color:var(--bad)">不会</b> 最先出现，其次 <b style="color:var(--warn)">模糊</b>，最后才是已熟练的。
+        标记规则：点“不会”→ level=0；点“模糊”→ level+1；点“知道”→ level+2（上限 5，首次知道直接记 3）。
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>本轮模式</h3>
+      <div class="row" style="margin-bottom:12px">
+        <div class="seg" id="segMode">
+          <button data-m="flash" class="${S.mode==='flash'?'on':''}">Flash 快过</button>
+          <button data-m="practice" class="${S.mode==='practice'?'on':''}">练习回想</button>
+          <button data-m="test" class="${S.mode==='test'?'on':''}">限时自测</button>
+        </div>
+        <div class="seg" id="segOrder">
+          <button data-o="seq" class="${S.order==='seq'?'on':''}">按章节顺序</button>
+          <button data-o="random" class="${S.order==='random'?'on':''}">随机打乱</button>
+        </div>
+      </div>
+      <div style="font-size:12.5px;color:var(--txt3);line-height:1.8">
+        <b style="color:var(--txt2)">Flash 快过</b>：先判断“我会 / 不确定”，两种选择都会展示标准答案，再确认“确实会”或“记错了”。<br>
+        <b style="color:var(--txt2)">练习回想</b>：先自己默述，再点开答案逐条对照；漏答关键点也请归入薄弱。<br>
+        <b style="color:var(--txt2)">限时自测</b>：默认隐藏答案，适合考前限时自测；提交初判后仍需核对答案，不会直接跳过。
+      </div>
+    </div>
+
+    ${weakList.length? `
+    <div class="panel">
+      <h3>薄弱清单（${weakList.length}）<em>点击展开答案</em></h3>
+      <div class="wronglist">
+        ${weakList.slice(0,30).map((c,i)=>`
+          <div class="wrongitem" data-w="${c.id}">
+            <div class="wn">${c.q}<span class="tag s" style="font-weight:400">${c.ch}</span><span class="lvpill lv0">Lv.${levelOf(c)}</span></div>
+            <div class="wd">${c.def}</div>
+            <div class="wa">${mdInline(c.ans)}</div>
+          </div>`).join("")}
+      </div>
+      ${weakList.length>30? `<div style="font-size:12px;color:var(--txt3);margin-top:6px">仅显示前 30 条，完整内容进入复习即可看到。</div>`:""}
+    </div>` : ""}
+
+    ${fuzzyList.length? `
+    <div class="panel">
+      <h3>模糊清单（${fuzzyList.length}）<em>记过但没把握，下一轮排在“不会”之后</em></h3>
+      <div class="wronglist">
+        ${fuzzyList.slice(0,30).map(c=>`
+          <div class="wrongitem fuzzy" data-w="${c.id}">
+            <div class="wn">${c.q}<span class="tag s" style="font-weight:400">${c.ch}</span><span class="lvpill lv${levelOf(c)}">Lv.${levelOf(c)}</span></div>
+            <div class="wd">${c.def}</div>
+            <div class="wa">${mdInline(c.ans)}</div>
+          </div>`).join("")}
+      </div>
+      ${fuzzyList.length>30? `<div style="font-size:12px;color:var(--txt3);margin-top:6px">仅显示前 30 条。</div>`:""}
+    </div>` : ""}
+
+    <div class="panel">
+      <h3>分章掌握情况 <em>点击“练”直接进入该章</em></h3>
+      <div style="overflow-x:auto">
+      <table class="tbl">
+        <tr><th>章节</th><th>所属篇</th><th>条目</th><th>知道</th><th>模糊</th><th>不会</th><th>进度</th><th></th><th></th></tr>
+        ${chRows}
+      </table>
+      </div>
+    </div>
+
+    <div style="text-align:center;color:var(--txt3);font-size:12px;padding:8px 0 30px">
+      进度自动保存于本机浏览器 · 建议每天过 100 条，一周覆盖全部
+    </div>
+  </div>`;
+
+  // 绑定
+  document.getElementById("startWeak").onclick = ()=>startSession({type:"weak"});
+  document.getElementById("startAll").onclick = ()=>startSession({type:"all"});
+  document.getElementById("startNew").onclick = ()=>startSession({type:"fresh"});
+  document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>startSession({type:"chapter",chapter:b.dataset.go}));
+  document.querySelectorAll("#segMode button").forEach(b=>b.onclick=()=>{
+    S.mode=b.dataset.m; saveState(); renderHome();
+  });
+  document.querySelectorAll("#segOrder button").forEach(b=>b.onclick=()=>{
+    S.order=b.dataset.o; saveState(); renderHome();
+  });
+  document.querySelectorAll("[data-w]").forEach(el=>el.onclick=()=>el.classList.toggle("open"));
+}
+
+/* ====================== 会话管理 ====================== */
+/* level 升序 + 组内抖动：保证“不会”永远排在“模糊”前，同档内不总按同一顺序 */
+function sortByLevel(list){
+  return list.map(c=>{
+    const lv = levelOf(c);
+    return {c, lv: lv===null? -1 : lv, r: Math.random()};
+  }).sort((a,b)=> (a.lv-b.lv) || (a.r-b.r)).map(x=>x.c);
+}
+function buildQueue(opt){
+  let list = CARDS.slice();
+  let fallback = false;
+  if(opt.type==="chapter") list = list.filter(c=>c.ch===opt.chapter);
+  else if(opt.type==="weak"){
+    // 优先复习：不会(level 0) + 模糊(1~2)，再排未过(new)；都熟练时回退到全量
+    list = reviewPool(CARDS);
+    if(list.length===0){ list = CARDS.slice(); fallback = true; }
+  }
+  else if(opt.type==="fresh") list = list.filter(c=>!isSeen(c));
+  else if(opt.type==="all") list = list.slice();
+  list = sortByLevel(list);
+  if(S.order==="random"){ /* 随机顺序只打散同 level 段内，不破坏 level 优先级 */ }
+  window.__fallback = fallback;
+  return list;
+}
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a; }
+
+function startSession(opt){
+  if(window.__advTimer) clearTimeout(window.__advTimer);
+  Q = buildQueue(opt);
+  if(Q.length===0){ alert("这个范围里没有可复习的知识点啦，换一个范围试试。"); return; }
+  qi = 0; revealed=false; answeringLock=false;
+  sessionStart = Date.now(); sessionCount={no:0,fuzzy:0,know:0}; sessionAnswers={};
+  window.__activeCh = opt.type==="chapter"? opt.chapter : null;
+  window.__sessionTitle = opt.type==="chapter"? opt.chapter :
+      opt.type==="weak"? (window.__fallback? "全部已熟练 · 全量回顾" : "优先复习 · 不会+模糊") :
+      opt.type==="fresh"? "未过知识点" : "全部知识点";
+  renderTree(); updateHeader();
+  renderCard();
+  saveState();
+}
+function backHome(){
+  if(window.__advTimer) clearTimeout(window.__advTimer);
+  Q=[]; qi=0; revealed=false; answeringLock=false; sessionAnswers={};
+  renderHome();
+}
+function updateHeader(){
+  const el = document.getElementById("progTxt");
+  const bar = document.getElementById("progBar");
+  if(!Q.length){
+    const a = allStats();
+    el.textContent = `${a.known} / ${a.total}`;
+    bar.style.width = a.rate+"%";
+  }else{
+    el.textContent = `${Math.min(qi+1,Q.length)} / ${Q.length}`;
+    bar.style.width = (qi/Q.length*100)+"%";
+  }
+}
+
+/* ====================== 渲染：卡片 ====================== */
+function renderCard(){
+  const c = Q[qi];
+  if(!c){ renderDone(); return; }
+  const st = tierOf(c);
+  const curLv = levelOf(c);
+  const modeCls = S.mode;
+  const isTest = S.mode==="test";
+  const lvText = curLv===null? "未标记" : st==="know"? `知道 Lv.${curLv}` : st==="fuzzy"? `模糊 Lv.${curLv}` : "不会 Lv.0";
+  const lvCls = curLv===null? "" : st==="know"? "okl" : st==="fuzzy"? "midl" : "badl";
+
+  let ansHtml = `
+    <div class="field"><div class="flabel">定义</div><div class="ftext">${mdInline(c.def)}</div></div>
+    <div class="field"><div class="flabel">要点</div><div class="ftext">${mdInline(c.ans)}</div></div>
+    ${c.why? `<div class="field"><div class="flabel">机制 / 为什么</div><div class="ftext">${mdInline(c.why)}</div></div>`:""}
+    ${c.tip? `<div class="field"><div class="flabel">答题提示 / 易错</div><div class="ftext">${mdInline(c.tip)}</div></div>`:""}
+    ${(c.link&&c.link.length)? `<div class="field"><div class="flabel">关联</div><div class="chips">${c.link.map(x=>`<span class="chip">${x}</span>`).join("")}</div></div>`:""}
+  `;
+
+  document.getElementById("content").innerHTML = `
+  <div class="study">
+    <div class="meta">
+      <span class="pill">${window.__sessionTitle||""}</span>
+      <span class="pill">${c.ch}</span>
+      <span class="pill">${c.level}</span>
+      <span class="pill lvpill ${lvCls}" id="lvPill">${lvText}</span>
+      <span class="spacer"></span>
+      <span style="color:var(--txt3);font-size:11.5px">第 ${qi+1} / ${Q.length} 张</span>
+    </div>
+    <div class="cardwrap">
+      <div class="card">
+        <div class="qzone">
+          <div class="qsmall">${isTest? "限时自测 · 先在心里作答" : "知识点"}</div>
+          <div class="qtext">${c.q}</div>
+          <div class="qhint">${
+            revealed? "逐条对照答案，再如实选三档；选完会写入 level 并影响下次排序" :
+            isTest? "先在心里限时作答，再选“不会 / 模糊 / 知道”并核对答案" :
+            S.mode==="practice"? "先在心里默述一遍，再按把握程度标记并看答案" :
+            "先按把握程度标记：不会 / 模糊 / 知道；标记后都会展示答案"}</div>
+        </div>
+        <div class="anszone ${revealed?'show':''}" id="anszone">${ansHtml}</div>
+      </div>
+    </div>
+
+    <div class="actions act3" id="actions">
+      ${revealed? `
+        <button class="big lv0" id="btnNo">不会<small>level → 0 · 1键</small></button>
+        <button class="big lv1" id="btnFuzzy">模糊<small>level +1 · 2键</small></button>
+        <button class="big lv3" id="btnKnow">知道<small>level +2 · 3键</small></button>
+      ` : `
+        <button class="big lv0" id="btnNo">不知道<small>完全没印象 · 1 / 空格</small></button>
+        <button class="big lv1" id="btnFuzzy">模糊<small>有点印象 · 2 / J</small></button>
+        <button class="big lv3" id="btnKnow">知道<small>一下想起来 · 3 / K</small></button>
+      `}
+    </div>
+    <div class="kbdhint">
+      ${revealed? `<kbd>1</kbd>/<kbd>空格</kbd> 不会 &nbsp;·&nbsp; <kbd>2</kbd>/<kbd>J</kbd> 模糊 &nbsp;·&nbsp; <kbd>3</kbd>/<kbd>K</kbd> 知道` : `按把握程度选：<kbd>1</kbd> 不知道 &nbsp;·&nbsp; <kbd>2</kbd> 模糊 &nbsp;·&nbsp; <kbd>3</kbd> 知道`} &nbsp;·&nbsp; <kbd>←</kbd> 上一张 &nbsp;·&nbsp; <kbd>Esc</kbd> 返回
+    </div>
+  </div>`;
+
+  const btnNo = document.getElementById("btnNo");
+  if(btnNo) btnNo.onclick = ()=>answer("no");
+  const btnFuzzy = document.getElementById("btnFuzzy");
+  if(btnFuzzy) btnFuzzy.onclick = ()=>answer("fuzzy");
+  const btnKnow = document.getElementById("btnKnow");
+  if(btnKnow) btnKnow.onclick = ()=>answer("know");
+
+  bindSwipe();
+  updateHeader();
+}
+
+function revealAnswer(){
+  if(answeringLock || !Q[qi]) return;
+  const sc = window.pageYOffset || document.documentElement.scrollTop || 0;
+  revealed = true;
+  renderCard();
+  window.scrollTo(0, sc);
+  // 手机短屏上把答案带入视野，但仍保留用户当前的阅读位置。
+  const ans = document.getElementById("anszone");
+  if(ans){
+    const r = ans.getBoundingClientRect();
+    if(r.top > window.innerHeight-150){
+      window.scrollTo(0, Math.max(0, sc+r.top-72));
+    }
+  }
+}
+
+function renderCardKeepScroll(){ revealAnswer(); }
+
+function answer(mark){
+  if(answeringLock) return;
+  const c = Q[qi];
+  if(!c) return;
+  // 任何入口都不能跳过答案：先标记，答案自动展开；同一张再标记一次才算最终判定。
+  if(!revealed){ revealAnswer(); return; }
+  answeringLock = true;
+  const res = applyMark(c, mark);
+  const prev = sessionAnswers[c.id];
+  if(prev && prev!==mark) sessionCount[prev]--;
+  if(prev!==mark){ sessionAnswers[c.id] = mark; sessionCount[mark]++; }
+  saveState();
+
+  // 动画后前进
+  const card = document.querySelector(".card");
+  if(card){
+    card.style.transition = "opacity .14s, transform .14s";
+    card.style.opacity = "0";
+    card.style.transform = mark==="know"? "translateX(28px)" : mark==="fuzzy"? "translateY(-6px)" : "translateX(-28px)";
+  }
+  const pill = document.getElementById("lvPill");
+  if(pill && res.after!==null){
+    pill.textContent = (res.after>=3?"知道 Lv.":res.after>0?"模糊 Lv.":"不会 Lv.")+res.after;
+    pill.className = "pill lvpill " + (res.after>=3?"okl":res.after>0?"midl":"badl");
+  }
+  if(window.__advTimer) clearTimeout(window.__advTimer);
+  window.__advTimer = setTimeout(()=>{
+    qi++; revealed=false; answeringLock=false;
+    if(qi>=Q.length){ renderDone(); }
+    else { renderCard(); window.scrollTo(0,0); }
+    updateHeader(); saveState();
+  }, 170);
+}
+function prevCard(){
+  if(answeringLock) return;
+  if(qi>0){ qi--; revealed = true; renderCard(); window.scrollTo(0,0); }
+}
+
+/* 完成页 */
+function renderDone(){
+  const total = sessionCount.no + sessionCount.fuzzy + sessionCount.know;
+  const noList = [], fuzzyList = [];
+  Q.forEach(c=>{
+    if(sessionAnswers[c.id]==="no") noList.push(c);
+    else if(sessionAnswers[c.id]==="fuzzy") fuzzyList.push(c);
+  });
+  const rate = total? Math.round(sessionCount.know/total*100):0;
+  const a = allStats();
+  const upNext = reviewPool(CARDS).length;
+  document.getElementById("content").innerHTML = `
+    <div class="done">
+      <div class="bigchar">${rate>=80?"🎯":rate>=50?"📈":"💪"}</div>
+      <h2>本轮完成 · ${window.__sessionTitle||""}</h2>
+      <div class="sub" style="margin-bottom:18px">共 ${total} 张 · 知道 ${sessionCount.know} · 模糊 ${sessionCount.fuzzy} · 不会 ${sessionCount.no}</div>
+      <div class="grid4" style="max-width:660px;margin:0 auto 18px">
+        <div class="kpi ok"><b>${sessionCount.know}</b><span>本轮标记“知道”</span></div>
+        <div class="kpi mid"><b>${sessionCount.fuzzy}</b><span>本轮标记“模糊”</span></div>
+        <div class="kpi no"><b>${sessionCount.no}</b><span>本轮标记“不会”</span></div>
+        <div class="kpi na"><b>${a.rate}%</b><span>加权掌握度</span></div>
+      </div>
+      <div style="font-size:12.5px;color:var(--txt3);margin-bottom:16px;line-height:1.9">
+        下一轮点“优先复习”时，仍有 <b style="color:var(--bad)">${a.weak}</b> 张 Lv.0（不会）、<b style="color:var(--warn)">${a.fuzzy}</b> 张 Lv.1~2（模糊）会排在前面，共 ${upNext} 张优先出现。
+      </div>
+      <div class="row" style="justify-content:center">
+        ${upNext? `<button class="btn" id="againWeak">优先复习不会+模糊（${upNext}）</button>`:""}
+        <button class="btn ghost" id="againSame">再刷一轮同一范围</button>
+        <button class="btn ghost" id="toHome">返回首页</button>
+      </div>
+      ${noList.length?`
+      <div class="panel" style="text-align:left;margin-top:22px">
+        <h3>本轮完全不会的（${noList.length}）<em>下轮最先出现</em></h3>
+        <div class="wronglist">
+          ${noList.map(c=>`
+            <div class="wrongitem" data-w="${c.id}">
+              <div class="wn">${c.q}<span class="tag s" style="font-weight:400">${c.ch}</span><span class="lvpill lv0">Lv.0</span></div>
+              <div class="wd">${c.def}</div>
+              <div class="wa">${mdInline(c.ans)}</div>
+            </div>`).join("")}
+        </div>
+      </div>`:""}
+      ${fuzzyList.length?`
+      <div class="panel" style="text-align:left;margin-top:16px">
+        <h3>本轮模糊的（${fuzzyList.length}）<em>排在不会之后</em></h3>
+        <div class="wronglist">
+          ${fuzzyList.map(c=>`
+            <div class="wrongitem fuzzy" data-w="${c.id}">
+              <div class="wn">${c.q}<span class="tag s" style="font-weight:400">${c.ch}</span><span class="lvpill lv${levelOf(c)}">Lv.${levelOf(c)}</span></div>
+              <div class="wd">${c.def}</div>
+              <div class="wa">${mdInline(c.ans)}</div>
+            </div>`).join("")}
+        </div>
+      </div>`:""}
+    </div>`;
+  document.querySelectorAll("[data-w]").forEach(el=>el.onclick=()=>el.classList.toggle("open"));
+  const aw = document.getElementById("againWeak");
+  if(aw) aw.onclick = ()=>startSession({type:"weak"});
+  document.getElementById("againSame").onclick = ()=>{
+    const list = Q.slice(); qi=0; revealed=false; answeringLock=false;
+    sessionCount={no:0,fuzzy:0,know:0}; sessionAnswers={};
+    Q = sortByLevel(list);
+    renderCard(); window.scrollTo(0,0);
+  };
+  document.getElementById("toHome").onclick = backHome;
+  updateHeader();
+}
+
+/* ====================== 交互杂项 ====================== */
+let touchX=null, touchY=null;
+function bindSwipe(){
+  const el = document.querySelector(".cardwrap");
+  if(!el) return;
+  el.ontouchstart = e=>{ touchX=e.touches[0].clientX; touchY=e.touches[0].clientY; };
+  el.ontouchend = e=>{
+    if(touchX==null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    const dy = e.changedTouches[0].clientY - touchY;
+    if(Math.abs(dx)>70 && Math.abs(dx)>Math.abs(dy)*1.5){
+      // 左滑=展开答案 / 已展开时按“知道”；右滑=上一张
+      if(dx<0){ if(revealed) answer("know"); else revealAnswer(); }else{ prevCard(); }
+    }
+    touchX=null;
+  };
+}
+function closeSidebar(){
+  document.getElementById("sidebar").classList.remove("open");
+  document.getElementById("mask").classList.remove("show");
+}
+function toggleSidebar(){
+  const sb = document.getElementById("sidebar");
+  sb.classList.toggle("open");
+  document.getElementById("mask").classList.toggle("show", sb.classList.contains("open"));
+}
+
+/* 顶栏按钮 */
+document.getElementById("homeBtn").onclick = backHome;
+document.getElementById("helpBtn").onclick = ()=>document.getElementById("sheet").classList.add("show");
+document.getElementById("closeSheet").onclick = ()=>document.getElementById("sheet").classList.remove("show");
+document.getElementById("sheet").onclick = e=>{ if(e.target.id==="sheet") document.getElementById("sheet").classList.remove("show"); };
+document.getElementById("menuBtn").onclick = toggleSidebar;
+document.getElementById("mask").onclick = closeSidebar;
+document.getElementById("resetBtn").onclick = ()=>{
+  if(confirm("确定清空所有掌握记录吗？此操作不可恢复。")){
+    S = cloneObj(DEFAULT_STATE); saveState(); backHome();
+  }
+};
+document.getElementById("exportBtn").onclick = ()=>{
+  const a = allStats();
+  let txt = "生物化学掌握情况导出\n生成时间："+new Date().toLocaleString()+"\n";
+  txt += `总计 ${a.total} 条；知道 ${a.known}、模糊 ${a.fuzzy}、不会 ${a.weak}、未过 ${a.fresh}；加权掌握度 ${a.rate}%\n\n`;
+  CH_ORDER.forEach(([cat,chs])=>{
+    txt += `【${cat}】\n`;
+    chs.forEach(ch=>{
+      const s = chapterStats(ch);
+      txt += `  ${ch}: 知道 ${s.known}/${s.total}，模糊 ${s.fuzzy}，不会 ${s.weak}\n`;
+    });
+  });
+  const no = CARDS.filter(c=>statusOf(c)==="weak");
+  const fz = CARDS.filter(c=>statusOf(c)==="fuzzy");
+  if(no.length){
+    txt += `\n【完全不会 Lv.0】\n`;
+    no.forEach(c=>{ txt += `- [${c.ch}] ${c.q}：${c.def}\n`; });
+  }
+  if(fz.length){
+    txt += `\n【模糊 Lv.1~2】\n`;
+    fz.forEach(c=>{ txt += `- [${c.ch}] Lv.${levelOf(c)} ${c.q}：${c.def}\n`; });
+  }
+  const blob = new Blob([txt], {type:"text/plain;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url; link.download = "生化掌握情况_"+new Date().toISOString().slice(0,10)+".txt";
+  link.click(); URL.revokeObjectURL(url);
+};
+
+/* 键盘：1 不会 / 2 模糊 / 3 知道；答案展开后按键才计入最终判定 */
+document.addEventListener("keydown", e=>{
+  if(e.target.tagName==="INPUT") return;
+  if(!Q.length) return;
+  if(e.key===" "){ e.preventDefault(); if(!revealed) revealAnswer(); else answer("no"); }
+  else if(e.key==="1"){ e.preventDefault(); answer("no"); }
+  else if(e.key==="j"||e.key==="J"||e.key==="2"){ e.preventDefault(); answer("fuzzy"); }
+  else if(e.key==="k"||e.key==="K"||e.key==="Enter"||e.key==="3"){ e.preventDefault(); answer("know"); }
+  else if(e.key==="ArrowLeft"){ e.preventDefault(); prevCard(); }
+  else if(e.key==="Escape"){ backHome(); }
+});
+
+/* 响应式：移动端显示菜单按钮 */
+function checkView(){
+  document.getElementById("menuBtn").style.display = window.innerWidth<=900? "grid":"none";
+}
+window.addEventListener("resize", checkView);
+
+/* 初始化 */
+checkView();
+renderHome();
+</script>
+</body>
+</html>
