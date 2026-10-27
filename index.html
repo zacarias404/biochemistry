@@ -175,11 +175,22 @@ h1 span{color:var(--acc)}
 .big.lv1:hover,.big.lv2:hover{background:rgba(230,162,60,.24);transform:translateY(-1px)}
 .big.lv3,.big.lv4,.big.lv5{background:rgba(76,167,119,.14);border-color:#3d7f5c;color:#8fe0b4}
 .big.lv3:hover,.big.lv4:hover,.big.lv5:hover{background:rgba(76,167,119,.26);transform:translateY(-1px)}
-.act3 .big{flex:1;min-width:96px}
+.act3 .big,.act4 .big{flex:1;min-width:96px}
+.big.nextbtn{background:rgba(63,182,168,.12);border-color:var(--acc);color:var(--acc)}
+.big.nextbtn:hover{background:rgba(63,182,168,.24);transform:translateY(-1px)}
+.pending{
+  text-align:center;font-size:12.5px;color:var(--txt2);margin-top:16px;padding:9px 12px;
+  border:1px dashed var(--line2);border-radius:10px;background:#16202a;line-height:1.7;
+}
+.pending b{font-weight:700}
 @media (max-width:560px){
   .act3{gap:7px}
-  .act3 .big{padding:11px 3px;font-size:14px;white-space:nowrap;flex-direction:column;gap:2px}
-  .act3 .big small{font-size:9.5px;line-height:1.35;opacity:.75;margin-top:0}
+  .act3 .big,.act4 .lv0,.act4 .lv1,.act4 .lv3{padding:11px 3px;font-size:14px;white-space:nowrap;flex-direction:column;gap:2px}
+  .act3 .big small,.act4 .lv0 small,.act4 .lv1 small,.act4 .lv3 small{font-size:9.5px;line-height:1.35;opacity:.75;margin-top:0}
+  .act4{flex-wrap:wrap;gap:7px}
+  .act4 .lv0,.act4 .lv1,.act4 .lv3{flex:1 1 30%;min-width:0}
+  .act4 .nextbtn{flex:1 1 100%;min-width:0;padding:11px}
+  .pending{margin-top:12px;font-size:12px}
 }
 @media (max-width:900px){
   .card .qzone{padding:6px 0 2px}
@@ -189,6 +200,9 @@ h1 span{color:var(--acc)}
 .lvpill.okl{color:var(--good);border-color:#3d7f5c}
 .lvpill.midl{color:var(--warn);border-color:#7a5a24}
 .lvpill.badl{color:var(--bad);border-color:#8d4139}
+.lvpill.lv0{color:var(--bad);border-color:#8d4139}
+.lvpill.lv1,.lvpill.lv2{color:var(--warn);border-color:#7a5a24}
+.lvpill.lv3,.lvpill.lv4,.lvpill.lv5{color:var(--good);border-color:#3d7f5c}
 .wrongitem.fuzzy{border-left-color:var(--warn)}
 .wrongitem .lvpill{margin-left:auto;font-size:10.5px;padding:0 7px;border:1px solid var(--line2);border-radius:99px;color:var(--txt2)}
 .kbdhint{text-align:center;color:var(--txt3);font-size:11.5px;margin-top:14px}
@@ -243,12 +257,15 @@ footer{text-align:center;font-size:11px;color:#4d5f72;padding:10px 8px 18px;poin
   .mask.show{display:block}
 }
 @media (max-width:900px){
-  .actions{
-    position:fixed;left:0;right:0;bottom:0;z-index:45;margin:0;padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+  .actionbar{
+    position:fixed;left:0;right:0;bottom:0;z-index:45;margin:0;
+    padding:8px 14px calc(8px + env(safe-area-inset-bottom));
     background:rgba(15,20,25,.94);backdrop-filter:blur(14px);border-top:1px solid var(--line);
   }
+  .actions{position:static;margin:0;padding:0;background:none;border:none;backdrop-filter:none}
+  .pending{margin:0 0 8px}
   .kbdhint{display:none}
-  .study{padding-bottom:70px}
+  .study{padding-bottom:210px}
 }
 @media (max-width:420px){
   .panel{padding:14px}
@@ -289,13 +306,15 @@ footer{text-align:center;font-size:11px;color:#4d5f72;padding:10px 8px 18px;poin
 <div class="sheet" id="sheet">
   <div class="sheetbox">
     <h3>使用说明</h3>
-    <div class="krow"><b>三档标记</b><span>不知道（Lv.0）/ 模糊（Lv.1~2）/ 知道（Lv.3+），标记后立刻展开答案</span></div>
+    <div class="krow"><b>初判即生效</b><span>答案未展开时选“不知道 / 模糊 / 知道”会<b>立即写入 level</b>，同时展开答案</span></div>
+    <div class="krow"><b>可改判</b><span>看完答案发现记错了，点“改判不会 / 模糊 / 知道”，按进入本张前的 level 重算，不会重复加分</span></div>
     <div class="krow"><b>自适应排序</b><span>每次复习按 level 升序：不会最先、模糊其次、熟练最后</span></div>
     <div class="krow"><b>步进规则</b><span>不会→0；模糊→level+1；知道→level+2（上限 5）</span></div>
     <div style="height:10px"></div>
-    <div class="krow"><span>标记“不知道”</span><b>1 / 空格</b></div>
+    <div class="krow"><span>标记“不知道”</span><b>1</b></div>
     <div class="krow"><span>标记“模糊”</span><b>2 / J</b></div>
-    <div class="krow"><span>标记“知道”</span><b>3 / K / Enter</b></div>
+    <div class="krow"><span>标记“知道”</span><b>3 / K</b></div>
+    <div class="krow"><span>只看答案不标记（展开前）/ 下一张（展开后）</span><b>空格 / Enter</b></div>
     <div class="krow"><span>上一个（不计入统计）</span><b>←</b></div>
     <div class="krow"><span>返回首页</span><b>Esc</b></div>
     <div style="height:14px"></div>
@@ -5682,9 +5701,11 @@ let S = loadState();
 let Q = [];          // 当前队列
 let qi = 0;          // 当前索引
 let revealed = false;
-let sessionStart = 0, sessionCount = {k:0,u:0};
-let sessionAnswers = {}; // 每张卡只计一次；回改答案时同步修正本轮统计
+let sessionStart = 0, sessionCount = {no:0,fuzzy:0,know:0};
+let sessionAnswers = {}; // 每张卡只计一次；改判时同步修正本轮统计
 let answeringLock = false;
+let curBefore = null;    // 进入当前卡时的 level，初判与改判都以它为基准，避免重复加分
+let curMark = null;      // 当前卡的初判标记（null=只看答案未标记）
 
 function cloneObj(o){ return JSON.parse(JSON.stringify(o)); }
 function loadState(){
@@ -5737,8 +5758,9 @@ function nextLevel(cur, mark){
   if(mark==="know") return cur===null? 3 : Math.min(MAX_LEVEL, Math.max(3, cur+2));
   return cur;
 }
-function applyMark(c, mark){
-  const before = levelOf(c);
+/* base 固定为“进入本张时的 level”，初判和改判都用它，避免连点刷分 */
+function applyMark(c, mark, base){
+  const before = (typeof base==="number")? base : levelOf(c);
   const after = nextLevel(before, mark);
   S.lv[c.id] = after; S.seen[c.id] = after;
   return {before, after};
@@ -5766,9 +5788,10 @@ function catStats(cat){
   chs.forEach(ch=>{const s=chapterStats(ch); k+=s.known; t+=s.total; w+=s.weak; f+=s.fuzzy;});
   return {known:k,total:t,weak:w,fuzzy:f,fresh:t-k-w-f};
 }
-/* 需要优先复习的“未熟练”：不会 + 模糊（level<3） */
+/* 需要优先复习的“未熟练”：已标记为不会(Lv.0)或模糊(Lv.1~2)的卡
+ * 未标记的新卡不算在这里，走“只过没见过的”，避免稀释掉真正不会的卡 */
 function reviewPool(list){
-  return list.filter(c=>{ const lv=levelOf(c); return lv===null || lv<3; });
+  return list.filter(c=>{ const lv=levelOf(c); return typeof lv==="number" && lv<3; });
 }
 
 /* ====================== Markdown 轻量渲染 ====================== */
@@ -5870,8 +5893,8 @@ function renderHome(){
         <button class="btn ghost" id="startNew">只过没见过的（${a.fresh}）</button>
       </div>
       <div style="font-size:12px;color:var(--txt3);margin-top:10px;line-height:1.8">
-        复习队列按 level 升序排队：<b style="color:var(--bad)">不会</b> 最先出现，其次 <b style="color:var(--warn)">模糊</b>，最后才是已熟练的。
-        标记规则：点“不会”→ level=0；点“模糊”→ level+1；点“知道”→ level+2（上限 5，首次知道直接记 3）。
+        复习队列按 level 升序排队：<b style="color:var(--bad)">不会</b> 最先出现，其次 <b style="color:var(--warn)">模糊</b>，最后才是已熟练的。<br>
+        标记规则：<b style="color:var(--txt2)">答案未展开时选择即写入 level 并展开答案</b>；不会→ level=0，模糊→ level+1，知道→ level+2（上限 5，首次知道直接记 3）。看完答案若发现记错，可<b>“改判”</b>，改判按进入本张前的 level 重算。
       </div>
     </div>
 
@@ -5955,9 +5978,10 @@ function renderHome(){
 /* ====================== 会话管理 ====================== */
 /* level 升序 + 组内抖动：保证“不会”永远排在“模糊”前，同档内不总按同一顺序 */
 function sortByLevel(list){
+  // 排序权重：Lv.0（不会）最前 → 未标记新卡 → Lv.1~2（模糊）→ Lv.3+（熟练）
   return list.map(c=>{
     const lv = levelOf(c);
-    return {c, lv: lv===null? -1 : lv, r: Math.random()};
+    return {c, lv: lv===null? 0.5 : lv, r: Math.random()};
   }).sort((a,b)=> (a.lv-b.lv) || (a.r-b.r)).map(x=>x.c);
 }
 function buildQueue(opt){
@@ -5982,11 +6006,11 @@ function startSession(opt){
   if(window.__advTimer) clearTimeout(window.__advTimer);
   Q = buildQueue(opt);
   if(Q.length===0){ alert("这个范围里没有可复习的知识点啦，换一个范围试试。"); return; }
-  qi = 0; revealed=false; answeringLock=false;
+  qi = 0; revealed=false; answeringLock=false; curBefore=null; curMark=null;
   sessionStart = Date.now(); sessionCount={no:0,fuzzy:0,know:0}; sessionAnswers={};
   window.__activeCh = opt.type==="chapter"? opt.chapter : null;
   window.__sessionTitle = opt.type==="chapter"? opt.chapter :
-      opt.type==="weak"? (window.__fallback? "全部已熟练 · 全量回顾" : "优先复习 · 不会+模糊") :
+      opt.type==="weak"? (window.__fallback? ((allStats().known+allStats().fuzzy+allStats().weak)>0? "未熟练已清空 · 全量回顾" : "尚无标记记录 · 先从全量开始") : "优先复习 · 不会+模糊") :
       opt.type==="fresh"? "未过知识点" : "全部知识点";
   renderTree(); updateHeader();
   renderCard();
@@ -5994,7 +6018,7 @@ function startSession(opt){
 }
 function backHome(){
   if(window.__advTimer) clearTimeout(window.__advTimer);
-  Q=[]; qi=0; revealed=false; answeringLock=false; sessionAnswers={};
+  Q=[]; qi=0; revealed=false; answeringLock=false; sessionAnswers={}; curBefore=null; curMark=null;
   renderHome();
 }
 function updateHeader(){
@@ -6014,6 +6038,8 @@ function updateHeader(){
 function renderCard(){
   const c = Q[qi];
   if(!c){ renderDone(); return; }
+  // 记录进入本张时的 level：初判与改判都以此为基准，避免同一张连点刷分
+  if(curBefore === null) curBefore = levelOf(c);
   const st = tierOf(c);
   const curLv = levelOf(c);
   const modeCls = S.mode;
@@ -6045,28 +6071,36 @@ function renderCard(){
           <div class="qsmall">${isTest? "限时自测 · 先在心里作答" : "知识点"}</div>
           <div class="qtext">${c.q}</div>
           <div class="qhint">${
-            revealed? "逐条对照答案，再如实选三档；选完会写入 level 并影响下次排序" :
-            isTest? "先在心里限时作答，再选“不会 / 模糊 / 知道”并核对答案" :
-            S.mode==="practice"? "先在心里默述一遍，再按把握程度标记并看答案" :
-            "先按把握程度标记：不会 / 模糊 / 知道；标记后都会展示答案"}</div>
+            revealed? "对照答案：与刚才判断不符就改判，相符就点“下一张”" :
+            isTest? "先在心里限时作答，再选“不知道 / 模糊 / 知道”，选择立即生效并展开答案" :
+            S.mode==="practice"? "先心里默述一遍，再按把握程度标记；选择立即生效并展开答案" :
+            "按把握程度选：不知道 / 模糊 / 知道 —— 选择立即写入 level，并展开答案核对"}</div>
         </div>
         <div class="anszone ${revealed?'show':''}" id="anszone">${ansHtml}</div>
       </div>
     </div>
 
-    <div class="actions act3" id="actions">
+    <div class="actionbar">
       ${revealed? `
-        <button class="big lv0" id="btnNo">不会<small>level → 0 · 1键</small></button>
-        <button class="big lv1" id="btnFuzzy">模糊<small>level +1 · 2键</small></button>
-        <button class="big lv3" id="btnKnow">知道<small>level +2 · 3键</small></button>
-      ` : `
-        <button class="big lv0" id="btnNo">不知道<small>完全没印象 · 1 / 空格</small></button>
-        <button class="big lv1" id="btnFuzzy">模糊<small>有点印象 · 2 / J</small></button>
-        <button class="big lv3" id="btnKnow">知道<small>一下想起来 · 3 / K</small></button>
-      `}
+      <div class="pending" id="pendingBar">${
+        curMark? `本张已记为 <b class="${curMark==="know"?"okl":curMark==="fuzzy"?"midl":"badl"}">${curMark==="know"?"知道":curMark==="fuzzy"?"模糊":"不会"} · Lv.${curLv===null?0:curLv}</b>（原 Lv.${curBefore===null?"未标记":curBefore}）· 与答案不符请改判`
+                : `已展开答案，尚未标记：下方三档会立即写入 level，或直接“下一张”跳过不改`}</div>
+      `:""}
+      <div class="actions ${revealed?'act4':'act3'}" id="actions">
+        ${revealed? `
+          <button class="big lv0" id="btnNo">改判不会<small>→ Lv.0 · 1</small></button>
+          <button class="big lv1" id="btnFuzzy">改判模糊<small>+1 · 2</small></button>
+          <button class="big lv3" id="btnKnow">改判知道<small>+2 · 3</small></button>
+          <button class="big nextbtn" id="btnNext">下一张<small>确认 · Enter</small></button>
+        ` : `
+          <button class="big lv0" id="btnNo">不知道<small>→ Lv.0 · 1</small></button>
+          <button class="big lv1" id="btnFuzzy">模糊<small>+1 · 2</small></button>
+          <button class="big lv3" id="btnKnow">知道<small>+2 · 3</small></button>
+        `}
+      </div>
     </div>
     <div class="kbdhint">
-      ${revealed? `<kbd>1</kbd>/<kbd>空格</kbd> 不会 &nbsp;·&nbsp; <kbd>2</kbd>/<kbd>J</kbd> 模糊 &nbsp;·&nbsp; <kbd>3</kbd>/<kbd>K</kbd> 知道` : `按把握程度选：<kbd>1</kbd> 不知道 &nbsp;·&nbsp; <kbd>2</kbd> 模糊 &nbsp;·&nbsp; <kbd>3</kbd> 知道`} &nbsp;·&nbsp; <kbd>←</kbd> 上一张 &nbsp;·&nbsp; <kbd>Esc</kbd> 返回
+      ${revealed? `<kbd>1</kbd> 改判不会 &nbsp;·&nbsp; <kbd>2</kbd> 改判模糊 &nbsp;·&nbsp; <kbd>3</kbd> 改判知道 &nbsp;·&nbsp; <kbd>Enter</kbd>/<kbd>空格</kbd> 下一张` : `<kbd>1</kbd> 不知道 &nbsp;·&nbsp; <kbd>2</kbd> 模糊 &nbsp;·&nbsp; <kbd>3</kbd> 知道 &nbsp;·&nbsp; <kbd>空格</kbd> 只看答案不标记`} &nbsp;·&nbsp; <kbd>←</kbd> 上一张 &nbsp;·&nbsp; <kbd>Esc</kbd> 返回
     </div>
   </div>`;
 
@@ -6076,6 +6110,8 @@ function renderCard(){
   if(btnFuzzy) btnFuzzy.onclick = ()=>answer("fuzzy");
   const btnKnow = document.getElementById("btnKnow");
   if(btnKnow) btnKnow.onclick = ()=>answer("know");
+  const btnNext = document.getElementById("btnNext");
+  if(btnNext) btnNext.onclick = ()=>answer("confirm");
 
   bindSwipe();
   updateHeader();
@@ -6099,34 +6135,50 @@ function revealAnswer(){
 
 function renderCardKeepScroll(){ revealAnswer(); }
 
+/* 初判（未展开）：立即写入 level 并展开答案，停在本张等用户核对
+ * 改判（已展开）：以进入本张时的 level 为基准重算，并进入下一张
+ * confirm：确认当前初判，进入下一张（未标记则跳过，不改变 level） */
 function answer(mark){
   if(answeringLock) return;
   const c = Q[qi];
   if(!c) return;
-  // 任何入口都不能跳过答案：先标记，答案自动展开；同一张再标记一次才算最终判定。
-  if(!revealed){ revealAnswer(); return; }
-  answeringLock = true;
-  const res = applyMark(c, mark);
+  const base = (curBefore===null)? levelOf(c) : curBefore;
+  curBefore = base;
+
+  if(mark==="confirm"){
+    if(!revealed){ revealAnswer(); return; }
+    answeringLock = true; advance(mark);
+    return;
+  }
+
+  const res = applyMark(c, mark, base);
   const prev = sessionAnswers[c.id];
   if(prev && prev!==mark) sessionCount[prev]--;
   if(prev!==mark){ sessionAnswers[c.id] = mark; sessionCount[mark]++; }
+  curMark = mark;
   saveState();
 
-  // 动画后前进
+  if(!revealed){ revealAnswer(); return; }   // 初判：只展开答案，不前进
+
+  answeringLock = true;                       // 改判：已看过答案，直接下一张
+  const pill = document.getElementById("lvPill");
+  if(pill){
+    pill.textContent = (res.after>=3?"知道 Lv.":res.after>0?"模糊 Lv.":"不会 Lv.")+res.after;
+    pill.className = "pill lvpill " + (res.after>=3?"okl":res.after>0?"midl":"badl");
+  }
+  advance(mark);
+}
+
+function advance(mark){
   const card = document.querySelector(".card");
   if(card){
     card.style.transition = "opacity .14s, transform .14s";
     card.style.opacity = "0";
-    card.style.transform = mark==="know"? "translateX(28px)" : mark==="fuzzy"? "translateY(-6px)" : "translateX(-28px)";
-  }
-  const pill = document.getElementById("lvPill");
-  if(pill && res.after!==null){
-    pill.textContent = (res.after>=3?"知道 Lv.":res.after>0?"模糊 Lv.":"不会 Lv.")+res.after;
-    pill.className = "pill lvpill " + (res.after>=3?"okl":res.after>0?"midl":"badl");
+    card.style.transform = mark==="know"? "translateX(28px)" : mark==="fuzzy"? "translateY(-6px)" : mark==="confirm"? "translateX(20px)" : "translateX(-28px)";
   }
   if(window.__advTimer) clearTimeout(window.__advTimer);
   window.__advTimer = setTimeout(()=>{
-    qi++; revealed=false; answeringLock=false;
+    qi++; revealed=false; answeringLock=false; curBefore=null; curMark=null;
     if(qi>=Q.length){ renderDone(); }
     else { renderCard(); window.scrollTo(0,0); }
     updateHeader(); saveState();
@@ -6134,7 +6186,11 @@ function answer(mark){
 }
 function prevCard(){
   if(answeringLock) return;
-  if(qi>0){ qi--; revealed = true; renderCard(); window.scrollTo(0,0); }
+  if(qi>0){
+    qi--; revealed = true; curBefore = null;
+    curMark = sessionAnswers[Q[qi].id] || null;
+    renderCard(); window.scrollTo(0,0);
+  }
 }
 
 /* 完成页 */
@@ -6196,7 +6252,7 @@ function renderDone(){
   const aw = document.getElementById("againWeak");
   if(aw) aw.onclick = ()=>startSession({type:"weak"});
   document.getElementById("againSame").onclick = ()=>{
-    const list = Q.slice(); qi=0; revealed=false; answeringLock=false;
+    const list = Q.slice(); qi=0; revealed=false; answeringLock=false; curBefore=null; curMark=null;
     sessionCount={no:0,fuzzy:0,know:0}; sessionAnswers={};
     Q = sortByLevel(list);
     renderCard(); window.scrollTo(0,0);
@@ -6216,8 +6272,8 @@ function bindSwipe(){
     const dx = e.changedTouches[0].clientX - touchX;
     const dy = e.changedTouches[0].clientY - touchY;
     if(Math.abs(dx)>70 && Math.abs(dx)>Math.abs(dy)*1.5){
-      // 左滑=展开答案 / 已展开时按“知道”；右滑=上一张
-      if(dx<0){ if(revealed) answer("know"); else revealAnswer(); }else{ prevCard(); }
+      // 左滑=展开答案 / 已展开时确认下一张（滑动不直接改 level）；右滑=上一张
+      if(dx<0){ if(revealed) answer("confirm"); else revealAnswer(); }else{ prevCard(); }
     }
     touchX=null;
   };
@@ -6276,10 +6332,10 @@ document.getElementById("exportBtn").onclick = ()=>{
 document.addEventListener("keydown", e=>{
   if(e.target.tagName==="INPUT") return;
   if(!Q.length) return;
-  if(e.key===" "){ e.preventDefault(); if(!revealed) revealAnswer(); else answer("no"); }
+  if(e.key===" "||e.key==="Enter"){ e.preventDefault(); if(!revealed) revealAnswer(); else answer("confirm"); }
   else if(e.key==="1"){ e.preventDefault(); answer("no"); }
   else if(e.key==="j"||e.key==="J"||e.key==="2"){ e.preventDefault(); answer("fuzzy"); }
-  else if(e.key==="k"||e.key==="K"||e.key==="Enter"||e.key==="3"){ e.preventDefault(); answer("know"); }
+  else if(e.key==="k"||e.key==="K"||e.key==="3"){ e.preventDefault(); answer("know"); }
   else if(e.key==="ArrowLeft"){ e.preventDefault(); prevCard(); }
   else if(e.key==="Escape"){ backHome(); }
 });
