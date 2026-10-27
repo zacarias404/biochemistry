@@ -310,6 +310,7 @@ footer{text-align:center;font-size:11px;color:#4d5f72;padding:10px 8px 18px;poin
     <div class="krow"><b>可改判</b><span>看完答案发现记错了，点“改判不会 / 模糊 / 知道”，按进入本张前的 level 重算，不会重复加分</span></div>
     <div class="krow"><b>自适应排序</b><span>每次复习按 level 升序：不会最先、模糊其次、熟练最后</span></div>
     <div class="krow"><b>步进规则</b><span>不会→0；模糊→level+1；知道→level+2（上限 5）</span></div>
+    <div class="krow"><b>改判</b><span>看完答案后可改判，只显示另外两档，按进入本张前的 level 重算</span></div>
     <div style="height:10px"></div>
     <div class="krow"><span>标记“不知道”</span><b>1</b></div>
     <div class="krow"><span>标记“模糊”</span><b>2 / J</b></div>
@@ -5704,7 +5705,7 @@ let revealed = false;
 let sessionStart = 0, sessionCount = {no:0,fuzzy:0,know:0};
 let sessionAnswers = {}; // 每张卡只计一次；改判时同步修正本轮统计
 let answeringLock = false;
-let curBefore = null;    // 进入当前卡时的 level，初判与改判都以它为基准，避免重复加分
+let curBefore;           // 进入当前卡时的 level（undefined=未取样，null=此前未标记）；初判与改判都以它为基准
 let curMark = null;      // 当前卡的初判标记（null=只看答案未标记）
 
 function cloneObj(o){ return JSON.parse(JSON.stringify(o)); }
@@ -5760,7 +5761,8 @@ function nextLevel(cur, mark){
 }
 /* base 固定为“进入本张时的 level”，初判和改判都用它，避免连点刷分 */
 function applyMark(c, mark, base){
-  const before = (typeof base==="number")? base : levelOf(c);
+  // 注意：base 可能为 null（此前未标记），必须显式判断 undefined，不能typeof number
+  const before = (base===undefined)? levelOf(c) : base;
   const after = nextLevel(before, mark);
   S.lv[c.id] = after; S.seen[c.id] = after;
   return {before, after};
@@ -5894,7 +5896,7 @@ function renderHome(){
       </div>
       <div style="font-size:12px;color:var(--txt3);margin-top:10px;line-height:1.8">
         复习队列按 level 升序排队：<b style="color:var(--bad)">不会</b> 最先出现，其次 <b style="color:var(--warn)">模糊</b>，最后才是已熟练的。<br>
-        标记规则：<b style="color:var(--txt2)">答案未展开时选择即写入 level 并展开答案</b>；不会→ level=0，模糊→ level+1，知道→ level+2（上限 5，首次知道直接记 3）。看完答案若发现记错，可<b>“改判”</b>，改判按进入本张前的 level 重算。
+        标记规则：<b style="color:var(--txt2)">答案未展开时选择即写入 level 并展开答案</b>；不会→ level=0，模糊→ level+1，知道→ level+2（上限 5，首次知道直接记 3）。看完答案若发现记错，可<b>“改判”</b>——此时<b style="color:var(--txt2)">只会出现另外两档</b>（刚选过的档不再重复出现），改判按进入本张前的 level 重算，不会叠加刷分。
       </div>
     </div>
 
@@ -6006,7 +6008,7 @@ function startSession(opt){
   if(window.__advTimer) clearTimeout(window.__advTimer);
   Q = buildQueue(opt);
   if(Q.length===0){ alert("这个范围里没有可复习的知识点啦，换一个范围试试。"); return; }
-  qi = 0; revealed=false; answeringLock=false; curBefore=null; curMark=null;
+  qi = 0; revealed=false; answeringLock=false; curBefore=undefined; curMark=null;
   sessionStart = Date.now(); sessionCount={no:0,fuzzy:0,know:0}; sessionAnswers={};
   window.__activeCh = opt.type==="chapter"? opt.chapter : null;
   window.__sessionTitle = opt.type==="chapter"? opt.chapter :
@@ -6018,7 +6020,7 @@ function startSession(opt){
 }
 function backHome(){
   if(window.__advTimer) clearTimeout(window.__advTimer);
-  Q=[]; qi=0; revealed=false; answeringLock=false; sessionAnswers={}; curBefore=null; curMark=null;
+  Q=[]; qi=0; revealed=false; answeringLock=false; sessionAnswers={}; curBefore=undefined; curMark=null;
   renderHome();
 }
 function updateHeader(){
@@ -6039,13 +6041,25 @@ function renderCard(){
   const c = Q[qi];
   if(!c){ renderDone(); return; }
   // 记录进入本张时的 level：初判与改判都以此为基准，避免同一张连点刷分
-  if(curBefore === null) curBefore = levelOf(c);
+  if(curBefore === undefined) curBefore = levelOf(c);   // 只在进入新卡时取样一次，初判后不再被覆盖
   const st = tierOf(c);
   const curLv = levelOf(c);
   const modeCls = S.mode;
   const isTest = S.mode==="test";
   const lvText = curLv===null? "未标记" : st==="know"? `知道 Lv.${curLv}` : st==="fuzzy"? `模糊 Lv.${curLv}` : "不会 Lv.0";
   const lvCls = curLv===null? "" : st==="know"? "okl" : st==="fuzzy"? "midl" : "badl";
+
+  // 展开答案后，只保留“与初判不同的两档”，避免出现“选了知道还能改判知道”的无效操作
+  const MARKS = [
+    {k:"no",    cls:"lv0", first:"不知道", again:"改判不会", sub:"→ Lv.0", key:"1"},
+    {k:"fuzzy", cls:"lv1", first:"模糊",   again:"改判模糊", sub:"+1",     key:"2"},
+    {k:"know",  cls:"lv3", first:"知道",   again:"改判知道", sub:"+2",     key:"3"}
+  ];
+  const MARK_LABEL = {no:"不知道", fuzzy:"模糊", know:"知道"};
+  const shown = revealed? MARKS.filter(m=>m.k!==curMark) : MARKS;
+  const marksHtml = shown.map(m=>`
+    <button class="big ${m.cls}" data-mark="${m.k}">${revealed? m.again : m.first}<small>${revealed? "" : m.sub+" · "}${m.key}</small></button>`).join("");
+  const kbdRevealed = shown.map(m=>`<kbd>${m.key}</kbd> ${m.again}`).join(" &nbsp;·&nbsp; ");
 
   let ansHtml = `
     <div class="field"><div class="flabel">定义</div><div class="ftext">${mdInline(c.def)}</div></div>
@@ -6083,33 +6097,22 @@ function renderCard(){
     <div class="actionbar">
       ${revealed? `
       <div class="pending" id="pendingBar">${
-        curMark? `本张已记为 <b class="${curMark==="know"?"okl":curMark==="fuzzy"?"midl":"badl"}">${curMark==="know"?"知道":curMark==="fuzzy"?"模糊":"不会"} · Lv.${curLv===null?0:curLv}</b>（原 Lv.${curBefore===null?"未标记":curBefore}）· 与答案不符请改判`
+        curMark? `本张已记为 <b class="${curMark==="know"?"okl":curMark==="fuzzy"?"midl":"badl"}">${curMark==="know"?"知道":curMark==="fuzzy"?"模糊":"不会"} · Lv.${curLv===null?0:curLv}</b>（原 Lv.${curBefore===null?"未标记":curBefore}）· ${curMark==="know"? "记错了就改判为不会／模糊" : "答对了就改判为更高一档"}`
                 : `已展开答案，尚未标记：下方三档会立即写入 level，或直接“下一张”跳过不改`}</div>
       `:""}
-      <div class="actions ${revealed?'act4':'act3'}" id="actions">
-        ${revealed? `
-          <button class="big lv0" id="btnNo">改判不会<small>→ Lv.0 · 1</small></button>
-          <button class="big lv1" id="btnFuzzy">改判模糊<small>+1 · 2</small></button>
-          <button class="big lv3" id="btnKnow">改判知道<small>+2 · 3</small></button>
-          <button class="big nextbtn" id="btnNext">下一张<small>确认 · Enter</small></button>
-        ` : `
-          <button class="big lv0" id="btnNo">不知道<small>→ Lv.0 · 1</small></button>
-          <button class="big lv1" id="btnFuzzy">模糊<small>+1 · 2</small></button>
-          <button class="big lv3" id="btnKnow">知道<small>+2 · 3</small></button>
-        `}
+      <div class="actions ${revealed? (curMark? "act3":"act4") : "act3"}" id="actions">
+        ${marksHtml}
+        ${revealed? `<button class="big nextbtn" id="btnNext">下一张<small>${curMark? "保持不改":"不改"} · Enter</small></button>`:""}
       </div>
     </div>
     <div class="kbdhint">
-      ${revealed? `<kbd>1</kbd> 改判不会 &nbsp;·&nbsp; <kbd>2</kbd> 改判模糊 &nbsp;·&nbsp; <kbd>3</kbd> 改判知道 &nbsp;·&nbsp; <kbd>Enter</kbd>/<kbd>空格</kbd> 下一张` : `<kbd>1</kbd> 不知道 &nbsp;·&nbsp; <kbd>2</kbd> 模糊 &nbsp;·&nbsp; <kbd>3</kbd> 知道 &nbsp;·&nbsp; <kbd>空格</kbd> 只看答案不标记`} &nbsp;·&nbsp; <kbd>←</kbd> 上一张 &nbsp;·&nbsp; <kbd>Esc</kbd> 返回
+      ${revealed? (curMark? `${kbdRevealed} &nbsp;·&nbsp; <kbd>Enter</kbd>/<kbd>空格</kbd> 下一张` : `<kbd>1</kbd> 不会 &nbsp;·&nbsp; <kbd>2</kbd> 模糊 &nbsp;·&nbsp; <kbd>3</kbd> 知道 &nbsp;·&nbsp; <kbd>Enter</kbd> 下一张`) : `<kbd>1</kbd> 不知道 &nbsp;·&nbsp; <kbd>2</kbd> 模糊 &nbsp;·&nbsp; <kbd>3</kbd> 知道 &nbsp;·&nbsp; <kbd>空格</kbd> 只看答案不标记`} &nbsp;·&nbsp; <kbd>←</kbd> 上一张 &nbsp;·&nbsp; <kbd>Esc</kbd> 返回
     </div>
   </div>`;
 
-  const btnNo = document.getElementById("btnNo");
-  if(btnNo) btnNo.onclick = ()=>answer("no");
-  const btnFuzzy = document.getElementById("btnFuzzy");
-  if(btnFuzzy) btnFuzzy.onclick = ()=>answer("fuzzy");
-  const btnKnow = document.getElementById("btnKnow");
-  if(btnKnow) btnKnow.onclick = ()=>answer("know");
+  document.querySelectorAll("#actions [data-mark]").forEach(b=>{
+    b.onclick = ()=>answer(b.dataset.mark);
+  });
   const btnNext = document.getElementById("btnNext");
   if(btnNext) btnNext.onclick = ()=>answer("confirm");
 
@@ -6142,7 +6145,7 @@ function answer(mark){
   if(answeringLock) return;
   const c = Q[qi];
   if(!c) return;
-  const base = (curBefore===null)? levelOf(c) : curBefore;
+  const base = (curBefore===undefined)? levelOf(c) : curBefore;
   curBefore = base;
 
   if(mark==="confirm"){
@@ -6178,7 +6181,7 @@ function advance(mark){
   }
   if(window.__advTimer) clearTimeout(window.__advTimer);
   window.__advTimer = setTimeout(()=>{
-    qi++; revealed=false; answeringLock=false; curBefore=null; curMark=null;
+    qi++; revealed=false; answeringLock=false; curBefore=undefined; curMark=null;
     if(qi>=Q.length){ renderDone(); }
     else { renderCard(); window.scrollTo(0,0); }
     updateHeader(); saveState();
@@ -6187,7 +6190,7 @@ function advance(mark){
 function prevCard(){
   if(answeringLock) return;
   if(qi>0){
-    qi--; revealed = true; curBefore = null;
+    qi--; revealed = true; curBefore = undefined;
     curMark = sessionAnswers[Q[qi].id] || null;
     renderCard(); window.scrollTo(0,0);
   }
@@ -6252,7 +6255,7 @@ function renderDone(){
   const aw = document.getElementById("againWeak");
   if(aw) aw.onclick = ()=>startSession({type:"weak"});
   document.getElementById("againSame").onclick = ()=>{
-    const list = Q.slice(); qi=0; revealed=false; answeringLock=false; curBefore=null; curMark=null;
+    const list = Q.slice(); qi=0; revealed=false; answeringLock=false; curBefore=undefined; curMark=null;
     sessionCount={no:0,fuzzy:0,know:0}; sessionAnswers={};
     Q = sortByLevel(list);
     renderCard(); window.scrollTo(0,0);
@@ -6333,9 +6336,9 @@ document.addEventListener("keydown", e=>{
   if(e.target.tagName==="INPUT") return;
   if(!Q.length) return;
   if(e.key===" "||e.key==="Enter"){ e.preventDefault(); if(!revealed) revealAnswer(); else answer("confirm"); }
-  else if(e.key==="1"){ e.preventDefault(); answer("no"); }
-  else if(e.key==="j"||e.key==="J"||e.key==="2"){ e.preventDefault(); answer("fuzzy"); }
-  else if(e.key==="k"||e.key==="K"||e.key==="3"){ e.preventDefault(); answer("know"); }
+  else if(e.key==="1"){ e.preventDefault(); answer(revealed&&curMark==="no"? "confirm":"no"); }
+  else if(e.key==="j"||e.key==="J"||e.key==="2"){ e.preventDefault(); answer(revealed&&curMark==="fuzzy"? "confirm":"fuzzy"); }
+  else if(e.key==="k"||e.key==="K"||e.key==="3"){ e.preventDefault(); answer(revealed&&curMark==="know"? "confirm":"know"); }
   else if(e.key==="ArrowLeft"){ e.preventDefault(); prevCard(); }
   else if(e.key==="Escape"){ backHome(); }
 });
